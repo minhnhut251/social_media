@@ -35,32 +35,3 @@ public class SocialmediaApplication {
 
 }
 
-@Configuration
-@EnableWebSecurity
-class SecurityConfig {
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http
-				.csrf(csrf -> csrf.disable())
-				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/login", "/register").permitAll()
-						.anyRequest().authenticated()
-				)
-				.formLogin();
-		return http.build();
-	}
-
-	@Bean
-	public UserDetailsService userDetailsService(DataSource dataSource, BCryptPasswordEncoder passwordEncoder) {
-		JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
-		if (!userDetailsManager.userExists("user")) {
-			UserDetails user = User.builder()
-					.username("user")
-					.password(passwordEncoder.encode("password"))
-					.roles("USER")
-					.build();
-			userDetailsManager.createUser(user);
-		}
-		return userDetailsManager;
-	}
-}
