@@ -12,11 +12,14 @@ import lombok.*;
 public class AdminEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int matk;
+    private int matkadmin;
     private String matkhau;
     private String email;
-    private int mavt;
     private int maoyen;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "mavt", nullable = false)
+    private RoleEntity role;
 }

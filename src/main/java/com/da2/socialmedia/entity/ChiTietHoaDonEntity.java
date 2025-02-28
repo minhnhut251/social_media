@@ -11,7 +11,10 @@ public class ChiTietHoaDonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int macthd;
-    private int mahd;
     private int masp;
     private int sl;
+
+    @ManyToOne
+    @JoinColumn(name = "mahd", nullable = false)
+    private HoadonEntity hoadon;
 }

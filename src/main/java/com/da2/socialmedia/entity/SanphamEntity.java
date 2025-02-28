@@ -21,4 +21,12 @@ public class SanphamEntity {
     private String moTa;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "matkbh", nullable = false)
+    private TaiKhoanBanHangEntity taiKhoanBanHang;
+
+    @ManyToOne
+    @JoinColumn(name = "macthd", nullable = false)
+    private ChiTietHoaDonEntity chiTietHoaDon;
 }

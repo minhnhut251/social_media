@@ -15,9 +15,12 @@ public class HoadonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int mahd;
-    private int matk;
     private double tong;
     private int status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "matk", nullable = false)
+    private UserEntity user;
 }

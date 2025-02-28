@@ -11,11 +11,14 @@ import java.sql.Timestamp;
 public class TaiKhoanBanHangEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int matk;
     private int mathkbh;
     private String ten;
     private String giayTo;
     private String avatar;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "matk", nullable = false)
+    private UserEntity user;
 }

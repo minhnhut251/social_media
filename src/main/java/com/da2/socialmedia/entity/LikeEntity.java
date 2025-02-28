@@ -3,13 +3,21 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "like")
+@Table(name = "luotthich")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class LikeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int mabd;
+    private int malt;
     private String tenTK;
+
+    @ManyToOne
+    @JoinColumn(name = "matk", nullable = false)
+    private UserEntity user;
+
+    @ManyToOne
+    @JoinColumn(name = "mabd", nullable = false)
+    private PostEntity post;
 }

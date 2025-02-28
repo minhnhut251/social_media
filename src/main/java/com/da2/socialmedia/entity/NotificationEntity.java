@@ -14,10 +14,13 @@ import java.util.Date;
 public class NotificationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int mattb;
-    private int matk;
+    private int matb;
     private String noiDung;
     private String type;
     private int matkSender;
     private Timestamp createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "matk", nullable = false)
+    private UserEntity user;
 }
