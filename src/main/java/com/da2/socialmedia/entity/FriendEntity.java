@@ -11,13 +11,15 @@ import java.util.List;
 public class FriendEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int mabn;
+
     private String status;
 
     @ManyToOne
     @JoinColumn(name = "matk1", nullable = false)
-    private UserEntity user1;
+    private User user1;
 
     @ManyToOne
     @JoinColumn(name = "matk2", nullable = false)
-    private UserEntity user2;
+    private User user2;
 }

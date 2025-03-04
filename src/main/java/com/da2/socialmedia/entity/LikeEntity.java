@@ -15,7 +15,7 @@ public class LikeEntity {
 
     @ManyToOne
     @JoinColumn(name = "matk", nullable = false)
-    private UserEntity user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "mabd", nullable = false)

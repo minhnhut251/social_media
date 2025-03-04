@@ -20,5 +20,5 @@ public class TaiKhoanBanHangEntity {
 
     @ManyToOne
     @JoinColumn(name = "matk", nullable = false)
-    private UserEntity user;
+    private User user;
 }

@@ -24,5 +24,5 @@ public class PostEntity {
 
     @ManyToOne
     @JoinColumn(name = "matk", nullable = false)
-    private UserEntity users;
+    private User users;
 }

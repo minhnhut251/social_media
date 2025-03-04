@@ -22,5 +22,5 @@ public class HoadonEntity {
 
     @ManyToOne
     @JoinColumn(name = "matk", nullable = false)
-    private UserEntity user;
+    private User user;
 }
