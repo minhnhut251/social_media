@@ -1,15 +1,15 @@
 package com.da2.socialmedia.controller;
 
+import com.da2.socialmedia.CustomUserDetails;
 import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.repository.PostRepository;
 
 import com.da2.socialmedia.entity.PostEntity;
-import com.da2.socialmedia.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -25,11 +25,11 @@ public class PostController {
         this.postRepository = postRepository;
     }
 
-    @GetMapping("/all_posts")
-    public String showUserList(Model model) {
+    @GetMapping("/")
+    public String viewHomePage(Model model) {
         List<PostEntity> listPosts = postRepository.findAll();
         model.addAttribute("listPosts", listPosts);
-        return "all-posts";
+        return "index";
     }
 
     @GetMapping("/new_post")
@@ -40,10 +40,15 @@ public class PostController {
 
     @PostMapping("/add_post")
     public String addUser(PostEntity post) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        CustomUserDetails customUser = (CustomUserDetails) authentication.getPrincipal();
+        User user = customUser.getUser();
+
+        post.setUsers(user);
 
         postRepository.save(post);
-        return "redirect:/all_posts";
+        return "redirect:/";
     }
 
 //    @GetMapping("/edit_post/{id}")

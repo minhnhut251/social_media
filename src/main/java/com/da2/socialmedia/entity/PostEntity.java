@@ -22,7 +22,7 @@ public class PostEntity {
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
-//    @ManyToOne
-//    @JoinColumn(name = "matk", nullable = false)
-//    private User users;
+    @ManyToOne
+    @JoinColumn(name = "matk", nullable = false)
+    private User users;
 }

@@ -18,10 +18,10 @@ public class AppController {
     @Autowired
     private UserRepository userRepo;
 
-    @GetMapping("")
-    public String viewHomePage() {
-        return "index";
-    }
+//    @GetMapping("")
+//    public String viewHomePage() {
+//        return "index";
+//    }
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
