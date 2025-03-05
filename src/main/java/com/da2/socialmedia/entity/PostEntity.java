@@ -15,14 +15,14 @@ import java.util.List;
 public class PostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int mabd;
+    private Long mabd;
     private String noiDung;
     private String mediaURL;
     private String sharePost;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "matk", nullable = false)
-    private User users;
+//    @ManyToOne
+//    @JoinColumn(name = "matk", nullable = false)
+//    private User users;
 }
