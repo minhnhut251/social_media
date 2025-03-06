@@ -200,8 +200,10 @@ main {
             <td th:text="${post.mabd}">mabd</td>
             <td th:text="${post.noiDung}">noiDung</td>
             <td>
-                <a  th:href="@{/post_edit/{id}(id=${post.mabd})}">Sửa</a>
-                <a  th:href="@{/post_delete/{id}(id=${post.mabd})}">Xóa</a>
+                <div sec:authorize="isAuthenticated()" th:if="${post.users.id == #authentication.getPrincipal().getId()}">
+                    <a th:href="@{/post_edit/{id}(id=${post.mabd})}">Edit</a>
+                    <a th:href="@{/post_delete/{id}(id=${post.mabd})}">Delete</a>
+                </div>
             </td>
         </tr>
         </tbody>

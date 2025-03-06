@@ -2,8 +2,11 @@ package com.da2.socialmedia.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -19,8 +22,14 @@ public class PostEntity {
     private String noiDung;
     private String mediaURL;
     private String sharePost;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+
+    @Column(columnDefinition = "TIMESTAMP")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(columnDefinition = "TIMESTAMP")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "matk", nullable = false)
