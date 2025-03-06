@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
     <title>Sign Up - CodeJava</title>
 <!--    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />-->
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
@@ -10,7 +10,7 @@
 <body>
 <div class="container text-center">
     <div>
-        <h1>Them Bai Dang</h1>
+        <h1>Sửa Bài Đăng</h1>
     </div>
 
 
@@ -25,20 +25,30 @@
         </form>
     </div>
 
-    <form th:action="@{/add_post}" th:object="${post}"
+    <form th:action="@{/update_post/{id}(id=${post.mabd})}" th:object="${post}"
           method="post" style="max-width: 600px; margin: 0 auto;">
-        <div class="m-3">
+        <div class="row">
+            <div class="form-group col-md-6">
+                matk: <span th:text="${post.users.id}">matk</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-6">
+                mabd: <span th:text="${post.mabd}">mabd</span>
+            </div>
+        </div>
 
-            <div class="form-group row">
+        <div class="row">
+            <div class="form-group col-md-6">
                 <label class="col-4 col-form-label">noiDung: </label>
                 <div class="col-8">
                     <input type="text" th:field="*{noiDung}" class="form-control" required />
                 </div>
             </div>
-
-
-            <div>
-                <button type="submit" class="btn btn-primary">Them</button>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mt-5">
+                <input type="submit" class="btn btn-primary" value="Lưu thay đổi">
             </div>
         </div>
     </form>

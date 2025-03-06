@@ -191,6 +191,7 @@ main {
             <th>matk</th>
             <th>mabd</th>
             <th>noidung</th>
+            <th>Chức năng</th>
         </tr>
         </thead>
         <tbody>
@@ -198,6 +199,10 @@ main {
             <td th:text="${post.users.id}">matk</td>
             <td th:text="${post.mabd}">mabd</td>
             <td th:text="${post.noiDung}">noiDung</td>
+            <td>
+                <a  th:href="@{/post_edit/{id}(id=${post.mabd})}">Sửa</a>
+                <a  th:href="@{/post_delete/{id}(id=${post.mabd})}">Xóa</a>
+            </td>
         </tr>
         </tbody>
     </table>
