@@ -13,7 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,13 +45,24 @@ public class PostController {
     }
 
     @PostMapping("/add_post")
-    public String addUser(PostEntity post) {
+    public String addUser(PostEntity post, @RequestParam(value = "image", required = false) MultipartFile file) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         CustomUserDetails customUser = (CustomUserDetails) authentication.getPrincipal();
         User user = customUser.getUser();
 
         post.setUsers(user);
+
+        // Handle image upload
+        if (file != null && !file.isEmpty()) {
+            try {
+                // Convert image to Base64 for storage in the database
+                String base64Image = Base64.getEncoder().encodeToString(file.getBytes());
+                post.setMediaURL(base64Image);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         postRepository.save(post);
         return "redirect:/";
