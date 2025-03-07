@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
@@ -133,37 +133,39 @@ main {
     border-bottom: 1px solid #ccc;
 }
 
+
 </style>
 <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Super media</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link " aria-current="page" href=""> <i class="fa-solid fa-house"></i>  </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-solid fa-user-group"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa-solid fa-video"></i></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" aria-disabled="true"><i class="fa-solid fa-bag-shopping"></i></a>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+<div th:replace="fragments/navbar :: navbar"></div>
+<!--<nav class="navbar navbar-expand-lg bg-body-tertiary">-->
+<!--    <div class="container-fluid">-->
+<!--        <a class="navbar-brand" href="#">Super media</a>-->
+<!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--            <span class="navbar-toggler-icon"></span>-->
+<!--        </button>-->
+<!--        <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--            <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link " aria-current="page" href=""> <i class="fa-solid fa-house"></i>  </a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="#"><i class="fa-solid fa-user-group"></i></a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="#"><i class="fa-solid fa-video"></i></a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link disabled" aria-disabled="true"><i class="fa-solid fa-bag-shopping"></i></a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--            <form class="d-flex" role="search">-->
+<!--                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--                <button class="btn btn-outline-success" type="submit">Search</button>-->
+<!--            </form>-->
 
-        </div>
-    </div>
-</nav>
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
 
 <div sec:authorize="isAnonymous()">
     <h3><a th:href="@{/register}">Register</a></h3>
@@ -228,6 +230,14 @@ main {
                     100 •  16 bình luận •  11 chia sẻ
                 </div>
             </div>
+<!--            <div class="post">-->
+<!--                <div class="user">Người dùng • 1 ngày trước</div>-->
+<!--                <img src="/static/food.jpg" alt="Bữa ăn" width="100%">-->
+<!--                <p>Đây là bài đăng mới của tôi</p>-->
+<!--                <div class="actions">-->
+<!--                    <i class="fa-solid fa-thumbs-up"></i> <span th:text="${likeCount}">0</span> • 16 bình luận • 11 chia sẻ-->
+<!--                </div>-->
+<!--            </div>-->
 
             <div class="suggestions">
                 <h3>Gợi ý kết bạn</h3>
@@ -268,7 +278,6 @@ main {
             <li >Nguyễn Văn e</li>
         </ul>
     </div>
-
 </div>
 </body>
 </html>
