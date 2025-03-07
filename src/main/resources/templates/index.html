@@ -140,56 +140,56 @@ main {
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 
-<div sec:authorize="isAnonymous()">
-    <h3><a th:href="@{/register}">Register</a></h3>
-    <h3><a th:href="@{/login}">Login</a></h3>
-</div>
-<div sec:authorize="isAuthenticated()">
-    <form th:action="@{/logout}" method="post">
-        <p>
-            Welcome <b><span sec:authentication="principal.fullName"></span></b>
-            <div th:text="${#authentication.getPrincipal().getId()}"></div>
+<!--<div sec:authorize="isAnonymous()">-->
+<!--    <h3><a th:href="@{/register}">Register</a></h3>-->
+<!--    <h3><a th:href="@{/login}">Login</a></h3>-->
+<!--</div>-->
+<!--<div sec:authorize="isAuthenticated()">-->
+<!--    <form th:action="@{/logout}" method="post">-->
+<!--        <p>-->
+<!--            Welcome <b><span sec:authentication="principal.fullName"></span></b>-->
+<!--            <div th:text="${#authentication.getPrincipal().getId()}"></div>-->
 
-        </p>
-        <input type="submit" value="Sign Out" />
-    </form>
-</div>
+<!--        </p>-->
+<!--        <input type="submit" value="Sign Out" />-->
+<!--    </form>-->
+<!--</div>-->
 
 <h3><a th:href="@{/users}">List of Users</a></h3>
 
 <h3><a th:href="@{/new_post}">New Post</a></h3>
 
-<div>
-    <table class="table table-striped table-bordered">
-        <thead class="thead-dark">
-        <tr>
-            <th>User ID</th>
-            <th>Post ID</th>
-            <th>Content</th>
-            <th>Image</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="post: ${listPosts}">
-            <td th:text="${post.users.id}">matk</td>
-            <td th:text="${post.mabd}">mabd</td>
-            <td th:text="${post.noiDung}">noiDung</td>
-            <td>
-                <img th:if="${post.mediaURL != null && !post.mediaURL.isEmpty()}"
-                     th:src="@{${post.mediaURL}}"
-                     class="post-image" alt="Post image"/>
-            </td>
-            <td>
-                <div sec:authorize="isAuthenticated()" th:if="${post.users.id == #authentication.getPrincipal().getId()}">
-                    <a th:href="@{/post_edit/{id}(id=${post.mabd})}" class="btn btn-primary btn-sm">Edit</a>
-                    <a th:href="@{/post_delete/{id}(id=${post.mabd})}" class="btn btn-danger btn-sm">Delete</a>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+<!--<div>-->
+<!--    <table class="table table-striped table-bordered">-->
+<!--        <thead class="thead-dark">-->
+<!--        <tr>-->
+<!--            <th>User ID</th>-->
+<!--            <th>Post ID</th>-->
+<!--            <th>Content</th>-->
+<!--            <th>Image</th>-->
+<!--            <th>Actions</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr th:each="post: ${listPosts}">-->
+<!--            <td th:text="${post.users.id}">matk</td>-->
+<!--            <td th:text="${post.mabd}">mabd</td>-->
+<!--            <td th:text="${post.noiDung}">noiDung</td>-->
+<!--            <td>-->
+<!--                <img th:if="${post.mediaURL != null && !post.mediaURL.isEmpty()}"-->
+<!--                     th:src="@{${post.mediaURL}}"-->
+<!--                     class="post-image" alt="Post image"/>-->
+<!--            </td>-->
+<!--            <td>-->
+<!--                <div sec:authorize="isAuthenticated()" th:if="${post.users.id == #authentication.getPrincipal().getId()}">-->
+<!--                    <a th:href="@{/post_edit/{id}(id=${post.mabd})}" class="btn btn-primary btn-sm">Edit</a>-->
+<!--                    <a th:href="@{/post_delete/{id}(id=${post.mabd})}" class="btn btn-danger btn-sm">Delete</a>-->
+<!--                </div>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->
 
 <div class="row container-fluid mt-5">
     <div class="col-3 ">
@@ -200,52 +200,64 @@ main {
             <li class="list-group-item">Đăng kí bán hàng</li>
         </ul>
     </div>
+
     <div class="col-6 ">
-        <div class="h2">News</div>
-        <ul class="list-group">
-            <div class="status-box">
-                <input type="text" placeholder="Bạn đang nghĩ gì?">
-                <button>Ảnh/Video</button>
-                <button>Phát trực tiếp</button>
-            </div>
-            <div class="post">
-                <div class="user">Người dùng • 1 ngày trước</div>
-                <img src="food.jpg" alt="Bữa ăn">
-                <p>Đây là bài đăng mới của tôi</p>
-                <div class="actions">
-                    100 •  16 bình luận •  11 chia sẻ
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <!-- Iterate through posts and use the fragment for each -->
+                <div th:each="post: ${listPosts}" class="my-4">
+                    <div th:replace="fragments/postCard :: postCard(${post})"></div>
                 </div>
             </div>
-
-            <div class="suggestions">
-                <h3>Gợi ý kết bạn</h3>
-                <div class="friend">
-                    <img src="avatar1.png" alt="Avatar">
-                    <p>Quen không</p>
-                    <button>Kết bạn</button>
-                </div>
-                <div class="friend">
-                    <img src="avatar2.png" alt="Avatar">
-                    <p>Hú</p>
-                    <button>Kết bạn</button>
-                </div>
-                <div class="friend">
-                    <img src="avatar2.png" alt="Avatar">
-                    <p>Ai day</p>
-                    <button>Kết bạn</button>
-                </div>
-            </div>
-
-            <div class="post">
-                <div class="user">Người dùng • 1 ngày trước</div>
-                <video controls>
-                    <source src="video.mp4" type="video/mp4">
-                </video>
-                <p>Đây là video của tôi</p>
-            </div>
-
-        </ul>
+        </div>
     </div>
+
+<!--    <div class="col-6 ">-->
+<!--        <div class="h2">News</div>-->
+<!--        <ul class="list-group">-->
+<!--            <div class="status-box">-->
+<!--                <input type="text" placeholder="Bạn đang nghĩ gì?">-->
+<!--                <button>Ảnh/Video</button>-->
+<!--                <button>Phát trực tiếp</button>-->
+<!--            </div>-->
+<!--            <div class="post">-->
+<!--                <div class="user">Người dùng • 1 ngày trước</div>-->
+<!--                <img src="food.jpg" alt="Bữa ăn">-->
+<!--                <p>Đây là bài đăng mới của tôi</p>-->
+<!--                <div class="actions">-->
+<!--                    100 •  16 bình luận •  11 chia sẻ-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="suggestions">-->
+<!--                <h3>Gợi ý kết bạn</h3>-->
+<!--                <div class="friend">-->
+<!--                    <img src="avatar1.png" alt="Avatar">-->
+<!--                    <p>Quen không</p>-->
+<!--                    <button>Kết bạn</button>-->
+<!--                </div>-->
+<!--                <div class="friend">-->
+<!--                    <img src="avatar2.png" alt="Avatar">-->
+<!--                    <p>Hú</p>-->
+<!--                    <button>Kết bạn</button>-->
+<!--                </div>-->
+<!--                <div class="friend">-->
+<!--                    <img src="avatar2.png" alt="Avatar">-->
+<!--                    <p>Ai day</p>-->
+<!--                    <button>Kết bạn</button>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="post">-->
+<!--                <div class="user">Người dùng • 1 ngày trước</div>-->
+<!--                <video controls>-->
+<!--                    <source src="video.mp4" type="video/mp4">-->
+<!--                </video>-->
+<!--                <p>Đây là video của tôi</p>-->
+<!--            </div>-->
+
+<!--        </ul>-->
+<!--    </div>-->
     <div class="col-3 ">
         <div class="h2">Bạn bè</div>
         <ul class="list-group">
