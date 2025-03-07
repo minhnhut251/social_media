@@ -133,6 +133,9 @@ main {
     border-bottom: 1px solid #ccc;
 }
 
+    .post-image{
+    height: 100px;
+    }
 </style>
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -188,10 +191,11 @@ main {
     <table class="table table-striped table-bordered">
         <thead class="thead-dark">
         <tr>
-            <th>matk</th>
-            <th>mabd</th>
-            <th>noidung</th>
-            <th>Chức năng</th>
+            <th>User ID</th>
+            <th>Post ID</th>
+            <th>Content</th>
+            <th>Image</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -200,9 +204,14 @@ main {
             <td th:text="${post.mabd}">mabd</td>
             <td th:text="${post.noiDung}">noiDung</td>
             <td>
+                <img th:if="${post.mediaURL != null && !post.mediaURL.isEmpty()}"
+                     th:src="@{${post.mediaURL}}"
+                     class="post-image" alt="Post image"/>
+            </td>
+            <td>
                 <div sec:authorize="isAuthenticated()" th:if="${post.users.id == #authentication.getPrincipal().getId()}">
-                    <a th:href="@{/post_edit/{id}(id=${post.mabd})}">Edit</a>
-                    <a th:href="@{/post_delete/{id}(id=${post.mabd})}">Delete</a>
+                    <a th:href="@{/post_edit/{id}(id=${post.mabd})}" class="btn btn-primary btn-sm">Edit</a>
+                    <a th:href="@{/post_delete/{id}(id=${post.mabd})}" class="btn btn-danger btn-sm">Delete</a>
                 </div>
             </td>
         </tr>
