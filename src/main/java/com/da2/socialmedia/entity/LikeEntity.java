@@ -11,7 +11,6 @@ public class LikeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int malt;
-    private String tenTK;
 
     @ManyToOne
     @JoinColumn(name = "matk", nullable = false)
