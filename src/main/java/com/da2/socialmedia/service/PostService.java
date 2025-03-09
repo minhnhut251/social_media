@@ -135,6 +135,6 @@ public class PostService {
      * @return List of matching posts
      */
     public List<PostEntity> searchPosts(String query) {
-        return postRepository.findByNoiDungContainingIgnoreCase(query);
+        return postRepository.findByNoiDungContainingIgnoreCaseOrderByCreatedAtDesc(query);
     }
 }

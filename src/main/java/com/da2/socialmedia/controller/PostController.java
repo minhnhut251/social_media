@@ -65,7 +65,7 @@ public class PostController {
         List<PostEntity> searchResults = postService.searchPosts(query);
         postViewService.preparePostsForDisplay(model, searchResults, currentUser);
         model.addAttribute("searchQuery", query);
-        return "search-results";
+        return "posts/search-results";
     }
 
     @GetMapping("/new_post")

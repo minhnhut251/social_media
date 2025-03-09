@@ -53,7 +53,7 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-        @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostEntity> posts;
 
 
