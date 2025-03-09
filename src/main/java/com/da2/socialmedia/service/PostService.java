@@ -126,7 +126,7 @@ public class PostService {
      * @return List of posts by the user
      */
     public List<PostEntity> getPostsByUserId(Long userId) {
-        return postRepository.findByUsersId(userId);
+        return postRepository.findByUsersIdOrderByCreatedAtDesc(userId);
     }
 
     /**

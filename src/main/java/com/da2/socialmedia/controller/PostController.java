@@ -46,7 +46,7 @@ public class PostController {
     }
 
     // New method to view user profile with their posts
-    @GetMapping("/user/{userId}/posts")
+    @GetMapping("/user/{userId}")
     public String viewUserPosts(@PathVariable("userId") long userId, Model model,
                                 @AuthenticationPrincipal CustomUserDetails currentUser) {
         List<PostEntity> userPosts = postService.getPostsByUserId(userId);
@@ -55,7 +55,7 @@ public class PostController {
         // Add username or other user info if needed
         // model.addAttribute("profileUser", userService.getUserById(userId));
 
-        return "user-posts";
+        return "taikhoan/personal-page";
     }
 
     // New method for search results
