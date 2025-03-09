@@ -20,10 +20,12 @@ public class PostService {
 
     private final String uploadDir = "./uploads/images";
     private final PostRepository postRepository;
+    private final LikeService likeService;
 
     @Autowired
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, LikeService likeService) {
         this.postRepository = postRepository;
+        this.likeService = likeService;
 
         // Create the uploads directory if it doesn't exist
         File directory = new File(uploadDir);
@@ -75,6 +77,14 @@ public class PostService {
         deleteFileIfExists(post.getMediaURL());
 
         postRepository.delete(post);
+    }
+
+    public boolean hasUserLikedPost(User user, PostEntity post) {
+        return likeService.hasUserLikedPost(user, post);
+    }
+
+    public long getLikeCount(PostEntity post) {
+        return likeService.countLikesForPost(post);
     }
 
     // Helper methods for file operations

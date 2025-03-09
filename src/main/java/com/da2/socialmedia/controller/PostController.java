@@ -3,6 +3,7 @@ package com.da2.socialmedia.controller;
 import com.da2.socialmedia.CustomUserDetails;
 import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.entity.PostEntity;
+import com.da2.socialmedia.service.LikeService;
 import com.da2.socialmedia.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,19 +17,42 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Controller
 public class PostController {
 
     private final PostService postService;
+    private final LikeService likeService;
 
     @Autowired
-    public PostController(PostService postService) {
+    public PostController(PostService postService, LikeService likeService) {
         this.postService = postService;
+        this.likeService = likeService;
     }
 
     @GetMapping("/")
-    public String viewHomePage(Model model) {
-        model.addAttribute("listPosts", postService.getAllPosts());
+    public String viewHomePage(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
+        List<PostEntity> posts = postService.getAllPosts();
+
+        // If user is authenticated, add like information for each post
+        if (currentUser != null) {
+            User user = currentUser.getUser();
+            Map<Long, Boolean> likedPosts = new HashMap<>();
+            Map<Long, Long> likeCounts = new HashMap<>();
+
+            for (PostEntity post : posts) {
+                likedPosts.put(post.getMabd(), likeService.hasUserLikedPost(user, post));
+                likeCounts.put(post.getMabd(), likeService.countLikesForPost(post));
+            }
+
+            model.addAttribute("likedPosts", likedPosts);
+            model.addAttribute("likeCounts", likeCounts);
+        }
+
+        model.addAttribute("listPosts", posts);
         return "index";
     }
 

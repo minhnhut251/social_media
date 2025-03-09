@@ -60,26 +60,25 @@
             <img th:src="@{${post.mediaURL}}" class="img-fluid rounded" alt="Post image" style="max-height: 500px;">
         </div>
 
-        <!-- Like/Comment buttons could go here -->
+        <!-- Like/Comment buttons -->
         <div class="d-flex justify-content-between" sec:authorize="isAuthenticated()">
-
-            <button class="btn btn-outline-primary btn-sm">
-                <i class="far fa-thumbs-up"></i> Like
+            <!-- Like button with toggle functionality -->
+            <button th:id="'likeBtn-' + ${post.mabd}"
+                    th:class="${likedPosts != null && likedPosts[post.mabd]} ? 'btn btn-primary btn-sm' : 'btn btn-outline-primary btn-sm'"
+                    th:onclick="'toggleLike(' + ${post.mabd} + ')'">
+                <i th:class="${likedPosts != null && likedPosts[post.mabd]} ? 'fas fa-thumbs-up' : 'far fa-thumbs-up'"></i>
+                <span th:id="'likeText-' + ${post.mabd}">
+                    <span th:if="${likedPosts != null && likedPosts[post.mabd]}">Unlike</span>
+                    <span th:unless="${likedPosts != null && likedPosts[post.mabd]}">Like</span>
+                </span>
             </button>
-
-
-
-            <button class="btn btn-primary btn-sm">
-                <i class="fas fa-thumbs-up"></i> Unlike
-            </button>
-
 
             <!-- Number of likes -->
             <span class="ms-3">
                 <i class="fas fa-heart"></i>
-                <span >0</span> likes
+                <span th:id="'likeCount-' + ${post.mabd}"
+                      th:text="${likeCounts != null} ? ${likeCounts[post.mabd]} : '0'">0</span> likes
             </span>
-
 
             <button class="btn btn-sm btn-outline-secondary">
                 <i class="bi bi-chat"></i> Comment
