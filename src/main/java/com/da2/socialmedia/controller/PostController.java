@@ -3,12 +3,10 @@ package com.da2.socialmedia.controller;
 import com.da2.socialmedia.CustomUserDetails;
 import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.entity.PostEntity;
-import com.da2.socialmedia.service.LikeService;
 import com.da2.socialmedia.service.PostService;
+import com.da2.socialmedia.service.PostViewService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,43 +15,57 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class PostController {
 
     private final PostService postService;
-    private final LikeService likeService;
+    private final PostViewService postViewService;
 
     @Autowired
-    public PostController(PostService postService, LikeService likeService) {
+    public PostController(PostService postService, PostViewService postViewService) {
         this.postService = postService;
-        this.likeService = likeService;
+        this.postViewService = postViewService;
     }
 
     @GetMapping("/")
     public String viewHomePage(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
         List<PostEntity> posts = postService.getAllPosts();
-
-        // If user is authenticated, add like information for each post
-        if (currentUser != null) {
-            User user = currentUser.getUser();
-            Map<Long, Boolean> likedPosts = new HashMap<>();
-            Map<Long, Long> likeCounts = new HashMap<>();
-
-            for (PostEntity post : posts) {
-                likedPosts.put(post.getMabd(), likeService.hasUserLikedPost(user, post));
-                likeCounts.put(post.getMabd(), likeService.countLikesForPost(post));
-            }
-
-            model.addAttribute("likedPosts", likedPosts);
-            model.addAttribute("likeCounts", likeCounts);
-        }
-
-        model.addAttribute("listPosts", posts);
+        postViewService.preparePostsForDisplay(model, posts, currentUser);
         return "index";
+    }
+
+    // New method to view a single post
+    @GetMapping("/post/{id}")
+    public String viewSinglePost(@PathVariable("id") long id, Model model,
+                                 @AuthenticationPrincipal CustomUserDetails currentUser) {
+        PostEntity post = postService.getPostById(id);
+        postViewService.preparePostForDisplay(model, post, currentUser);
+        return "post-detail";
+    }
+
+    // New method to view user profile with their posts
+    @GetMapping("/user/{userId}/posts")
+    public String viewUserPosts(@PathVariable("userId") long userId, Model model,
+                                @AuthenticationPrincipal CustomUserDetails currentUser) {
+        List<PostEntity> userPosts = postService.getPostsByUserId(userId);
+        postViewService.preparePostsForDisplay(model, userPosts, currentUser);
+
+        // Add username or other user info if needed
+        // model.addAttribute("profileUser", userService.getUserById(userId));
+
+        return "user-posts";
+    }
+
+    // New method for search results
+    @GetMapping("/search")
+    public String searchPosts(@RequestParam("query") String query, Model model,
+                              @AuthenticationPrincipal CustomUserDetails currentUser) {
+        List<PostEntity> searchResults = postService.searchPosts(query);
+        postViewService.preparePostsForDisplay(model, searchResults, currentUser);
+        model.addAttribute("searchQuery", query);
+        return "search-results";
     }
 
     @GetMapping("/new_post")
@@ -63,7 +75,8 @@ public class PostController {
     }
 
     @PostMapping("/add_post")
-    public String addUser(PostEntity post, @RequestParam(value = "image", required = false) MultipartFile file, @AuthenticationPrincipal CustomUserDetails currentUser) {
+    public String addUser(PostEntity post, @RequestParam(value = "image", required = false) MultipartFile file,
+                          @AuthenticationPrincipal CustomUserDetails currentUser) {
         User user = currentUser.getUser();
         postService.createPost(post, user, file);
         return "redirect:/";

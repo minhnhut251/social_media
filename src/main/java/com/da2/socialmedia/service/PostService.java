@@ -35,7 +35,7 @@ public class PostService {
     }
 
     public List<PostEntity> getAllPosts() {
-        return postRepository.findAll();
+        return postRepository.findByOrderByCreatedAtDesc();
     }
 
     public PostEntity getPostById(Long id) {
@@ -116,5 +116,25 @@ public class PostService {
                 file.delete();
             }
         }
+    }
+
+    // Add these methods to your existing PostService class:
+
+    /**
+     * Get posts by user ID
+     * @param userId The user ID
+     * @return List of posts by the user
+     */
+    public List<PostEntity> getPostsByUserId(Long userId) {
+        return postRepository.findByUsersId(userId);
+    }
+
+    /**
+     * Search posts by content
+     * @param query The search query
+     * @return List of matching posts
+     */
+    public List<PostEntity> searchPosts(String query) {
+        return postRepository.findByNoiDungContainingIgnoreCase(query);
     }
 }

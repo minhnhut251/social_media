@@ -47,17 +47,28 @@
         <!-- You can add a user avatar here if you have one -->
         <div>
             <strong th:text="${post.users.lastName} + ' ' + ${post.users.firstName}">Username</strong>
-            <small class="text-muted" th:if="${post.createdAt != null}" th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy HH:mm')}">Date</small>
+            <a th:href="@{/post/{id}(id=${post.mabd})}" class="text-muted" th:if="${post.createdAt != null}" th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy HH:mm')}">Date</a>
         </div>
     </div>
 
     <!-- Post content -->
     <div class="card-body">
-        <p class="card-text" th:text="${post.noiDung}">Content goes here</p>
 
         <!-- Post image if available -->
         <div th:if="${post.mediaURL != null && !post.mediaURL.isEmpty()}" class="text-center mb-3">
             <img th:src="@{${post.mediaURL}}" class="img-fluid rounded" alt="Post image" style="max-height: 500px;">
+        </div>
+
+        <p class="card-text" th:text="${post.noiDung}">Content goes here</p>
+
+
+        <!-- Number of likes -->
+        <div class="d-flex">
+            <span class="ms-3">
+                <i class="fas fa-heart"></i>
+                <span th:id="'likeCount-' + ${post.mabd}"
+                      th:text="${likeCounts != null} ? ${likeCounts[post.mabd]} : '0'">0</span> likes
+            </span>
         </div>
 
         <!-- Like/Comment buttons -->
@@ -72,13 +83,6 @@
                     <span th:unless="${likedPosts != null && likedPosts[post.mabd]}">Like</span>
                 </span>
             </button>
-
-            <!-- Number of likes -->
-            <span class="ms-3">
-                <i class="fas fa-heart"></i>
-                <span th:id="'likeCount-' + ${post.mabd}"
-                      th:text="${likeCounts != null} ? ${likeCounts[post.mabd]} : '0'">0</span> likes
-            </span>
 
             <button class="btn btn-sm btn-outline-secondary">
                 <i class="bi bi-chat"></i> Comment
