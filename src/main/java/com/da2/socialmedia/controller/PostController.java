@@ -46,17 +46,17 @@ public class PostController {
     }
 
     // New method to view user profile with their posts
-    @GetMapping("/user/{userId}")
-    public String viewUserPosts(@PathVariable("userId") long userId, Model model,
-                                @AuthenticationPrincipal CustomUserDetails currentUser) {
-        List<PostEntity> userPosts = postService.getPostsByUserId(userId);
-        postViewService.preparePostsForDisplay(model, userPosts, currentUser);
-
-        // Add username or other user info if needed
-        // model.addAttribute("profileUser", userService.getUserById(userId));
-
-        return "taikhoan/personal-page";
-    }
+//    @GetMapping("/user/{userId}")
+//    public String viewUserPosts(@PathVariable("userId") long userId, Model model,
+//                                @AuthenticationPrincipal CustomUserDetails currentUser) {
+//        List<PostEntity> userPosts = postService.getPostsByUserId(userId);
+//        postViewService.preparePostsForDisplay(model, userPosts, currentUser);
+//
+//        // Add username or other user info if needed
+//         model.addAttribute("profileUser", currentUser.getUser());
+//
+//        return "taikhoan/personal-page";
+//    }
 
     // New method for search results
     @GetMapping("/search")

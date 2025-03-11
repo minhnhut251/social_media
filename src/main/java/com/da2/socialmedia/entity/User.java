@@ -32,18 +32,20 @@ public class User {
     @Column(name = "last_name", nullable = false, length = 20)
     private String lastName;
 
-    //    private String tentk;
-//    private String matkhau;
-//    private String hoten;
-//    private String email;
     @Column(name = "sdt", length = 20)
     private String sdt;
     private String avatar;
+
+    private String moTa;
 
 //    @Column(columnDefinition = "DATE")
     private LocalDate ngaysinh;
     private String banner;
     private String sex;
+
+    private String diaChi;
+    private String hocVan;
+    private String NoiLamViec;
 
     @Column(columnDefinition = "TIMESTAMP")
     @CreationTimestamp

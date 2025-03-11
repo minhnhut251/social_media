@@ -14,18 +14,81 @@
 
 <div class="container mt-4">
     <div class="row">
+        <div class="card">
+            <div class="banner-container">
+                <img th:if="${profileUser.banner != null}" th:src="${profileUser.banner}" class="profile-banner" alt="User Banner">
+                <img th:unless="${profileUser.banner != null}" src="/img/default-banner.jpg" class="profile-banner" alt="Default Banner">
+
+                <div th:if="${isOwnProfile}" class="edit-banner" data-bs-toggle="modal" data-bs-target="#bannerModal">
+                    <i class="fas fa-camera"></i>
+                </div>
+            </div>
+
+            <div class="avatar-container">
+                <img th:if="${profileUser.avatar != null}" th:src="${profileUser.avatar}" class="profile-avatar" alt="User Avatar">
+                <img th:unless="${profileUser.avatar != null}" src="/img/default-avatar.jpg" class="profile-avatar" alt="Default Avatar">
+
+                <div th:if="${isOwnProfile}" class="edit-avatar" data-bs-toggle="modal" data-bs-target="#avatarModal">
+                    <i class="fas fa-camera"></i>
+                </div>
+            </div>
+
+            <div class="text-center mt-3 mb-4">
+                <h3 th:text="${profileUser.lastName + ' ' + profileUser.firstName}">Username</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
         <!-- User profile sidebar -->
         <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <h4 th:if="${profileUser != null}" th:text="${profileUser.lastName + ' ' + profileUser.firstName}">User Profile</h4>
-                    <h4 th:unless="${profileUser != null}">User Profile</h4>
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4>Thông tin cá nhân</h4>
+                    <a th:if="${isOwnProfile}" th:href="@{/profile/edit}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-edit"></i> Sửa thông tin
+                    </a>
                 </div>
                 <div class="card-body">
-                    <!-- User profile details would go here -->
-                    <p class="text-muted">User information</p>
+                    <p><strong>Họ tên: </strong> <span th:text="${profileUser.lastName + ' ' + profileUser.firstName}"></span></p>
+                    <p><strong>Ngày sinh: </strong> <span th:text="${profileUser.ngaysinh}"></span></p>
+                    <p><strong>Giới tính: </strong> <span th:text="${profileUser.sex}"></span></p>
+                    <p><strong>Nơi làm việc: </strong> <span th:text="${profileUser.noiLamViec}"></span></p>
+                    <p><strong>Địa chỉ: </strong> <span th:text="${profileUser.diaChi}"></span></p>
+                    <p><strong>Học vấn: </strong> <span th:text="${profileUser.hocVan}"></span></p>
+                    <p><strong>Số điện thoại: </strong> <span th:text="${profileUser.sdt}"></span></p>
+                    <h4>Mô tả</h4>
+                    <div th:if="${!isOwnProfile}">
+                        <p th:text="${profileUser.moTa}">User description</p>
+                    </div>
+                </div>
+            </div>
 
-                    <!-- You could add friend request button, follow button, etc. here -->
+            <div class="card">
+                <div class="card-header">
+                    <h4>Mô tả</h4>
+                </div>
+                <div class="card-body">
+                    <div th:if="${!isOwnProfile}">
+                        <p th:text="${profileUser.moTa}">User description</p>
+                    </div>
+                    <div th:if="${isOwnProfile}" id="description-container">
+                        <div id="description-display" class="mb-3">
+                            <p th:text="${profileUser.moTa}">User description</p>
+                            <button id="edit-description-btn" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-edit"></i> Sửa mô tả
+                            </button>
+                        </div>
+                        <div id="description-editor" style="display: none;">
+                            <form id="description-form">
+                                <textarea id="description-textarea" class="form-control mb-2" rows="5" th:text="${profileUser.moTa}"></textarea>
+                                <div>
+                                    <button type="submit" class="btn btn-sm btn-primary">Lưu</button>
+                                    <button type="button" id="cancel-edit-btn" class="btn btn-sm btn-secondary">Hủy</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
