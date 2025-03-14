@@ -142,71 +142,8 @@ main {
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<!--<div sec:authorize="isAnonymous()">-->
-<!--    <h3><a th:href="@{/register}">Register</a></h3>-->
-<!--    <h3><a th:href="@{/login}">Login</a></h3>-->
-<!--</div>-->
-<!--<div sec:authorize="isAuthenticated()">-->
-<!--    <form th:action="@{/logout}" method="post">-->
-<!--        <p>-->
-<!--            Welcome <b><span sec:authentication="principal.fullName"></span></b>-->
-<!--            <div th:text="${#authentication.getPrincipal().getId()}"></div>-->
-
-<!--        </p>-->
-<!--        <input type="submit" value="Sign Out" />-->
-<!--    </form>-->
-<!--</div>-->
-
-<h3><a th:href="@{/users}">List of Users</a></h3>
-<h3><a th:href="@{/new_post}">New Post</a></h3>
+<h1>Trang người bán hàng</h1>
 
 
-<div class="row container-fluid mt-5">
-    <div class="col-3 ">
-        <div sec:authorize="isAuthenticated()">
-            <a class="h4" th:href="@{/user/{userId}(userId=${#authentication.getPrincipal().getId()})}">Trang cá nhân</a>
-        </div>
-        <ul class="list-group">
-            <li class="list-group-item">Mua sắm</li>
-            <li class="list-group-item">bạn bè</li>
-            <li class="list-group-item">Đăng kí bán hàng</li>
-            <div sec:authorize="hasAnyAuthority('ROLE_VENDOR')">
-                <a th:href="@{/vendor}">Trang người bán hàng</a>
-            </div>
-        </ul>
-    </div>
-
-    <div class="col-6 ">
-        <div class="row">
-            <div class="col-md-8 mx-auto">
-                <!-- Iterate through posts and use the fragment for each -->
-                <div th:each="post: ${listPosts}" class="my-4">
-                    <div th:replace="~{fragments/postCard :: postCard(${post})}"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-<!--    <div class="col-6 ">-->
-<!--        <div class="h2">News</div>-->
-<!--        <ul class="list-group">-->
-<!--            <div class="status-box">-->
-<!--                <input type="text" placeholder="Bạn đang nghĩ gì?">-->
-<!--                <button>Ảnh/Video</button>-->
-<!--                <button>Phát trực tiếp</button>-->
-<!--            </div>-->
-
-    <div class="col-3 ">
-        <div class="h2">Bạn bè</div>
-        <ul class="list-group">
-            <li >Nguyễn Văn A</li>
-            <li >Nguyễn Văn b</li>
-            <li >Nguyễn Văn c</li>
-            <li >Nguyễn Văn d</li>
-            <li >Nguyễn Văn e</li>
-        </ul>
-    </div>
-</div>
-<script src="/js/like.js"></script>
 </body>
 </html>

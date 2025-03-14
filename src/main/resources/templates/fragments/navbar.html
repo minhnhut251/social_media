@@ -70,6 +70,7 @@ header nav a {
                 <form th:action="@{/logout}" method="post">
                     <p>
                         Welcome <b><span sec:authentication="principal.fullName"></span></b>
+                        <span sec:authentication="principal.authorities">Roles</span>
                         <div th:text="${#authentication.getPrincipal().getId()}"></div>
 
                     </p>

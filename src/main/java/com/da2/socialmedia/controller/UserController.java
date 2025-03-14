@@ -1,6 +1,6 @@
 package com.da2.socialmedia.controller;
 
-import com.da2.socialmedia.CustomUserDetails;
+import com.da2.socialmedia.security.CustomUserDetails;
 import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.service.PostService;
 import com.da2.socialmedia.service.PostViewService;
@@ -10,7 +10,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class UserController {
@@ -68,6 +67,11 @@ public class UserController {
 
         userService.updateUserProfile(user);
         return "redirect:/user/" + user.getId();
+    }
+
+    @GetMapping("/vendor")
+    public String vendorPage(){
+        return "shop/vendor";
     }
 
 //    @PostMapping("/profile/update-avatar")

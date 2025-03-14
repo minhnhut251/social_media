@@ -1,4 +1,4 @@
-package com.da2.socialmedia;
+package com.da2.socialmedia.security;
 
 import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.repository.UserRepository;

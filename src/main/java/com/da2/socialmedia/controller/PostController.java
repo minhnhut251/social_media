@@ -1,6 +1,6 @@
 package com.da2.socialmedia.controller;
 
-import com.da2.socialmedia.CustomUserDetails;
+import com.da2.socialmedia.security.CustomUserDetails;
 import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.entity.PostEntity;
 import com.da2.socialmedia.service.PostService;
@@ -42,7 +42,7 @@ public class PostController {
                                  @AuthenticationPrincipal CustomUserDetails currentUser) {
         PostEntity post = postService.getPostById(id);
         postViewService.preparePostForDisplay(model, post, currentUser);
-        return "post-detail";
+        return "posts/post-detail";
     }
 
     // New method to view user profile with their posts
@@ -71,7 +71,7 @@ public class PostController {
     @GetMapping("/new_post")
     public String showNewPostPage(Model model) {
         model.addAttribute("post", new PostEntity());
-        return "new-post";
+        return "posts/new-post";
     }
 
     @PostMapping("/add_post")
@@ -86,7 +86,7 @@ public class PostController {
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
         PostEntity post = postService.getPostById(id);
         model.addAttribute("post", post);
-        return "edit-post";
+        return "posts/edit-post";
     }
 
     @PostMapping("/update_post/{id}")
