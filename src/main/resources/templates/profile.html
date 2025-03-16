@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Profile Clone</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* body {
+            background-color: #18191A;
+            color: white;
+        } */
+        .cover-photo {
+            width: 100%;
+            height: 300px;
+            position: relative;
+        }
+        .avatar {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            /* border: 5px solid #18191A; */
+            position: absolute;
+            bottom: -85px;
+            left: 20px;
+        }
+        .profile-buttons button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <div class="cover-photo position-relative">
+        <button class="btn btn-secondary position-absolute end-0 m-3"><i class="fa fa-camera"></i> Thêm ảnh bìa</button>
+        <img src="img/ceccb544-0d55-4734-8292-1b608bfcee81.webp" alt="Avatar" class="avatar">
+    </div>
+    <div class="mt-5 d-flex align-items-center justify-content-between">
+        <div>
+            <h2>Huỳnh Khoa</h2>
+            <p>95 người bạn</p>
+        </div>
+        <div class="profile-buttons">
+            <button class="btn btn-primary">+ Thêm vào tin</button>
+            <button class="btn btn-secondary"><i class="fa fa-edit"></i> Chỉnh sửa trang cá nhân</button>
+        </div>
+    </div>
+    <hr>
+    <nav class="nav nav-tabs">
+        <a class="nav-link active" href="#">Bài viết</a>
+        <a class="nav-link" href="#">Giới thiệu</a>
+        <a class="nav-link" href="#">Bạn bè</a>
+        <a class="nav-link" href="#">Ảnh</a>
+        <a class="nav-link" href="#">Video</a>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm">
+                <h5 class="fw-bold">Thông tin cá nhân</h5>
+                <p><strong>Họ và tên:</strong> Nguyễn Văn A</p>
+                <p><strong>Ngày sinh:</strong> 01/01/2000</p>
+                <p><strong>Công việc:</strong> Lập trình viên</p>
+                <p><strong>Thành phố:</strong> Hà Nội</p>
+                <button class="btn btn-primary w-100">Sửa thông tin</button>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+
+            <div class="mt-4">
+                <div class=" p-3 rounded">
+                    <input type="text" class="form-control bg-secondary text-white" placeholder="Bạn đang nghĩ gì?">
+                    <div class="d-flex mt-2">
+                        <button class="btn  flex-grow-1"><i class="fa fa-video"></i> Video trực tiếp</button>
+                        <button class="btn  flex-grow-1 mx-1"><i class="fa fa-image"></i> Ảnh/Video</button>
+                        <button class="btn  flex-grow-1"><i class="fa fa-calendar"></i> Sự kiện</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card p-3 shadow-sm mb-3">
+                <div class="d-flex align-items-center">
+                    <img src="https://via.placeholder.com/50" class="rounded-circle me-2" alt="Avatar">
+                    <div>
+                        <h6 class="m-0">Người dùng</h6>
+                        <small class="text-muted">1 ngày trước</small>
+                    </div>
+                </div>
+                <p class="mt-3">Đây là bài đăng mới của tôi</p>
+                <img src="https://via.placeholder.com/500x300" class="img-fluid rounded" alt="Ảnh bài đăng">
+                <div class="d-flex justify-content-between mt-2">
+                    <button class="btn btn-outline-primary"><i class="bi bi-heart"></i> Thích</button>
+                    <button class="btn btn-outline-secondary"><i class="bi bi-chat"></i> Bình luận</button>
+                    <button class="btn btn-outline-success"><i class="bi bi-share"></i> Chia sẻ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
