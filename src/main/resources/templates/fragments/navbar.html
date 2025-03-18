@@ -93,6 +93,12 @@
             <!--                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
             <!--                <button class="btn btn-outline-success" type="submit">Search</button>-->
             <!--            </form>-->
+
+<!--            <form class="d-flex" role="search" method="get" th:action="@{/search}">-->
+<!--                <input name="query" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--                <button class="btn btn-outline-success" type="submit">Search</button>-->
+<!--            </form>-->
+
             <div class="search-box ms-3">
                 <i class="fas fa-search"></i>
                 <input class="form-control" type="search" placeholder="Tìm kiếm">
@@ -123,9 +129,16 @@
                 <p>Welcome <b><span sec:authentication="principal.fullName"></span></b></p>
 <!--                <div th:text="${#authentication.getPrincipal().getId()}"></div>-->
                 <form th:action="@{/logout}" method="post">
+                    <p>
+                        Welcome <b><span sec:authentication="principal.fullName"></span></b>
+                        <span sec:authentication="principal.authorities">Roles</span>
+
+                    </p>
                     <input type="submit" value="Sign Out" />
                 </form>
             </div>
+
+
         </div>
     </div>
 </nav>

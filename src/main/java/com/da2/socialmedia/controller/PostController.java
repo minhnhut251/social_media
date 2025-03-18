@@ -1,6 +1,6 @@
 package com.da2.socialmedia.controller;
 
-import com.da2.socialmedia.CustomUserDetails;
+import com.da2.socialmedia.security.CustomUserDetails;
 import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.entity.PostEntity;
 import com.da2.socialmedia.service.PostService;
@@ -42,21 +42,21 @@ public class PostController {
                                  @AuthenticationPrincipal CustomUserDetails currentUser) {
         PostEntity post = postService.getPostById(id);
         postViewService.preparePostForDisplay(model, post, currentUser);
-        return "post-detail";
+        return "posts/post-detail";
     }
 
     // New method to view user profile with their posts
-    @GetMapping("/user/{userId}/posts")
-    public String viewUserPosts(@PathVariable("userId") long userId, Model model,
-                                @AuthenticationPrincipal CustomUserDetails currentUser) {
-        List<PostEntity> userPosts = postService.getPostsByUserId(userId);
-        postViewService.preparePostsForDisplay(model, userPosts, currentUser);
-
-        // Add username or other user info if needed
-        // model.addAttribute("profileUser", userService.getUserById(userId));
-
-        return "user-posts";
-    }
+//    @GetMapping("/user/{userId}")
+//    public String viewUserPosts(@PathVariable("userId") long userId, Model model,
+//                                @AuthenticationPrincipal CustomUserDetails currentUser) {
+//        List<PostEntity> userPosts = postService.getPostsByUserId(userId);
+//        postViewService.preparePostsForDisplay(model, userPosts, currentUser);
+//
+//        // Add username or other user info if needed
+//         model.addAttribute("profileUser", currentUser.getUser());
+//
+//        return "taikhoan/personal-page";
+//    }
 
     // New method for search results
     @GetMapping("/search")
@@ -65,13 +65,13 @@ public class PostController {
         List<PostEntity> searchResults = postService.searchPosts(query);
         postViewService.preparePostsForDisplay(model, searchResults, currentUser);
         model.addAttribute("searchQuery", query);
-        return "search-results";
+        return "posts/search-results";
     }
 
     @GetMapping("/new_post")
     public String showNewPostPage(Model model) {
         model.addAttribute("post", new PostEntity());
-        return "new-post";
+        return "posts/new-post";
     }
 
     @PostMapping("/add_post")
@@ -86,7 +86,7 @@ public class PostController {
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
         PostEntity post = postService.getPostById(id);
         model.addAttribute("post", post);
-        return "edit-post";
+        return "posts/edit-post";
     }
 
     @PostMapping("/update_post/{id}")

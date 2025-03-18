@@ -18,6 +18,16 @@ public class AppController {
     @Autowired
     private UserRepository userRepo;
 
+    @GetMapping("/admin/login")
+    public String viewAdminLoginPage() {
+        return "admin/admin_login";
+    }
+
+    @GetMapping({"/admin", "/admin/"})
+    public String viewAdminHomePage() {
+        return "admin/admin_home";
+    }
+
 //    @GetMapping("")
 //    public String viewHomePage() {
 //        return "index";
@@ -27,12 +37,12 @@ public class AppController {
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new User());
 
-        return "signup_form";
+        return "taikhoan/signup_form";
     }
 
     @GetMapping("/login")
     String login() {
-        return "login";
+        return "taikhoan/login";
     }
 
     @PostMapping("/process_register")
@@ -43,7 +53,7 @@ public class AppController {
 
         userRepo.save(user);
 
-        return "register_success";
+        return "taikhoan/register_success";
     }
 
     @GetMapping("/users")
@@ -51,6 +61,6 @@ public class AppController {
         List<User> listUsers = userRepo.findAll();
         model.addAttribute("listUsers", listUsers);
 
-        return "users";
+        return "taikhoan/users";
     }
 }

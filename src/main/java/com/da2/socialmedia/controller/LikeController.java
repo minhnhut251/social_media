@@ -1,6 +1,6 @@
 package com.da2.socialmedia.controller;
 
-import com.da2.socialmedia.CustomUserDetails;
+import com.da2.socialmedia.security.CustomUserDetails;
 import com.da2.socialmedia.entity.PostEntity;
 import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.service.LikeService;

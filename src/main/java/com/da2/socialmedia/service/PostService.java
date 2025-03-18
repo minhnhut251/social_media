@@ -18,20 +18,22 @@ import java.util.UUID;
 @Service
 public class PostService {
 
-    private final String uploadDir = "./uploads/images";
+//    private final String uploadDir = "./uploads/images";
     private final PostRepository postRepository;
     private final LikeService likeService;
+    private final FileService fileService;
 
     @Autowired
-    public PostService(PostRepository postRepository, LikeService likeService) {
+    public PostService(PostRepository postRepository, LikeService likeService, FileService fileService) {
         this.postRepository = postRepository;
         this.likeService = likeService;
+        this.fileService = fileService;
 
         // Create the uploads directory if it doesn't exist
-        File directory = new File(uploadDir);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
+//        File directory = new File(uploadDir);
+//        if (!directory.exists()) {
+//            directory.mkdirs();
+//        }
     }
 
     public List<PostEntity> getAllPosts() {
@@ -47,7 +49,8 @@ public class PostService {
         post.setUsers(user);
 
         if (file != null && !file.isEmpty()) {
-            String mediaUrl = handleFileUpload(file);
+//            String mediaUrl = handleFileUpload(file);
+            String mediaUrl = fileService.handleFileUpload(file);
             post.setMediaURL(mediaUrl);
         }
 
@@ -60,10 +63,12 @@ public class PostService {
 
         if (file != null && !file.isEmpty()) {
             // Delete old file if exists
-            deleteFileIfExists(existingPost.getMediaURL());
+//            deleteFileIfExists(existingPost.getMediaURL());
+            fileService.deleteFileIfExists(existingPost.getMediaURL());
 
             // Upload new file
-            String mediaUrl = handleFileUpload(file);
+//            String mediaUrl = handleFileUpload(file);
+            String mediaUrl = fileService.handleFileUpload((file));
             existingPost.setMediaURL(mediaUrl);
         }
 
@@ -74,8 +79,8 @@ public class PostService {
         PostEntity post = getPostById(id);
 
         // Delete associated file if exists
-        deleteFileIfExists(post.getMediaURL());
-
+//        deleteFileIfExists(post.getMediaURL());
+        fileService.deleteFileIfExists(post.getMediaURL());
         postRepository.delete(post);
     }
 
@@ -88,35 +93,35 @@ public class PostService {
     }
 
     // Helper methods for file operations
-    private String handleFileUpload(MultipartFile file) {
-        try {
-            // Generate a unique filename
-            String originalFilename = file.getOriginalFilename();
-            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String newFilename = UUID.randomUUID().toString() + fileExtension;
+//    private String handleFileUpload(MultipartFile file) {
+//        try {
+//            // Generate a unique filename
+//            String originalFilename = file.getOriginalFilename();
+//            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+//            String newFilename = UUID.randomUUID().toString() + fileExtension;
+//
+//            // Save the file to the upload directory
+//            Path filePath = Paths.get(uploadDir, newFilename);
+//            Files.write(filePath, file.getBytes());
+//
+//            // Return the relative path
+//            return "/uploads/images/" + newFilename;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            throw new RuntimeException("Failed to upload file", e);
+//        }
+//    }
 
-            // Save the file to the upload directory
-            Path filePath = Paths.get(uploadDir, newFilename);
-            Files.write(filePath, file.getBytes());
-
-            // Return the relative path
-            return "/uploads/images/" + newFilename;
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to upload file", e);
-        }
-    }
-
-    private void deleteFileIfExists(String mediaURL) {
-        if (mediaURL != null && !mediaURL.isEmpty()) {
-            // Extract the filename from the path
-            String fileName = mediaURL.substring(mediaURL.lastIndexOf("/") + 1);
-            File file = new File(uploadDir, fileName);
-            if (file.exists()) {
-                file.delete();
-            }
-        }
-    }
+//    private void deleteFileIfExists(String mediaURL) {
+//        if (mediaURL != null && !mediaURL.isEmpty()) {
+//            // Extract the filename from the path
+//            String fileName = mediaURL.substring(mediaURL.lastIndexOf("/") + 1);
+//            File file = new File(uploadDir, fileName);
+//            if (file.exists()) {
+//                file.delete();
+//            }
+//        }
+//    }
 
     // Add these methods to your existing PostService class:
 
@@ -126,7 +131,7 @@ public class PostService {
      * @return List of posts by the user
      */
     public List<PostEntity> getPostsByUserId(Long userId) {
-        return postRepository.findByUsersId(userId);
+        return postRepository.findByUsersIdOrderByCreatedAtDesc(userId);
     }
 
     /**
@@ -135,6 +140,6 @@ public class PostService {
      * @return List of matching posts
      */
     public List<PostEntity> searchPosts(String query) {
-        return postRepository.findByNoiDungContainingIgnoreCase(query);
+        return postRepository.findByNoiDungContainingIgnoreCaseOrderByCreatedAtDesc(query);
     }
 }

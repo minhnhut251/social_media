@@ -81,7 +81,7 @@
     }
 </style>
 <body>
-<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
 
 
@@ -92,6 +92,9 @@
             <li><a href="#">Bạn bè</a></li>
             <li><a href="#">Đăng ký bán hàng</a></li>
             <li><a th:href="@{/new_post}">New Post</a></li>
+            <li sec:authorize="hasAnyAuthority('ROLE_VENDOR')">
+                <a th:href="@{/vendor}">Trang người bán hàng</a>
+            </li>
         </ul>
     </div>
 
@@ -131,7 +134,7 @@
                     </div>
                 </div>
                 <div th:each="post: ${listPosts}" class="my-4">
-                    <div th:replace="fragments/postCard :: postCard(${post})"></div>
+                    <div th:replace="~{fragments/postCard :: postCard(${post})}"></div>
                 </div>
                 <!-- Posts Section -->
 <!--                <div class="post-card card mb-3">-->
