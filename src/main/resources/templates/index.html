@@ -79,86 +79,10 @@
     .post-image{
     height: 100px;
     }
-    .navbar {
-        position: relative;
-    }
-
-    /* Ô tìm kiếm */
-    .navbar .form-control {
-        width: 250px;
-        border-radius: 20px;
-        padding-left: 30px;
-    }
-
-    .navbar .search-box {
-        position: relative;
-    }
-
-    .navbar .search-box i {
-        position: absolute;
-        left: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: gray;
-    }
-
-    /* Căn giữa nhóm icon */
-    .navbar-center {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 25px;
-    }
-
-    .navbar-icons i {
-        font-size: 1.5rem;
-        cursor: pointer;
-    }
-
-    /* Nhóm thông báo + tin nhắn */
-    .navbar-right {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    /* Phần đăng nhập/đăng ký */
-    .auth-links {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .auth-links a {
-        text-decoration: none;
-        font-size: 1rem;
-        font-weight: bold;
-    }
-
-    /* Đăng xuất */
-    .logout-form {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .logout-form input {
-        border: none;
-        background-color: #ff4d4d;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
 </style>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 
-
-<h3><a th:href="@{/users}">List of Users</a></h3>
-
-<h3><a th:href="@{/new_post}">New Post</a></h3>
 
 
     <div class="sidebar">
@@ -167,6 +91,7 @@
             <li><a href="#">Mua sắm</a></li>
             <li><a href="#">Bạn bè</a></li>
             <li><a href="#">Đăng ký bán hàng</a></li>
+            <li><a th:href="@{/new_post}">New Post</a></li>
         </ul>
     </div>
 
@@ -228,43 +153,43 @@
 <!--                    </div>-->
 <!--                </div>-->
 
-                <div class="post-card card mb-3">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="/api/placeholder/40/40" class="rounded-circle me-2" alt="Avatar">
-                            <div>
-                                <h5 class="mb-0">Người dùng</h5>
-                                <p class="text-muted small mb-0">2 ngày trước</p>
-                            </div>
-                        </div>
-                        <p>Một bài đăng khác với nội dung khác nhau...</p>
-                        <img src="/api/placeholder/600/400" class="img-fluid rounded mb-3" alt="Bài đăng">
-                        <div class="d-flex justify-content-between">
-                            <button class="btn btn-light"><i class="far fa-thumbs-up me-1"></i>Thích</button>
-                            <button class="btn btn-light"><i class="far fa-comment me-1"></i>Bình luận</button>
-                            <button class="btn btn-light"><i class="far fa-share-square me-1"></i>Chia sẻ</button>
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="post-card card mb-3">-->
+<!--                    <div class="card-body">-->
+<!--                        <div class="d-flex align-items-center mb-2">-->
+<!--                            <img src="/api/placeholder/40/40" class="rounded-circle me-2" alt="Avatar">-->
+<!--                            <div>-->
+<!--                                <h5 class="mb-0">Người dùng</h5>-->
+<!--                                <p class="text-muted small mb-0">2 ngày trước</p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <p>Một bài đăng khác với nội dung khác nhau...</p>-->
+<!--                        <img src="/api/placeholder/600/400" class="img-fluid rounded mb-3" alt="Bài đăng">-->
+<!--                        <div class="d-flex justify-content-between">-->
+<!--                            <button class="btn btn-light"><i class="far fa-thumbs-up me-1"></i>Thích</button>-->
+<!--                            <button class="btn btn-light"><i class="far fa-comment me-1"></i>Bình luận</button>-->
+<!--                            <button class="btn btn-light"><i class="far fa-share-square me-1"></i>Chia sẻ</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
 
-                <div class="post-card card mb-3">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="/api/placeholder/40/40" class="rounded-circle me-2" alt="Avatar">
-                            <div>
-                                <h5 class="mb-0">Người dùng</h5>
-                                <p class="text-muted small mb-0">3 ngày trước</p>
-                            </div>
-                        </div>
-                        <p>Bài đăng thứ ba với nội dung khác biệt...</p>
-                        <img src="/api/placeholder/600/400" class="img-fluid rounded mb-3" alt="Bài đăng">
-                        <div class="d-flex justify-content-between">
-                            <button class="btn btn-light"><i class="far fa-thumbs-up me-1"></i>Thích</button>
-                            <button class="btn btn-light"><i class="far fa-comment me-1"></i>Bình luận</button>
-                            <button class="btn btn-light"><i class="far fa-share-square me-1"></i>Chia sẻ</button>
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="post-card card mb-3">-->
+<!--                    <div class="card-body">-->
+<!--                        <div class="d-flex align-items-center mb-2">-->
+<!--                            <img src="/api/placeholder/40/40" class="rounded-circle me-2" alt="Avatar">-->
+<!--                            <div>-->
+<!--                                <h5 class="mb-0">Người dùng</h5>-->
+<!--                                <p class="text-muted small mb-0">3 ngày trước</p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <p>Bài đăng thứ ba với nội dung khác biệt...</p>-->
+<!--                        <img src="/api/placeholder/600/400" class="img-fluid rounded mb-3" alt="Bài đăng">-->
+<!--                        <div class="d-flex justify-content-between">-->
+<!--                            <button class="btn btn-light"><i class="far fa-thumbs-up me-1"></i>Thích</button>-->
+<!--                            <button class="btn btn-light"><i class="far fa-comment me-1"></i>Bình luận</button>-->
+<!--                            <button class="btn btn-light"><i class="far fa-share-square me-1"></i>Chia sẻ</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
         </div>
     </div>

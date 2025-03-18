@@ -34,4 +34,7 @@ public class PostEntity {
     @ManyToOne
     @JoinColumn(name = "matk", nullable = false)
     private User users;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LikeEntity> likes;
 }
