@@ -50,15 +50,16 @@
                     </a>
                 </div>
                 <div class="card-body">
-                    <p><strong>Họ tên: </strong> <span th:text="${profileUser.lastName + ' ' + profileUser.firstName}"></span></p>
+<!--                    <p><strong>Họ tên: </strong> <span th:text="${profileUser.lastName + ' ' + profileUser.firstName}"></span></p>-->
+                    <h4>Mô tả</h4>
+                    <p th:text="${profileUser.moTa}">User description</p>
                     <p><strong>Ngày sinh: </strong> <span th:text="${profileUser.ngaysinh}"></span></p>
                     <p><strong>Giới tính: </strong> <span th:text="${profileUser.sex}"></span></p>
                     <p><strong>Nơi làm việc: </strong> <span th:text="${profileUser.noiLamViec}"></span></p>
                     <p><strong>Địa chỉ: </strong> <span th:text="${profileUser.diaChi}"></span></p>
                     <p><strong>Học vấn: </strong> <span th:text="${profileUser.hocVan}"></span></p>
                     <p><strong>Số điện thoại: </strong> <span th:text="${profileUser.sdt}"></span></p>
-                    <h4>Mô tả</h4>
-                    <p th:text="${profileUser.moTa}">User description</p>
+
                 </div>
             </div>
 

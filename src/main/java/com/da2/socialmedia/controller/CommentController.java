@@ -1,10 +1,10 @@
 package com.da2.socialmedia.controller;
 
 
-import com.da2.socialmedia.CustomUserDetails;
 import com.da2.socialmedia.entity.CommentEntity;
 import com.da2.socialmedia.entity.PostEntity;
 import com.da2.socialmedia.entity.User;
+import com.da2.socialmedia.security.CustomUserDetails;
 import com.da2.socialmedia.service.CommentService;
 import com.da2.socialmedia.service.PostService;
 import com.da2.socialmedia.service.UserService;

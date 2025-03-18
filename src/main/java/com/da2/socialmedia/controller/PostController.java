@@ -63,8 +63,10 @@ public class PostController {
 //        return "taikhoan/personal-page";
 //    }
     @GetMapping("/post/{id}")
-    public String showPostDetail(@PathVariable("id") long id, Model model) {
+    public String showPostDetail(@PathVariable("id") long id, Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
         PostEntity post = postService.getPostById(id);
+        postViewService.preparePostForDisplay(model, post, currentUser);
+
         if (post == null) {
             return "redirect:/";
         }
@@ -78,7 +80,7 @@ public class PostController {
         // Add any other attributes your view needs
         // e.g. Like counts, etc.
 
-        return "post-detail";
+        return "posts/post-detail";
     }
 
     // New method for search results

@@ -99,10 +99,11 @@
 <!--                <button class="btn btn-outline-success" type="submit">Search</button>-->
 <!--            </form>-->
 
-            <div class="search-box ms-3">
+            <form class="search-box ms-3 d-flex" role="search" method="get" th:action="@{/search}">
                 <i class="fas fa-search"></i>
-                <input class="form-control" type="search" placeholder="Tìm kiếm">
-            </div>
+                <input class="form-control" type="search" placeholder="Tìm kiếm" name="query" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
         </div>
 
         <!-- Nhóm 4 icon chính (Căn giữa) -->
@@ -127,13 +128,9 @@
             <!-- Phần đăng xuất -->
             <div sec:authorize="isAuthenticated()" class="logout-form">
                 <p>Welcome <b><span sec:authentication="principal.fullName"></span></b></p>
+<!--                <span sec:authentication="principal.authorities">Roles</span>-->
 <!--                <div th:text="${#authentication.getPrincipal().getId()}"></div>-->
                 <form th:action="@{/logout}" method="post">
-                    <p>
-                        Welcome <b><span sec:authentication="principal.fullName"></span></b>
-                        <span sec:authentication="principal.authorities">Roles</span>
-
-                    </p>
                     <input type="submit" value="Sign Out" />
                 </form>
             </div>

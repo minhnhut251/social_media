@@ -53,7 +53,7 @@ public class UserController {
             return "redirect:/login";
         }
 
-        User user = currentUser.getUser();
+        User user = userService.getUserById(currentUser.getId());
         model.addAttribute("user", user);
         return "taikhoan/edit-profile";
     }

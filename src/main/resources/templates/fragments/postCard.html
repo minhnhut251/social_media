@@ -59,14 +59,22 @@
         <div th:if="${post.mediaURL != null && !post.mediaURL.isEmpty()}" class="text-center mb-3">
             <img th:src="@{${post.mediaURL}}" class="img-fluid rounded" alt="Post image" style="max-height: 500px;">
         </div>
-        <div class="d-flex justify-content-between" sec:authorize="isAuthenticated()">
+
+<!--        Không có đăng nhập cũng xuất hiện-->
+        <div class="d-flex justify-content-between">
+            <!--                Số lượt like-->
             <div class="d-flex">
-            <span class="ms-3">
-                <i class="fas fa-heart"></i>
-                <span th:id="'likeCount-' + ${post.mabd}"
-                      th:text="${likeCounts != null} ? ${likeCounts[post.mabd]} : '0'">0</span> likes
-            </span>
+                <span class="ms-3">
+                    <i class="fas fa-heart"></i>
+                    <span th:id="'likeCount-' + ${post.mabd}"
+                          th:text="${likeCounts != null} ? ${likeCounts[post.mabd]} : '0'">0</span> likes
+                </span>
             </div>
+<!--            Chỗ này thêm số lượt bình luận-->
+        </div>
+
+        <div class="d-flex justify-content-between" sec:authorize="isAuthenticated()">
+
 <!--            <button class="btn btn-light"><i class="far fa-thumbs-up me-1"></i>Thích</button>-->
             <button th:id="'likeBtn-' + ${post.mabd}"
                     th:class="${likedPosts != null && likedPosts[post.mabd]} ? 'btn btn-primary btn-sm' : 'btn btn-outline-primary btn-sm'"
