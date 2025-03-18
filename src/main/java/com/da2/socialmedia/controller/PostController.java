@@ -1,5 +1,6 @@
 package com.da2.socialmedia.controller;
 
+import com.da2.socialmedia.entity.CommentEntity;
 import com.da2.socialmedia.security.CustomUserDetails;
 import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.entity.PostEntity;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import com.da2.socialmedia.service.CommentService;
+
 
 import java.util.List;
 
@@ -22,11 +25,13 @@ public class PostController {
 
     private final PostService postService;
     private final PostViewService postViewService;
+    private final CommentService commentService;
 
     @Autowired
-    public PostController(PostService postService, PostViewService postViewService) {
+    public PostController(PostService postService, PostViewService postViewService ,CommentService commentService) {
         this.postService = postService;
         this.postViewService = postViewService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/")
@@ -37,13 +42,13 @@ public class PostController {
     }
 
     // New method to view a single post
-    @GetMapping("/post/{id}")
-    public String viewSinglePost(@PathVariable("id") long id, Model model,
-                                 @AuthenticationPrincipal CustomUserDetails currentUser) {
-        PostEntity post = postService.getPostById(id);
-        postViewService.preparePostForDisplay(model, post, currentUser);
-        return "posts/post-detail";
-    }
+//    @GetMapping("/post/{id}")
+//    public String viewSinglePost(@PathVariable("id") long id, Model model,
+//                                 @AuthenticationPrincipal CustomUserDetails currentUser) {
+//        PostEntity post = postService.getPostById(id);
+//        postViewService.preparePostForDisplay(model, post, currentUser);
+//        return "post-detail";
+//    }
 
     // New method to view user profile with their posts
 //    @GetMapping("/user/{userId}")
@@ -57,6 +62,24 @@ public class PostController {
 //
 //        return "taikhoan/personal-page";
 //    }
+    @GetMapping("/post/{id}")
+    public String showPostDetail(@PathVariable("id") long id, Model model) {
+        PostEntity post = postService.getPostById(id);
+        if (post == null) {
+            return "redirect:/";
+        }
+
+        // Get comments for this post
+        List<CommentEntity> comments = commentService.getCommentsForPost(post);
+        // Add to model
+        model.addAttribute("post", post);
+        model.addAttribute("comments", comments);
+
+        // Add any other attributes your view needs
+        // e.g. Like counts, etc.
+
+        return "post-detail";
+    }
 
     // New method for search results
     @GetMapping("/search")
