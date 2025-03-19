@@ -1,8 +1,13 @@
 package com.da2.socialmedia.service;
 
+import com.da2.socialmedia.entity.PostEntity;
 import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.repository.UserRepository;
+import com.da2.socialmedia.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,6 +49,44 @@ public class UserService {
         existingUser.setSdt(user.getSdt());
 
         userRepository.save(existingUser);
+    }
+
+
+
+    public void updateAvatar(Long id, MultipartFile avatar_file) {
+        System.out.println("Update avatar service");
+        User user = getUserById(id);
+
+        if (avatar_file != null && !avatar_file.isEmpty()) {
+            // Delete old avatar if exists
+            fileService.deleteFileIfExists(user.getAvatar());
+
+            // Save new avatar
+            String avatarUrl = fileService.handleFileUpload((avatar_file));
+            System.out.println(avatarUrl);
+            System.out.println(user.getId());
+            user.setAvatar(avatarUrl);
+        }
+
+        userRepository.save(user);
+
+    }
+
+    public void refreshAuthenticationPrincipal(User updatedUser) {
+        // Get currently authenticated user
+        Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Create new CustomUserDetails with updated user info
+        CustomUserDetails updatedPrincipal = new CustomUserDetails(updatedUser);
+
+        // Create new authentication with the updated principal
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(
+                updatedPrincipal,
+                currentAuth.getCredentials(),
+                currentAuth.getAuthorities());
+
+        // Set the new authentication object
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
 
 

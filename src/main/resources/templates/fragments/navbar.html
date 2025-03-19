@@ -127,9 +127,15 @@
 
             <!-- Phần đăng xuất -->
             <div sec:authorize="isAuthenticated()" class="logout-form">
-                <p>Welcome <b><span sec:authentication="principal.fullName"></span></b></p>
+                <p>Welcome
+<!--                    css lại cho đẹp -->
+                    <a th:href="@{/profile/{userId}(userId=${#authentication.getPrincipal().getId()})}">
+                        <b sec:authentication="principal.fullName"></b>
+                    </a>
+                </p>
 <!--                <span sec:authentication="principal.authorities">Roles</span>-->
 <!--                <div th:text="${#authentication.getPrincipal().getId()}"></div>-->
+                <img th:src ="${#authentication.getPrincipal().getUser().getAvatar()}" style="max-width: 40px; max-height: 40px">
                 <form th:action="@{/logout}" method="post">
                     <input type="submit" value="Sign Out" />
                 </form>

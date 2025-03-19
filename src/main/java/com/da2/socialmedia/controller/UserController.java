@@ -10,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class UserController {
@@ -25,7 +26,7 @@ public class UserController {
         this.postViewService = postViewService;
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/profile/{userId}")
     public String viewUserProfile(@PathVariable("userId") long userId, Model model,
                                   @AuthenticationPrincipal CustomUserDetails currentUser) {
         try {
@@ -66,7 +67,39 @@ public class UserController {
         }
 
         userService.updateUserProfile(user);
-        return "redirect:/user/" + user.getId();
+
+        // Refresh authentication principal
+        User updatedUser = userService.getUserById(user.getId());
+        userService.refreshAuthenticationPrincipal(updatedUser);
+
+        return "redirect:/profile/" + user.getId();
+    }
+
+    @GetMapping("/profile/edit_avatar")
+    public String showEditAvatarForm(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        String avatar = userService.getUserById(currentUser.getId()).getAvatar();
+        model.addAttribute("current_avatar", avatar);
+        model.addAttribute("id", currentUser.getId());
+        return "taikhoan/edit-avatar";
+    }
+
+    @PostMapping("/profile/update_avatar")
+    public String updateAvatar(@RequestParam(value = "new_avatar", required = false) MultipartFile avatar_file,
+                                @AuthenticationPrincipal CustomUserDetails currentUser) {
+
+        System.out.println(avatar_file);
+        Long id = currentUser.getId();
+        userService.updateAvatar(id, avatar_file);
+
+        // Refresh authentication principal
+        User updatedUser = userService.getUserById(id);
+        userService.refreshAuthenticationPrincipal(updatedUser);
+
+        return "redirect:/profile/" + currentUser.getId();
     }
 
     @GetMapping("/vendor")

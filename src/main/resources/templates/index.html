@@ -87,7 +87,7 @@
 
     <div class="sidebar">
         <div sec:authorize="isAuthenticated()">
-            <a class="h5" th:href="@{/user/{userId}(userId=${#authentication.getPrincipal().getId()})}">Trang cá nhân</a>
+            <a class="h5" th:href="@{/profile/{userId}(userId=${#authentication.getPrincipal().getId()})}">Trang cá nhân</a>
         </div>
         <ul class="list-unstyled">
             <li><a href="#">Mua sắm</a></li>

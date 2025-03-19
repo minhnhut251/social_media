@@ -43,22 +43,26 @@
 <div th:fragment="postCard(post)" class="post-card card mb-3">
     <div class="card-body">
         <div class="d-flex align-items-center mb-2">
-            <img src="/api/placeholder/40/40" class="rounded-circle me-2" alt="Avatar">
+            <img th:src="@{${post.users.avatar}}" class="rounded-circle me-2" alt="Avatar" style="max-width: 40px; max-height: 40px">
+<!--            <img src="/api/placeholder/40/40" class="rounded-circle me-2" alt="Avatar">-->
             <div>
 <!--                <h5 class="mb-0">Người dùng</h5>-->
                 <div>
-                    <strong th:text="${post.users.lastName} + ' ' + ${post.users.firstName}">Username</strong>
+<!--                    css lại cho đẹp -->
+                    <a th:href="@{/profile/{id}(id=${post.users.id})}" th:text="${post.users.lastName} + ' ' + ${post.users.firstName}">Username</a>
                     <a th:href="@{/post/{id}(id=${post.mabd})}" class="text-muted" th:if="${post.createdAt != null}" th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy HH:mm')}">Date</a>
                 </div>
 <!--                <p class="text-muted small mb-0">1 ngày trước</p>-->
             </div>
         </div>
 <!--        <p>Nội dung bài đăng ở đây...</p>-->
-        <p class="card-text" th:text="${post.noiDung}">Content goes here</p>
-<!--        <img src="img/ceccb544-0d55-4734-8292-1b608bfcee81.webp" class="img-fluid rounded mb-3" alt="Bài đăng">-->
         <div th:if="${post.mediaURL != null && !post.mediaURL.isEmpty()}" class="text-center mb-3">
             <img th:src="@{${post.mediaURL}}" class="img-fluid rounded" alt="Post image" style="max-height: 500px;">
         </div>
+
+        <p class="card-text" th:text="${post.noiDung}">Content goes here</p>
+<!--        <img src="img/ceccb544-0d55-4734-8292-1b608bfcee81.webp" class="img-fluid rounded mb-3" alt="Bài đăng">-->
+
 
 <!--        Không có đăng nhập cũng xuất hiện-->
         <div class="d-flex justify-content-between">

@@ -115,7 +115,7 @@ public class PostController {
     }
 
     @PostMapping("/update_post/{id}")
-    public String updateUser(@PathVariable("id") long id, PostEntity post,
+    public String updatePost(@PathVariable("id") long id, PostEntity post,
                              @RequestParam(value = "image", required = false) MultipartFile file,
                              Model model) {
         postService.updatePost(id, post, file);
@@ -123,7 +123,7 @@ public class PostController {
     }
 
     @GetMapping("/post_delete/{id}")
-    public String deleteUser(@PathVariable("id") long id, Model model) {
+    public String deletePost(@PathVariable("id") long id, Model model) {
         postService.deletePost(id);
         return "redirect:/";
     }
