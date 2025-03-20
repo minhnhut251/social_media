@@ -15,6 +15,6 @@ public class ChiTietHoaDonEntity {
     private int sl;
 
     @ManyToOne
-    @JoinColumn(name = "mahd", nullable = false)
+    @JoinColumn(name = "mahd", nullable = true)
     private HoadonEntity hoadon;
 }

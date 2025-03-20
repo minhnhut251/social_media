@@ -69,10 +69,10 @@ public class UserController {
         return "redirect:/user/" + user.getId();
     }
 
-    @GetMapping("/vendor")
-    public String vendorPage(){
-        return "shop/vendor";
-    }
+//    @GetMapping("/vendor")
+//    public String vendorPage(){
+//        return "shop/vendor";
+//    }
 
 //    @PostMapping("/profile/update-avatar")
 //    public String updateAvatar(@RequestParam("avatar") MultipartFile file,
