@@ -25,12 +25,16 @@
             </div>
 
             <div class="avatar-container">
-                <img th:if="${profileUser.avatar != null}" th:src="${profileUser.avatar}" class="profile-avatar" alt="User Avatar">
+                <img th:if="${profileUser.avatar != null}" th:src="${profileUser.avatar}" class="profile-avatar" alt="User Avatar" style="width: 100px">
                 <img th:unless="${profileUser.avatar != null}" src="/img/default-avatar.jpg" class="profile-avatar" alt="Default Avatar">
 
                 <div th:if="${isOwnProfile}" class="edit-avatar" data-bs-toggle="modal" data-bs-target="#avatarModal">
                     <i class="fas fa-camera"></i>
                 </div>
+
+                <a th:if="${isOwnProfile}" th:href="@{/profile/edit_avatar}" class="btn btn-sm btn-primary">
+                    <i class="fas fa-edit"></i> Sửa avatar
+                </a>
             </div>
 
             <div class="text-center mt-3 mb-4">
