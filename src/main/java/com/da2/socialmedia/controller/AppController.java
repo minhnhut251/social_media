@@ -28,6 +28,18 @@ public class AppController {
         return "admin/admin_home";
     }
 
+    @GetMapping("/friends")
+    public String viewFriend() {
+
+        return "/friends";
+    }
+
+    @GetMapping("/video")
+    public String viewvideo() {
+
+        return "/video";
+    }
+
 //    @GetMapping("")
 //    public String viewHomePage() {
 //        return "index";
@@ -63,4 +75,6 @@ public class AppController {
 
         return "taikhoan/users";
     }
+
+
 }
