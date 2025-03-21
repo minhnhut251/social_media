@@ -18,10 +18,10 @@
         <h3>Đăng Ký</h3>
         <form th:action="@{/process_register}" th:object="${user}" method="post">
             <div class="mb-3">
-                <input type="text" th:field="*{firstName}" class="form-control" placeholder="Họ" required>
+                <input type="text" th:field="*{lastName}" class="form-control" placeholder="Họ" required>
             </div>
             <div class="mb-3">
-                <input type="text" th:field="*{lastName}" class="form-control" placeholder="Tên" required>
+                <input type="text" th:field="*{firstName}" class="form-control" placeholder="Tên" required>
             </div>
             <div class="mb-3">
                 <input type="email" th:field="*{email}" class="form-control" placeholder="Email" required>

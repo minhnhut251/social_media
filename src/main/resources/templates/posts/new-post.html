@@ -15,15 +15,15 @@
         <h1>Them Bai Dang</h1>
     </div>
 
-    <div sec:authorize="isAuthenticated()">
-        <form th:action="@{/logout}" method="post">
-            <p>
-                Welcome <b><span sec:authentication="principal.fullName"></span></b>
-            <div th:text="${#authentication.getPrincipal().getId()}"></div>
-            </p>
-            <input type="submit" value="Sign Out" />
-        </form>
-    </div>
+<!--    <div sec:authorize="isAuthenticated()">-->
+<!--        <form th:action="@{/logout}" method="post">-->
+<!--            <p>-->
+<!--                Welcome <b><span sec:authentication="principal.fullName"></span></b>-->
+<!--            <div th:text="${#authentication.getPrincipal().getId()}"></div>-->
+<!--            </p>-->
+<!--            <input type="submit" value="Sign Out" />-->
+<!--        </form>-->
+<!--    </div>-->
 
     <form th:action="@{/add_post}" th:object="${post}"
           method="post" style="max-width: 600px; margin: 0 auto;"
