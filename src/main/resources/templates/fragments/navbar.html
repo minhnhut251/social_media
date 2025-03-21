@@ -12,47 +12,88 @@
 
     <style>
         .navbar {
-            position: relative;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            z-index: 1050;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+        }
+
+        body {
+            padding-top: 10px; /* Để tránh bị navbar che mất nội dung */
+        }
+
+        /* Đảm bảo căn giữa theo trục dọc */
+        .container-fluid {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
         }
 
         /* Ô tìm kiếm */
-        .navbar .form-control {
-            width: 250px;
-            border-radius: 20px;
-            padding-left: 30px;
-        }
-
-        .navbar .search-box {
+        .search-box {
             position: relative;
         }
 
-        .navbar .search-box i {
+        .search-box .form-control {
+            width: 250px;
+            border-radius: 20px;
+            padding-left: 35px;
+        }
+
+        .search-box i {
             position: absolute;
-            left: 10px;
+            left: 12px;
             top: 50%;
             transform: translateY(-50%);
             color: gray;
         }
 
-        /* Căn giữa nhóm icon */
+        /* Nhóm 4 icon chính (Căn giữa theo trục dọc) */
         .navbar-center {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
             display: flex;
             gap: 25px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
         }
 
-        .navbar-icons i {
+        .navbar-center i {
             font-size: 1.5rem;
             cursor: pointer;
+            transition: color 0.3s ease;
+
+        }
+        .navbar-center i,.navbar-right i{
+            color: black;
         }
 
-        /* Nhóm thông báo + tin nhắn */
+        .navbar-center i:hover {
+            color: #007bff;
+        }
+
+        /* Nhóm thông báo + tin nhắn + tài khoản */
         .navbar-right {
             display: flex;
             align-items: center;
             gap: 15px;
+            font-size: 1.2rem;
+        }
+
+        .navbar-icons i {
+            font-size: 1.7rem; /* Tăng kích thước icon bên phải */
+            margin: 0 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .navbar-icons i:hover {
+            transform: scale(1.1);
         }
 
         /* Phần đăng nhập/đăng ký */
@@ -64,8 +105,14 @@
 
         .auth-links a {
             text-decoration: none;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: bold;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .auth-links a:hover {
+            color: #007bff;
         }
 
         /* Đăng xuất */
@@ -82,40 +129,47 @@
             padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-form input:hover {
+            background-color: #cc0000;
         }
     </style>
 
-    <div class="container-fluid d-flex align-items-center">
+    <div class="container-fluid">
         <!-- Logo + Ô tìm kiếm -->
         <div class="d-flex align-items-center">
             <a class="navbar-brand" th:href="@{/}">Super media</a>
-            <!--            <form class="d-flex" role="search">-->
-            <!--                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
-            <!--                <button class="btn btn-outline-success" type="submit">Search</button>-->
-            <!--            </form>-->
-
-<!--            <form class="d-flex" role="search" method="get" th:action="@{/search}">-->
-<!--                <input name="query" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
-<!--                <button class="btn btn-outline-success" type="submit">Search</button>-->
-<!--            </form>-->
 
             <form class="search-box ms-3 d-flex" role="search" method="get" th:action="@{/search}">
-                <i class="fas fa-search"></i>
-                <input class="form-control" type="search" placeholder="Tìm kiếm" name="query" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+                <div class="position-relative">
+                    <input class="form-control ps-5" type="search" placeholder="Tìm kiếm" name="query" aria-label="Search">
+                    <button class="btn position-absolute top-50 start-0 translate-middle-y ms-2 border-0 bg-transparent" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
             </form>
         </div>
 
-        <!-- Nhóm 4 icon chính (Căn giữa) -->
+        <!-- Nhóm 4 icon chính (Căn giữa navbar) -->
+<!--        <div class="navbar-center">-->
+<!--            <i class="fas fa-home" th:href="@{/}"></i>-->
+<!--            <i class="fas fa-user-friends" th:href="@{/friends}"></i>-->
+<!--            <i class="fas fa-tv" th:href="@{/video}"></i>-->
+<!--            <i class="fas fa-store" th:href="@{/shop/vendor.html}"></i>-->
+<!--        </div>-->
+
         <div class="navbar-center">
-            <i class="fas fa-home" th:href="@{/}"></i>
-            <i class="fas fa-user-friends"></i>
-            <i class="fas fa-tv"></i>
-            <i class="fas fa-store"></i>
+            <a th:href="@{/}" class="nav-link"><i class="fas fa-home"></i></a>
+            <a th:href="@{/friends}" class="nav-link"><i class="fas fa-user-friends"></i></a>
+            <a th:href="@{/video}" class="nav-link"><i class="fas fa-tv"></i></a>
+            <a th:href="@{/shop/vendor.html}" class="nav-link"><i class="fas fa-store"></i></a>
         </div>
 
+
         <!-- Nhóm thông báo + tin nhắn + tài khoản -->
-        <div class="navbar-right ms-auto">
+        <div class="navbar-right">
             <i class="fas fa-bell"></i>
             <i class="fas fa-comment-dots"></i>
 
@@ -128,62 +182,15 @@
             <!-- Phần đăng xuất -->
             <div sec:authorize="isAuthenticated()" class="logout-form">
                 <p>Welcome <b><span sec:authentication="principal.fullName"></span></b></p>
-<!--                <span sec:authentication="principal.authorities">Roles</span>-->
-<!--                <div th:text="${#authentication.getPrincipal().getId()}"></div>-->
                 <form th:action="@{/logout}" method="post">
                     <input type="submit" value="Sign Out" />
                 </form>
             </div>
-
-
         </div>
     </div>
 </nav>
 
 
 
-<!--<nav th:fragment="navbar" class="navbar navbar-expand-lg bg-body-tertiary">-->
-<!--    <div class="container-fluid">-->
-<!--        <a class="navbar-brand" th:href="@{/}">Super media</a>-->
-<!--        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"-->
-<!--                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--            <span class="navbar-toggler-icon"></span>-->
-<!--        </button>-->
-<!--        <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-<!--            <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link " aria-current="page" th:href="@{/}"> <i class="fa-solid fa-house"></i>  </a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#"><i class="fa-solid fa-user-group"></i></a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#"><i class="fa-solid fa-video"></i></a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link disabled" aria-disabled="true"><i class="fa-solid fa-bag-shopping"></i></a>-->
-<!--                </li>-->
-<!--            </ul>-->
 
-<!--            <div sec:authorize="isAnonymous()">-->
-<!--                <h3><a th:href="@{/register}">Register</a></h3>-->
-<!--                <h3><a th:href="@{/login}">Login</a></h3>-->
-<!--            </div>-->
-<!--            <div sec:authorize="isAuthenticated()">-->
-<!--                <form th:action="@{/logout}" method="post">-->
-<!--                    <p>-->
-<!--                        Welcome <b><span sec:authentication="principal.fullName"></span></b>-->
-<!--                        <div th:text="${#authentication.getPrincipal().getId()}"></div>-->
 
-<!--                    </p>-->
-<!--                    <input type="submit" value="Sign Out" />-->
-<!--                </form>-->
-<!--            </div>-->
-
-<!--            <form class="d-flex" role="search">-->
-<!--                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
-<!--                <button class="btn btn-outline-success" type="submit">Search</button>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</nav>-->

@@ -10,38 +10,142 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <style>
+    /* Bắt buộc trình duyệt sử dụng chế độ sáng */
+    :root {
+        color-scheme: light !important;
+    }
+
+    /* Chỉnh toàn bộ nền về trắng */
+    /*html, body {*/
+    /*    background-color: white !important;*/
+    /*    color: black !important;*/
+    /*}*/
+
+    /* Đảm bảo container chính không bị ảnh hưởng */
+    /*.container, .main-content, .sidebar, .card, .friend-suggestions-container {*/
+    /*    background-color: white !important;*/
+    /*    color: black !important;*/
+    /*}*/
+
+    /* Nếu navbar có màu tối, ép nó về trắng */
+    /*.navbar, .sidebar {*/
+    /*    background-color: #545353 !important;*/
+    /*    color: black !important;*/
+    /*}*/
+    /** {*/
+    /*    background-color: #545353 !important;*/
+    /*    color: black !important;*/
+    /*}*/
+
+    /* Đảm bảo tất cả thẻ con cũng có nền trắng */
+    /*.card, .friend-suggestions-container {*/
+    /*    background: white !important;*/
+    /*    border: 1px solid #ddd; !* Viền nếu cần *!*/
+    /*}*/
+
+
+
     .sidebar {
         position: fixed;
         top: 56px;
-        width: 350px;
+        width: 300px;
         height: calc(100vh - 56px);
         overflow-y: auto;
         background: white;
         padding: 15px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     }
+
+    .sidebar a {
+        display: block;
+        padding: 10px;
+        color: #333;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .sidebar a:hover {
+        background: #f8f9fa;
+        color: #007bff;
+    }
+
+    .sidebar i {
+        font-size: 20px;
+    }
+
+
+
+    /*.sidebar {*/
+    /*    position: fixed;*/
+    /*    top: 56px;*/
+    /*    width: 350px;*/
+    /*    height: calc(100vh - 56px);*/
+    /*    overflow-y: auto;*/
+    /*    background: white;*/
+    /*    padding: 15px;*/
+    /*    box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/
+    /*}*/
     .main-content {
         margin-left: 280px;
         margin-right: 280px;
-        padding-top: 76px;
+        padding-top: 80px;
         min-height: 100vh;
     }
+    /*.right-sidebar {*/
+    /*    position: fixed;*/
+    /*    top: 56px;*/
+    /*    right: 0;*/
+    /*    width: 350px;*/
+    /*    height: calc(100vh - 56px);*/
+    /*    overflow-y: auto;*/
+    /*    background: white;*/
+    /*    padding: 15px;*/
+    /*    box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/
+    /*}*/
     .right-sidebar {
         position: fixed;
         top: 56px;
         right: 0;
-        width: 350px;
+        width: 300px;
         height: calc(100vh - 56px);
         overflow-y: auto;
         background: white;
         padding: 15px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
     }
-    .post-card {
-        margin-bottom: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    .friend-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-radius: 8px;
+        transition: background 0.3s;
     }
+
+    .friend-item:hover {
+        background: #f8f9fa;
+    }
+
+    .friend-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+
+    .friend-name {
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+
+    /*.post-card {*/
+    /*    margin-bottom: 20px;*/
+    /*    border-radius: 10px;*/
+    /*    box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/
+    /*}*/
 
     .friend-suggestions img {
         width: 80px;
@@ -80,38 +184,64 @@
     height: 100px;
     }
 </style>
-<body>
+<body >
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
 
 
+<!--    <div class="sidebar">-->
+<!--        <div sec:authorize="isAuthenticated()">-->
+<!--            <a class="h5" th:href="@{/user/{userId}(userId=${#authentication.getPrincipal().getId()})}">Trang cá nhân</a>-->
+<!--        </div>-->
+<!--        <ul class="list-unstyled">-->
+<!--            <li><a href="#">Mua sắm cc</a></li>-->
+<!--            <li><a href="#">Bạn bè</a></li>-->
+<!--            <li><a href="#">Đăng ký bán hàng</a></li>-->
+<!--            <li><a th:href="@{/new_post}">New Post</a></li>-->
+<!--            <li sec:authorize="hasAnyAuthority('ROLE_VENDOR')">-->
+<!--                <a th:href="@{/vendor}">Trang người bán hàng</a>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
+
     <div class="sidebar">
         <div sec:authorize="isAuthenticated()">
-            <a class="h5" th:href="@{/user/{userId}(userId=${#authentication.getPrincipal().getId()})}">Trang cá nhân</a>
+            <a class="h5 d-flex align-items-center" th:href="@{/user/{userId}(userId=${#authentication.getPrincipal().getId()})}">
+                <i class="fa-solid fa-user-circle me-2"></i> Trang cá nhân
+            </a>
         </div>
-        <ul class="list-unstyled">
-            <li><a href="#">Mua sắm</a></li>
-            <li><a href="#">Bạn bè</a></li>
-            <li><a href="#">Đăng ký bán hàng</a></li>
-            <li><a th:href="@{/new_post}">New Post</a></li>
+        <ul class="list-unstyled mt-3">
+            <li>
+                <a href="#" class="d-flex align-items-center">
+                    <i class="fa-solid fa-cart-shopping me-2"></i> Mua sắm
+                </a>
+            </li>
+            <li>
+                <a href="#" class="d-flex align-items-center">
+                    <i class="fa-solid fa-users me-2"></i> Bạn bè
+                </a>
+            </li>
+            <li>
+                <a href="#" class="d-flex align-items-center">
+                    <i class="fa-solid fa-store me-2"></i> Đăng ký bán hàng
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/new_post}" class="d-flex align-items-center">
+                    <i class="fa-solid fa-pen-to-square me-2"></i> New Post
+                </a>
+            </li>
             <li sec:authorize="hasAnyAuthority('ROLE_VENDOR')">
-                <a th:href="@{/vendor}">Trang người bán hàng</a>
+                <a th:href="@{/vendor}" class="d-flex align-items-center">
+                    <i class="fa-solid fa-box me-2"></i> Trang người bán hàng
+                </a>
             </li>
         </ul>
     </div>
 
-<!--    <div class="col-6 ">-->
-<!--        <div class="row">-->
-<!--            <div class="col-md-8 mx-auto">-->
-<!--                &lt;!&ndash; Iterate through posts and use the fragment for each &ndash;&gt;-->
-<!--                <div th:each="post: ${listPosts}" class="my-4">-->
-<!--                    <div th:replace="fragments/postCard :: postCard(${post})"></div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 
-    <div class="container">
+
+<div class="container">
         <div class="main-content">
             <div class="container">
                 <!-- Friend Suggestions Section -->
@@ -119,12 +249,12 @@
                     <h5 class="text-center">Gợi ý kết bạn</h5>
                     <div class="d-flex friend-suggestions">
                         <div class="friend-card">
-                            <img src="img/ceccb544-0d55-4734-8292-1b608bfcee81.webp" alt="Quen không">
+                            <img src="img/benngoaich.webp" alt="Quen không">
                             <p class="mb-1 small">Quen không</p>
                             <button class="btn btn-dark btn-sm">Kết bạn</button>
                         </div>
                         <div class="friend-card">
-                            <img src="/api/placeholder/80/80" alt="Hù">
+                            <img src="img/ceccb544-0d55-4734-8292-1b608bfcee81.webp" alt="Hù">
                             <p class="mb-1 small">Hù</p>
                             <button class="btn btn-dark btn-sm">Kết bạn</button>
                         </div>
@@ -138,76 +268,43 @@
                 <div th:each="post: ${listPosts}" class="my-4">
                     <div th:replace="~{fragments/postCard :: postCard(${post})}"></div>
                 </div>
-                <!-- Posts Section -->
-<!--                <div class="post-card card mb-3">-->
-<!--                    <div class="card-body">-->
-<!--                        <div class="d-flex align-items-center mb-2">-->
-<!--                            <img src="/api/placeholder/40/40" class="rounded-circle me-2" alt="Avatar">-->
-<!--                            <div>-->
-<!--                                <h5 class="mb-0">Người dùng</h5>-->
-<!--                                <p class="text-muted small mb-0">1 ngày trước</p>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <p>Nội dung bài đăng ở đây...</p>-->
-<!--                        <img src="img/ceccb544-0d55-4734-8292-1b608bfcee81.webp" class="img-fluid rounded mb-3" alt="Bài đăng">-->
-<!--                        <div class="d-flex justify-content-between">-->
-<!--                            <button class="btn btn-light"><i class="far fa-thumbs-up me-1"></i>Thích</button>-->
-<!--                            <button class="btn btn-light"><i class="far fa-comment me-1"></i>Bình luận</button>-->
-<!--                            <button class="btn btn-light"><i class="far fa-share-square me-1"></i>Chia sẻ</button>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div class="post-card card mb-3">-->
-<!--                    <div class="card-body">-->
-<!--                        <div class="d-flex align-items-center mb-2">-->
-<!--                            <img src="/api/placeholder/40/40" class="rounded-circle me-2" alt="Avatar">-->
-<!--                            <div>-->
-<!--                                <h5 class="mb-0">Người dùng</h5>-->
-<!--                                <p class="text-muted small mb-0">2 ngày trước</p>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <p>Một bài đăng khác với nội dung khác nhau...</p>-->
-<!--                        <img src="/api/placeholder/600/400" class="img-fluid rounded mb-3" alt="Bài đăng">-->
-<!--                        <div class="d-flex justify-content-between">-->
-<!--                            <button class="btn btn-light"><i class="far fa-thumbs-up me-1"></i>Thích</button>-->
-<!--                            <button class="btn btn-light"><i class="far fa-comment me-1"></i>Bình luận</button>-->
-<!--                            <button class="btn btn-light"><i class="far fa-share-square me-1"></i>Chia sẻ</button>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div class="post-card card mb-3">-->
-<!--                    <div class="card-body">-->
-<!--                        <div class="d-flex align-items-center mb-2">-->
-<!--                            <img src="/api/placeholder/40/40" class="rounded-circle me-2" alt="Avatar">-->
-<!--                            <div>-->
-<!--                                <h5 class="mb-0">Người dùng</h5>-->
-<!--                                <p class="text-muted small mb-0">3 ngày trước</p>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <p>Bài đăng thứ ba với nội dung khác biệt...</p>-->
-<!--                        <img src="/api/placeholder/600/400" class="img-fluid rounded mb-3" alt="Bài đăng">-->
-<!--                        <div class="d-flex justify-content-between">-->
-<!--                            <button class="btn btn-light"><i class="far fa-thumbs-up me-1"></i>Thích</button>-->
-<!--                            <button class="btn btn-light"><i class="far fa-comment me-1"></i>Bình luận</button>-->
-<!--                            <button class="btn btn-light"><i class="far fa-share-square me-1"></i>Chia sẻ</button>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
             </div>
         </div>
     </div>
 
     <div class="right-sidebar">
-        <h5>Bạn bè</h5>
+        <h5 class="mb-3">Bạn bè</h5>
         <ul class="list-unstyled">
-            <li>Nguyễn Văn A</li>
-            <li>Nguyễn Thị B</li>
-            <li>Trần Văn C</li>
+            <li class="friend-item">
+                <img src="img/card.jpg" alt="Avatar" class="friend-avatar">
+                <span class="friend-name">Nguyễn Văn A</span>
+            </li>
+            <li class="friend-item">
+                <img src="https://via.placeholder.com/40" alt="Avatar" class="friend-avatar">
+                <span class="friend-name">Nguyễn Thị B</span>
+            </li>
+            <li class="friend-item">
+                <img src="https://via.placeholder.com/40" alt="Avatar" class="friend-avatar">
+                <span class="friend-name">Trần Văn C</span>
+            </li>
         </ul>
     </div>
+
 </div>
 <script src="/js/like.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.body.style.backgroundColor = "white";
+        document.body.style.color = "black";
+
+        // Đảm bảo các phần tử quan trọng cũng có nền trắng
+        document.querySelectorAll(".sidebar, .right-sidebar, .main-content, .container, .card").forEach(el => {
+            el.style.backgroundColor = "white";
+            el.style.color = "black";
+        });
+    });
+</script>
+
 </body>
 </html>
