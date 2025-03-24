@@ -34,6 +34,18 @@ public class AppController {
         return "/friends";
     }
 
+    @GetMapping("/carts")
+    public String viewcart() {
+
+        return "/shop/cart";
+    }
+
+    @GetMapping("/shop")
+    public String viewshop() {
+
+        return "/shop/shop";
+    }
+
     @GetMapping("/video")
     public String viewvideo() {
 

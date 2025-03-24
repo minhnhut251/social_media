@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản Phẩm</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        /*body {*/
+        /*    background-color: #f8f9fa;*/
+        /*}*/
+
+
+
+        /*.search-box input {*/
+        /*    padding-left: 30px;*/
+        /*    border-radius: 20px;*/
+        /*    border: 1px solid #ced4da;*/
+        /*}*/
+
+        /*.search-box i {*/
+        /*    position: absolute;*/
+        /*    left: 10px;*/
+        /*    top: 50%;*/
+        /*    transform: translateY(-50%);*/
+        /*}*/
+
+
+
+        /*.sidebar {*/
+        /*    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);*/
+        /*    padding: 20px;*/
+        /*    height: 100%;*/
+        /*    overflow-y: auto;*/
+
+        /*}*/
+
+        /*.filter-section {*/
+        /*    margin-bottom: 20px;*/
+        /*}*/
+
+        /*.filter-title {*/
+        /*    font-weight: bold;*/
+        /*    margin-bottom: 10px;*/
+        /*}*/
+
+        /*.product-card {*/
+        /*    margin-bottom: 20px;*/
+        /*    transition: transform 0.3s;*/
+        /*    overflow: hidden;*/
+        /*    position: relative;*/
+        /*}*/
+
+        /*.product-card:hover {*/
+        /*    transform: translateY(-5px);*/
+        /*    box-shadow: 0 4px 8px rgba(0,0,0,0.1);*/
+        /*}*/
+
+        /*.product-image {*/
+        /*    height: 200px;*/
+        /*    object-fit: cover;*/
+        /*    width: 100%;*/
+        /*}*/
+
+        /*.cart-sidebar {*/
+        /*    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);*/
+        /*    padding: 20px;*/
+        /*    height: 100%;*/
+        /*    overflow-y: auto;*/
+
+        /*}*/
+
+        body {
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh; /* Chiều cao toàn màn hình */
+        }
+
+        .sidebar {
+            width: 250px;
+            position: fixed;
+            left: 0;
+            background: white;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+
+        .cart-sidebar {
+            width: 250px;
+            position: fixed;
+            right: 0;
+            background: white;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .search-box input {
+            padding-left: 30px;
+            border-radius: 20px;
+            border: 1px solid #ced4da;
+            width: 100%;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Sản phẩm */
+        .product-card {
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+            overflow: hidden;
+            position: relative;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+
+
+
+        @media (max-width: 991.98px) {
+            .sidebar, .cart-sidebar {
+                position: fixed;
+                top: 0;
+                height: 100vh;
+                z-index: 999;
+                overflow-y: auto;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar {
+                left: 0;
+                width: 250px;
+            }
+
+            .cart-sidebar {
+                right: 0;
+                width: 250px;
+                transform: translateX(100%);
+            }
+
+            .sidebar.show, .cart-sidebar.show {
+                transform: translateX(0);
+            }
+
+
+        }
+
+        @media (max-width: 767.98px) {
+            .product-col {
+                width: 50%;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .product-col {
+                width: 50%;
+            }
+        }
+
+        .checkbox-item {
+            margin-bottom: 8px;
+        }
+
+        .aii{
+            padding-top: 50px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container-fluid aii">
+    <div class="row">
+        <!-- Left Sidebar -->
+        <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+            <div class="sidebar">
+                <div class="filter-section">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-funnel me-2"></i>
+                        <h5 class="mb-0">Bộ Lọc</h5>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-title">Loại</div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" class="form-check-input" id="type1" checked>
+                        <label class="form-check-label" for="type1">Áo</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" class="form-check-input" id="type2" checked>
+                        <label class="form-check-label" for="type2">Quần</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" class="form-check-input" id="type3" checked>
+                        <label class="form-check-label" for="type3">Giày</label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-title">Giá</div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" class="form-check-input" id="price1" checked>
+                        <label class="form-check-label" for="price1">Dưới 500k</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" class="form-check-input" id="price2" checked>
+                        <label class="form-check-label" for="price2">500k - 1 triệu</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" class="form-check-input" id="price3" checked>
+                        <label class="form-check-label" for="price3">Trên 1 triệu</label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-title">Nơi bán</div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" class="form-check-input" id="location1" checked>
+                        <label class="form-check-label" for="location1">Hà Nội</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" class="form-check-input" id="location2" checked>
+                        <label class="form-check-label" for="location2">TP. Hồ Chí Minh</label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-title">Dịch vụ & khuyến mãi</div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" class="form-check-input" id="service1" checked>
+                        <label class="form-check-label" for="service1">Freeship</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" class="form-check-input" id="service2" checked>
+                        <label class="form-check-label" for="service2">Khuyến mãi</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6 col-xl-8 py-3">
+            <div class="d-lg-none mb-3">
+                <button class="btn btn-outline-secondary btn-sm me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterSidebar">
+                    <i class="bi bi-funnel"></i> Bộ lọc
+                </button>
+                <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartSidebar">
+                    <i class="bi bi-cart"></i> Giỏ hàng
+                </button>
+            </div>
+
+            <div class="row">
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/ddd?text=Quần+Jean" class="product-image" alt="Quần Jean">
+                        <div class="card-body">
+                            <h6 class="card-title">Quần Jean Nam</h6>
+                            <p class="card-text text-danger">399.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/333?text=Áo+Hoodie" class="product-image" alt="Áo Hoodie">
+                        <div class="card-body">
+                            <h6 class="card-title">Áo Hoodie Đen</h6>
+                            <p class="card-text text-danger">450.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card   ">
+                        <img src="https://via.placeholder.com/300x300/f00?text=Áo+Thun+Đỏ" class="product-image" alt="Áo Thun Đỏ">
+                        <div class="card-body">
+                            <h6 class="card-title">Áo Thun Đỏ Basic</h6>
+                            <p class="card-text text-danger">199.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/00f?text=Áo+Sơ+Mi" class="product-image" alt="Áo Sơ Mi">
+                        <div class="card-body">
+                            <h6 class="card-title">Áo Sơ Mi Nam</h6>
+                            <p class="card-text text-danger">350.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/fff?text=Giày+Trắng" class="product-image" alt="Giày Trắng">
+                        <div class="card-body">
+                            <h6 class="card-title">Giày Thể Thao Trắng</h6>
+                            <p class="card-text text-danger">750.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/000?text=Giày+Đen" class="product-image" alt="Giày Đen">
+                        <div class="card-body">
+                            <h6 class="card-title">Giày Thể Thao Đen</h6>
+                            <p class="card-text text-danger">680.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/00f?text=Giày+Xanh" class="product-image" alt="Giày Xanh">
+                        <div class="card-body">
+                            <h6 class="card-title">Giày Thể Thao Xanh</h6>
+                            <p class="card-text text-danger">720.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/000?text=Sản+Phẩm" class="product-image" alt="Sản Phẩm">
+                        <div class="card-body">
+                            <h6 class="card-title">Sản Phẩm Khác</h6>
+                            <p class="card-text text-danger">499.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/ddd?text=Quần+Jean" class="product-image" alt="Quần Jean">
+                        <div class="card-body">
+                            <h6 class="card-title">Quần Jean Nam</h6>
+                            <p class="card-text text-danger">399.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/333?text=Áo+Hoodie" class="product-image" alt="Áo Hoodie">
+                        <div class="card-body">
+                            <h6 class="card-title">Áo Hoodie Đen</h6>
+                            <p class="card-text text-danger">450.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card   ">
+                        <img src="https://via.placeholder.com/300x300/f00?text=Áo+Thun+Đỏ" class="product-image" alt="Áo Thun Đỏ">
+                        <div class="card-body">
+                            <h6 class="card-title">Áo Thun Đỏ Basic</h6>
+                            <p class="card-text text-danger">199.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/00f?text=Áo+Sơ+Mi" class="product-image" alt="Áo Sơ Mi">
+                        <div class="card-body">
+                            <h6 class="card-title">Áo Sơ Mi Nam</h6>
+                            <p class="card-text text-danger">350.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/fff?text=Giày+Trắng" class="product-image" alt="Giày Trắng">
+                        <div class="card-body">
+                            <h6 class="card-title">Giày Thể Thao Trắng</h6>
+                            <p class="card-text text-danger">750.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/000?text=Giày+Đen" class="product-image" alt="Giày Đen">
+                        <div class="card-body">
+                            <h6 class="card-title">Giày Thể Thao Đen</h6>
+                            <p class="card-text text-danger">680.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/00f?text=Giày+Xanh" class="product-image" alt="Giày Xanh">
+                        <div class="card-body">
+                            <h6 class="card-title">Giày Thể Thao Xanh</h6>
+                            <p class="card-text text-danger">720.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/000?text=Sản+Phẩm" class="product-image" alt="Sản Phẩm">
+                        <div class="card-body">
+                            <h6 class="card-title">Sản Phẩm Khác</h6>
+                            <p class="card-text text-danger">499.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/ddd?text=Quần+Jean" class="product-image" alt="Quần Jean">
+                        <div class="card-body">
+                            <h6 class="card-title">Quần Jean Nam</h6>
+                            <p class="card-text text-danger">399.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/333?text=Áo+Hoodie" class="product-image" alt="Áo Hoodie">
+                        <div class="card-body">
+                            <h6 class="card-title">Áo Hoodie Đen</h6>
+                            <p class="card-text text-danger">450.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card   ">
+                        <img src="https://via.placeholder.com/300x300/f00?text=Áo+Thun+Đỏ" class="product-image" alt="Áo Thun Đỏ">
+                        <div class="card-body">
+                            <h6 class="card-title">Áo Thun Đỏ Basic</h6>
+                            <p class="card-text text-danger">199.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/00f?text=Áo+Sơ+Mi" class="product-image" alt="Áo Sơ Mi">
+                        <div class="card-body">
+                            <h6 class="card-title">Áo Sơ Mi Nam</h6>
+                            <p class="card-text text-danger">350.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/fff?text=Giày+Trắng" class="product-image" alt="Giày Trắng">
+                        <div class="card-body">
+                            <h6 class="card-title">Giày Thể Thao Trắng</h6>
+                            <p class="card-text text-danger">750.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/000?text=Giày+Đen" class="product-image" alt="Giày Đen">
+                        <div class="card-body">
+                            <h6 class="card-title">Giày Thể Thao Đen</h6>
+                            <p class="card-text text-danger">680.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/00f?text=Giày+Xanh" class="product-image" alt="Giày Xanh">
+                        <div class="card-body">
+                            <h6 class="card-title">Giày Thể Thao Xanh</h6>
+                            <p class="card-text text-danger">720.000đ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-xl-3 product-col">
+                    <div class="card product-card">
+                        <img src="https://via.placeholder.com/300x300/000?text=Sản+Phẩm" class="product-image" alt="Sản Phẩm">
+                        <div class="card-body">
+                            <h6 class="card-title">Sản Phẩm Khác</h6>
+                            <p class="card-text text-danger">499.000đ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-xl-2 d-none d-lg-block">
+            <div class="cart-sidebar">
+                <h5 class="mb-3"><i class="bi bi-cart me-2"></i>Giỏ hàng</h5>
+                <div class="mb-3">
+                    <div class="text-center">
+                        <i class="bi bi-cart3" style="font-size: 3rem; color: #aaa;"></i>
+                        <p class="mt-2">Chưa có sản phẩm</p>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h6>Đơn hàng</h6>
+                    <p class="text-muted">Bạn chưa có đơn hàng nào</p>
+                </div>
+                <div class="mb-3">
+                    <h6>Địa chỉ</h6>
+                    <button class="btn btn-sm btn-outline-primary w-100">+ Thêm địa chỉ</button>
+                </div>
+                <div>
+                    <h6>Nhận xét</h6>
+                    <p class="text-muted">Chưa có nhận xét nào</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="offcanvas offcanvas-start" tabindex="-1" id="filterSidebar">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Bộ Lọc</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="sidebar">
+            <div class="filter-section">
+                <div class="filter-title">Loại</div>
+                <div class="checkbox-item">
+                    <input type="checkbox" class="form-check-input" id="mtype1" checked>
+                    <label class="form-check-label" for="mtype1">Áo</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" class="form-check-input" id="mtype2" checked>
+                    <label class="form-check-label" for="mtype2">Quần</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" class="form-check-input" id="mtype3" checked>
+                    <label class="form-check-label" for="mtype3">Giày</label>
+                </div>
+            </div>
+            <div class="filter-section">
+                <div class="filter-title">Giá</div>
+                <div class="checkbox-item">
+                    <input type="checkbox" class="form-check-input" id="mprice1" checked>
+                    <label class="form-check-label" for="mprice1">Dưới 500k</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" class="form-check-input" id="mprice2" checked>
+                    <label class="form-check-label" for="mprice2">500k - 1 triệu</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" class="form-check-input" id="mprice3" checked>
+                    <label class="form-check-label" for="mprice3">Trên 1 triệu</label>
+                </div>
+            </div>
+            <div class="filter-section">
+                <div class="filter-title">Nơi bán</div>
+                <div class="checkbox-item">
+                    <input type="checkbox" class="form-check-input" id="mlocation1" checked>
+                    <label class="form-check-label" for="mlocation1">Hà Nội</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" class="form-check-input" id="mlocation2" checked>
+                    <label class="form-check-label" for="mlocation2">TP. Hồ Chí Minh</label>
+                </div>
+            </div>
+            <div class="filter-section">
+                <div class="filter-title">Dịch vụ & khuyến mãi</div>
+                <div class="checkbox-item">
+                    <input type="checkbox" class="form-check-input" id="mservice1" checked>
+                    <label class="form-check-label" for="mservice1">Freeship</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" class="form-check-input" id="mservice2" checked>
+                    <label class="form-check-label" for="mservice2">Khuyến mãi</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="cartSidebar">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title"><i class="bi bi-cart me-2"></i>Giỏ hàng</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="mb-3">
+            <div class="text-center">
+                <i class="bi bi-cart3" style="font-size: 3rem; color: #aaa;"></i>
+                <p class="mt-2">Chưa có sản phẩm</p>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <h6>Đơn hàng</h6>
+            <p class="text-muted">Bạn chưa có đơn hàng nào</p>
+        </div>
+
+        <div class="mb-3">
+            <h6>Địa chỉ</h6>
+            <button class="btn btn-sm btn-outline-primary w-100">+ Thêm địa chỉ</button>
+        </div>
+
+        <div>
+            <h6>Nhận xét</h6>
+            <p class="text-muted">Chưa có nhận xét nào</p>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

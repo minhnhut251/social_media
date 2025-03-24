@@ -10,41 +10,6 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <style>
-    /* Bắt buộc trình duyệt sử dụng chế độ sáng */
-    :root {
-        color-scheme: light !important;
-    }
-
-    /* Chỉnh toàn bộ nền về trắng */
-    /*html, body {*/
-    /*    background-color: white !important;*/
-    /*    color: black !important;*/
-    /*}*/
-
-    /* Đảm bảo container chính không bị ảnh hưởng */
-    /*.container, .main-content, .sidebar, .card, .friend-suggestions-container {*/
-    /*    background-color: white !important;*/
-    /*    color: black !important;*/
-    /*}*/
-
-    /* Nếu navbar có màu tối, ép nó về trắng */
-    /*.navbar, .sidebar {*/
-    /*    background-color: #545353 !important;*/
-    /*    color: black !important;*/
-    /*}*/
-    /** {*/
-    /*    background-color: #545353 !important;*/
-    /*    color: black !important;*/
-    /*}*/
-
-    /* Đảm bảo tất cả thẻ con cũng có nền trắng */
-    /*.card, .friend-suggestions-container {*/
-    /*    background: white !important;*/
-    /*    border: 1px solid #ddd; !* Viền nếu cần *!*/
-    /*}*/
-
-
-
     .sidebar {
         position: fixed;
         top: 56px;
@@ -140,13 +105,6 @@
         font-weight: 500;
     }
 
-
-    /*.post-card {*/
-    /*    margin-bottom: 20px;*/
-    /*    border-radius: 10px;*/
-    /*    box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/
-    /*}*/
-
     .friend-suggestions img {
         width: 80px;
         height: 80px;
@@ -186,23 +144,6 @@
 </style>
 <body >
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-
-
-
-<!--    <div class="sidebar">-->
-<!--        <div sec:authorize="isAuthenticated()">-->
-<!--            <a class="h5" th:href="@{/user/{userId}(userId=${#authentication.getPrincipal().getId()})}">Trang cá nhân</a>-->
-<!--        </div>-->
-<!--        <ul class="list-unstyled">-->
-<!--            <li><a href="#">Mua sắm cc</a></li>-->
-<!--            <li><a href="#">Bạn bè</a></li>-->
-<!--            <li><a href="#">Đăng ký bán hàng</a></li>-->
-<!--            <li><a th:href="@{/new_post}">New Post</a></li>-->
-<!--            <li sec:authorize="hasAnyAuthority('ROLE_VENDOR')">-->
-<!--                <a th:href="@{/vendor}">Trang người bán hàng</a>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--    </div>-->
 
     <div class="sidebar">
         <div sec:authorize="isAuthenticated()">
