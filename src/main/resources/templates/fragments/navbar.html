@@ -156,7 +156,7 @@
         </div>
         <div class="navbar-right">
             <i class="fas fa-bell"></i>
-            <i class="fas fa-comment-dots"></i>
+            <a th:href="@{/messenger}"> <i class="fas fa-comment-dots"></i> </a>
             <div sec:authorize="isAnonymous()" class="auth-links">
                 <a th:href="@{/register}">Register</a>
                 <a th:href="@{/login}">Login</a>

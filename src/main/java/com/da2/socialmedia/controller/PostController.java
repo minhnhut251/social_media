@@ -41,27 +41,6 @@ public class PostController {
         return "index";
     }
 
-    // New method to view a single post
-//    @GetMapping("/post/{id}")
-//    public String viewSinglePost(@PathVariable("id") long id, Model model,
-//                                 @AuthenticationPrincipal CustomUserDetails currentUser) {
-//        PostEntity post = postService.getPostById(id);
-//        postViewService.preparePostForDisplay(model, post, currentUser);
-//        return "post-detail";
-//    }
-
-    // New method to view user profile with their posts
-//    @GetMapping("/user/{userId}")
-//    public String viewUserPosts(@PathVariable("userId") long userId, Model model,
-//                                @AuthenticationPrincipal CustomUserDetails currentUser) {
-//        List<PostEntity> userPosts = postService.getPostsByUserId(userId);
-//        postViewService.preparePostsForDisplay(model, userPosts, currentUser);
-//
-//        // Add username or other user info if needed
-//         model.addAttribute("profileUser", currentUser.getUser());
-//
-//        return "taikhoan/personal-page";
-//    }
     @GetMapping("/post/{id}")
     public String showPostDetail(@PathVariable("id") long id, Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
         PostEntity post = postService.getPostById(id);

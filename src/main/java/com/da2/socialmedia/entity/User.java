@@ -70,6 +70,9 @@ public class User {
     )
     private Set<RoleEntity> roles = new HashSet<>();
 
+    public String getFullName() {
+        return this.lastName + " " + this.firstName;
+    }
 
 
 
