@@ -1,9 +1,11 @@
 package com.da2.socialmedia.controller;
 
 import com.da2.socialmedia.entity.SanphamEntity;
+import com.da2.socialmedia.entity.TaiKhoanBanHangEntity;
 import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.security.CustomUserDetails;
 import com.da2.socialmedia.service.ProductService;
+import com.da2.socialmedia.service.TKBHService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -21,10 +23,12 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final TKBHService tkbhService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, TKBHService tkbhService) {
         this.productService = productService;
+        this.tkbhService = tkbhService;
     }
 
     @GetMapping("")
@@ -32,6 +36,11 @@ public class ProductController {
         List<SanphamEntity> products = productService.getProductsByUserId(currentUser.getUser().getId());
         model.addAttribute("products", products);
         model.addAttribute("product", new SanphamEntity()); // For the add product form
+
+        // Get vendor information
+        TaiKhoanBanHangEntity vendorInfo = tkbhService.findByUser(currentUser.getUser());
+        model.addAttribute("vendorInfo", vendorInfo);
+
         return "shop/vendor";
     }
 

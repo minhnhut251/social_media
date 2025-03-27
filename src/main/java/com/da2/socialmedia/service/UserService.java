@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -93,40 +92,5 @@ public class UserService {
         // Set the new authentication object
         SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
-
-
-//    public void updateUserAvatar(Long userId, MultipartFile file) {
-//        if (file != null && !file.isEmpty()) {
-//            User user = getUserById(userId);
-//
-//            // Delete old avatar if exists
-//            if (user.getAvatar() != null && !user.getAvatar().isEmpty()) {
-//                fileService.deleteFileIfExists(user.getAvatar());
-//            }
-//
-//            // Upload new avatar
-//            String avatarUrl = fileService.handleFileUpload(file);
-//            user.setAvatar(avatarUrl);
-//
-//            userRepository.save(user);
-//        }
-//    }
-//
-//    public void updateUserBanner(Long userId, MultipartFile file) {
-//        if (file != null && !file.isEmpty()) {
-//            User user = getUserById(userId);
-//
-//            // Delete old banner if exists
-//            if (user.getBanner() != null && !user.getBanner().isEmpty()) {
-//                fileService.deleteFileIfExists(user.getBanner());
-//            }
-//
-//            // Upload new banner
-//            String bannerUrl = fileService.handleFileUpload(file);
-//            user.setBanner(bannerUrl);
-//
-//            userRepository.save(user);
-//        }
-//    }
 
 }

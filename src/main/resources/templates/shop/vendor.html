@@ -66,37 +66,71 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <h1 class="mb-4">Quản lý sản phẩm</h1>
 
-    <!-- Add Product Form -->
-    <div class="form-section mb-4">
-        <h3>Thêm sản phẩm mới</h3>
-        <form th:action="@{/vendor/product/add}" method="post" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="tensp" class="form-label">Tên sản phẩm</label>
-                    <input type="text" class="form-control" id="tensp" name="tensp" required>
+    <!-- Vendor Information Section -->
+    <div>
+        <div class="row align-items-center">
+<!--            <div class="col-md-4 text-center">-->
+<!--                &lt;!&ndash; Placeholder for vendor avatar, you can add logic to show a default image if no avatar &ndash;&gt;-->
+<!--                <img th:src="${vendorInfo.avatar != null and !#strings.isEmpty(vendorInfo.avatar)}-->
+<!--                     ? ${vendorInfo.avatar}-->
+<!--                     : '/images/default-vendor-avatar.png'"-->
+<!--                     alt="Vendor Avatar" class="vendor-avatar">-->
+<!--            </div>-->
+            <div class="col-md-8">
+                <h2 th:text="${vendorInfo.tenStore}">Tên Cửa Hàng</h2>
+                <p class="text-muted mb-3">
+                    <i class="fas fa-map-marker-alt me-2"></i>
+                    <span th:text="${vendorInfo.diaChi}">Địa Chỉ Cửa Hàng</span>
+                </p>
+                <div class="mb-3">
+                    <strong>Giới Thiệu:</strong>
+                    <p th:text="${vendorInfo.gioiThieu}">Mô tả về cửa hàng</p>
+                    <p th:text="${vendorInfo.status.name()}">Mô tả về cửa hàng</p>
                 </div>
-                <div class="col-md-3 mb-3">
-                    <label for="sl" class="form-label">Số lượng</label>
-                    <input type="number" class="form-control" id="sl" name="sl" min="1" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="gia" class="form-label">Giá (VND)</label>
-                    <input type="number" class="form-control" id="gia" name="gia" min="0" step="1000" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="moTa" class="form-label">Mô tả</label>
-                    <textarea class="form-control" id="moTa" name="moTa" rows="3"></textarea>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="productImage" class="form-label">Hình ảnh</label>
-                    <input type="file" class="form-control" id="productImage" name="productImage" accept="image/*">
-                </div>
+                <!-- Additional vendor details can be added here -->
             </div>
-            <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
-        </form>
+        </div>
     </div>
+
+
+    <div th:if="${vendorInfo.status.name() != 'ACTIVE'}">
+        Chưa xác nhận
+    </div>
+    <div th:if="${vendorInfo.status.name() == 'ACTIVE'}">
+        <h1 class="mb-4">Quản lý sản phẩm</h1>
+
+        <!-- Add Product Form -->
+        <div class="form-section mb-4">
+            <h3>Thêm sản phẩm mới</h3>
+            <form th:action="@{/vendor/product/add}" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="tensp" class="form-label">Tên sản phẩm</label>
+                        <input type="text" class="form-control" id="tensp" name="tensp" required>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="sl" class="form-label">Số lượng</label>
+                        <input type="number" class="form-control" id="sl" name="sl" min="1" required>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="gia" class="form-label">Giá (VND)</label>
+                        <input type="number" class="form-control" id="gia" name="gia" min="0" step="1000" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="moTa" class="form-label">Mô tả</label>
+                        <textarea class="form-control" id="moTa" name="moTa" rows="3"></textarea>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="productImage" class="form-label">Hình ảnh</label>
+                        <input type="file" class="form-control" id="productImage" name="productImage" accept="image/*">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+            </form>
+        </div>
+    </div>
+
 
     <!-- Product List -->
     <div class="products-section">
