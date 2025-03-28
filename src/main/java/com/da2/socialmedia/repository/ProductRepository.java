@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends JpaRepository<SanphamEntity, Integer> {
+public interface ProductRepository extends JpaRepository<SanphamEntity, Long> {
 
-    List<SanphamEntity> findByUsersId(Long userId);
+    List<SanphamEntity> findByTkbhMatkbh(Long maTkbh);
 
     List<SanphamEntity> findByTenspContainingIgnoreCase(String keyword);
 }
