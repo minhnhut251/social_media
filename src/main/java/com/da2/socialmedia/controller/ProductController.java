@@ -106,4 +106,13 @@ public class ProductController {
 
         return "redirect:/vendor";
     }
+
+
+    @GetMapping("/shop")
+    public String showShopPage(Model model) {
+        List<SanphamEntity> products = productService.getAllProducts();
+        model.addAttribute("products", products);
+        System.out.println("Number of products: " + products.size());
+        return "shop/shop";
+    }
 }

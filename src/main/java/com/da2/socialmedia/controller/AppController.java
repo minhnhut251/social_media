@@ -40,11 +40,11 @@ public class AppController {
         return "/shop/cart";
     }
 
-    @GetMapping("/shop")
-    public String viewshop() {
-
-        return "/shop/shop";
-    }
+//    @GetMapping("/shop")
+//    public String viewshop() {
+//
+//        return "/shop/shop";
+//    }
 
     @GetMapping("/video")
     public String viewvideo() {
