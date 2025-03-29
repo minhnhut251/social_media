@@ -1,3 +1,109 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="vi">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Danh sách bạn bè</title>-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">-->
+<!--    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">-->
+<!--    <meta name="_csrf" th:content="${_csrf.token}"/>-->
+<!--    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+
+<!--    <style>-->
+<!--        body { background-color: #18191A; color: #E4E6EB; }-->
+<!--        .sidebar {-->
+<!--            width: 250px;-->
+<!--            height: 100vh;-->
+<!--            background: #242526;-->
+<!--            padding: 40px;-->
+<!--            position: fixed;-->
+<!--            left: 0;-->
+<!--            top: 0;-->
+<!--            padding-top: 60px;-->
+<!--        }-->
+<!--        .au{-->
+<!--            margin-left: 270px; /* Tạo khoảng cách với sidebar */-->
+<!--            padding: 60px 20px 20px;-->
+<!--        }-->
+
+<!--        .sidebar a {-->
+<!--            color: #E4E6EB;-->
+<!--            text-decoration: none;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 10px; /* Khoảng cách giữa icon và chữ */-->
+<!--            padding: 10px;-->
+<!--            border-radius: 5px;-->
+<!--            transition: background 0.3s ease, color 0.3s ease;-->
+<!--        }-->
+
+<!--        .sidebar a i {-->
+<!--            font-size: 1.2rem;-->
+<!--            color: #E4E6EB;-->
+<!--            transition: color 0.3s ease;-->
+<!--        }-->
+
+<!--        /* Hover đổi màu chữ và icon */-->
+<!--        .sidebar a:hover {-->
+<!--            background: #3A3B3C;-->
+<!--            color: #007bff; /* Chữ đổi màu xanh */-->
+<!--        }-->
+
+<!--        .sidebar a:hover i {-->
+<!--            color: #007bff; /* Icon đổi màu xanh */-->
+<!--        }-->
+
+<!--        .friend-card { background: #242526; padding: 10px; border-radius: 10px; text-align: center; }-->
+<!--        .friend-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 10px; }-->
+<!--        .btn-custom { background: #3A3B3C; color: white; border: none; }-->
+<!--        .btn-custom:hover { background: #4E4F50; }-->
+
+
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div th:replace="~{fragments/navbar :: navbar}"></div>-->
+<!--&lt;!&ndash; Sidebar &ndash;&gt;-->
+<!--<div class="sidebar">-->
+<!--    <h4>Bạn bè</h4>-->
+<!--    <a href="#"><i class="fas fa-home"></i> Trang chủ</a>-->
+<!--    <a href="#"><i class="fas fa-user-plus"></i> Lời mời kết bạn</a>-->
+<!--    <a href="#"><i class="fas fa-user-friends"></i> Gợi ý</a>-->
+<!--    <a href="#"><i class="fas fa-address-book"></i> Tất cả bạn bè</a>-->
+<!--    <a href="#"><i class="fas fa-birthday-cake"></i> Sinh nhật</a>-->
+<!--    <a href="#"><i class="fas fa-list"></i> Danh sách tùy chỉnh</a>-->
+<!--</div>-->
+
+
+<!--&lt;!&ndash; Main Content &ndash;&gt;-->
+<!--<div class="content au">-->
+<!--    <h3 class="mb-4">Những người bạn có thể biết</h3>-->
+<!--    <div class="row">-->
+<!--        &lt;!&ndash; Mẫu một thẻ bạn bè &ndash;&gt;-->
+<!--        <div th:each="user : ${suggestedUsers}" class="col-md-3 mb-3">-->
+<!--            <div class="friend-card">-->
+<!--                <img th:if="${user.avatar != null and !user.avatar.isEmpty()}" th:src="${user.avatar}" th:alt="${user.fullName}">-->
+<!--                <img th:unless="${user.avatar != null and !user.avatar.isEmpty()}" src="/api/placeholder/150/150" alt="Default Avatar">-->
+
+<!--                <h5 class="mt-2" th:text="${user.fullName}">Tên người dùng</h5>-->
+<!--                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>-->
+<!--                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; Nhân bản thêm các thẻ bạn bè &ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="col-md-3 mb-3">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="friend-card">&ndash;&gt;-->
+<!--&lt;!&ndash;                <img src="https://via.placeholder.com/150" alt="Friend">&ndash;&gt;-->
+<!--&lt;!&ndash;                <h5 class="mt-2">Trần Thị B</h5>&ndash;&gt;-->
+<!--&lt;!&ndash;                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -5,65 +111,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Danh sách bạn bè</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { background-color: #18191A; color: #E4E6EB; }
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            background: #242526;
-            padding: 40px;
-            position: fixed;
-            left: 0;
-            top: 0;
-            padding-top: 60px;
-        }
-        .au{
-            margin-left: 270px; /* Tạo khoảng cách với sidebar */
-            padding: 60px 20px 20px;
-        }
-
-        .sidebar a {
-            color: #E4E6EB;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px; /* Khoảng cách giữa icon và chữ */
-            padding: 10px;
-            border-radius: 5px;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        .sidebar a i {
-            font-size: 1.2rem;
-            color: #E4E6EB;
-            transition: color 0.3s ease;
-        }
-
-        /* Hover đổi màu chữ và icon */
-        .sidebar a:hover {
-            background: #3A3B3C;
-            color: #007bff; /* Chữ đổi màu xanh */
-        }
-
-        .sidebar a:hover i {
-            color: #007bff; /* Icon đổi màu xanh */
-        }
-
+        .sidebar { width: 250px; height: 100vh; background: #242526; position: fixed; left: 0; top: 0; padding: 60px 20px; }
+        .au { margin-left: 270px; padding: 60px 20px; }
+        .sidebar a { color: #E4E6EB; text-decoration: none; display: block; padding: 10px; border-radius: 5px; }
+        .sidebar a:hover { background: #3A3B3C; color: #007bff; }
         .friend-card { background: #242526; padding: 10px; border-radius: 10px; text-align: center; }
         .friend-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 10px; }
         .btn-custom { background: #3A3B3C; color: white; border: none; }
         .btn-custom:hover { background: #4E4F50; }
-
-
     </style>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
+
 <!-- Sidebar -->
 <div class="sidebar">
     <h4>Bạn bè</h4>
@@ -71,171 +135,26 @@
     <a href="#"><i class="fas fa-user-plus"></i> Lời mời kết bạn</a>
     <a href="#"><i class="fas fa-user-friends"></i> Gợi ý</a>
     <a href="#"><i class="fas fa-address-book"></i> Tất cả bạn bè</a>
-    <a href="#"><i class="fas fa-birthday-cake"></i> Sinh nhật</a>
-    <a href="#"><i class="fas fa-list"></i> Danh sách tùy chỉnh</a>
 </div>
-
 
 <!-- Main Content -->
 <div class="content au">
     <h3 class="mb-4">Những người bạn có thể biết</h3>
     <div class="row">
-        <!-- Mẫu một thẻ bạn bè -->
-        <div class="col-md-3 mb-3">
+        <div th:each="user : ${suggestedUsers}" class="col-md-3 mb-3">
             <div class="friend-card">
-                <img src="img/pindp.jpg" alt="Friend">
-                <h5 class="mt-2">Nguyễn Văn A</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <!-- Nhân bản thêm các thẻ bạn bè -->
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Trần Thị B</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
+                <img th:src="${user.avatar != null and !user.avatar.isEmpty()} ? ${user.avatar} : '/api/placeholder/150/150'"
+                     th:alt="${user.fullName}">
+                <h5 class="mt-2" th:text="${user.fullName}">Tên người dùng</h5>
+                <a th:href="@{/add-friend(id=${user.id})}" class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</a>
+<!--                <button class="btn btn-custom btn-sm w-100 mt-2 add-friend" th:data-id="${user.id}">Thêm bạn bè</button>-->
 
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Nguyễn Văn A</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <!-- Nhân bản thêm các thẻ bạn bè -->
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Trần Thị B</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Nguyễn Văn A</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <!-- Nhân bản thêm các thẻ bạn bè -->
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Trần Thị B</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Nguyễn Văn A</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <!-- Nhân bản thêm các thẻ bạn bè -->
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Trần Thị B</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Nguyễn Văn A</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <!-- Nhân bản thêm các thẻ bạn bè -->
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Trần Thị B</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Nguyễn Văn A</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <!-- Nhân bản thêm các thẻ bạn bè -->
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Trần Thị B</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Nguyễn Văn A</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <!-- Nhân bản thêm các thẻ bạn bè -->
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Trần Thị B</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Nguyễn Văn A</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <!-- Nhân bản thêm các thẻ bạn bè -->
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Trần Thị B</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Nguyễn Văn A</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
-            </div>
-        </div>
-        <!-- Nhân bản thêm các thẻ bạn bè -->
-        <div class="col-md-3 mb-3">
-            <div class="friend-card">
-                <img src="https://via.placeholder.com/150" alt="Friend">
-                <h5 class="mt-2">Trần Thị B</h5>
-                <button class="btn btn-custom btn-sm w-100 mt-2">Thêm bạn bè</button>
-                <button class="btn btn-outline-secondary btn-sm w-100 mt-2">Gỡ</button>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </body>
 </html>

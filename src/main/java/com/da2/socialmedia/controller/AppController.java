@@ -28,11 +28,11 @@ public class AppController {
         return "admin/admin_home";
     }
 
-    @GetMapping("/friends")
-    public String viewFriend() {
-
-        return "/friends";
-    }
+//    @GetMapping("/friends")
+//    public String viewFriend() {
+//
+//        return "/friends";
+//    }
 
     @GetMapping("/carts")
     public String viewcart() {
