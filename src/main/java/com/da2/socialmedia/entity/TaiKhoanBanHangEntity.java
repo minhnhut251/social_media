@@ -2,7 +2,12 @@ package com.da2.socialmedia.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "taikhoanbanhang")
 @Data
@@ -11,14 +16,31 @@ import java.sql.Timestamp;
 public class TaiKhoanBanHangEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int mathkbh;
-    private String ten;
+    private Long matkbh;
+    private String tenStore;
     private String giayTo;
+    private String gioiThieu;
+    private String diaChi;
     private String avatar;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "matk", nullable = false)
+    @Column(columnDefinition = "TIMESTAMP")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(columnDefinition = "TIMESTAMP")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    @OneToOne
+    @JoinColumn(name = "matk", nullable = false, unique = true)
     private User user;
+
+    @Enumerated(EnumType.STRING)
+    private VendorStatus status = VendorStatus.PENDING_APPROVAL;
+
+    public enum VendorStatus {
+        PENDING_APPROVAL,
+        ACTIVE,
+        SUSPENDED
+    }
 }

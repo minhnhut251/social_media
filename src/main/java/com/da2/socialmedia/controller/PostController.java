@@ -6,6 +6,7 @@ import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.entity.PostEntity;
 import com.da2.socialmedia.service.PostService;
 import com.da2.socialmedia.service.PostViewService;
+import com.da2.socialmedia.service.TKBHService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -26,18 +27,27 @@ public class PostController {
     private final PostService postService;
     private final PostViewService postViewService;
     private final CommentService commentService;
+    private final TKBHService tkbhService;
 
     @Autowired
-    public PostController(PostService postService, PostViewService postViewService ,CommentService commentService) {
+    public PostController(PostService postService, PostViewService postViewService ,CommentService commentService, TKBHService tkbhService) {
         this.postService = postService;
         this.postViewService = postViewService;
         this.commentService = commentService;
+        this.tkbhService = tkbhService;
     }
 
     @GetMapping("/")
     public String viewHomePage(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
         List<PostEntity> posts = postService.getAllPosts();
         postViewService.preparePostsForDisplay(model, posts, currentUser);
+
+        // Check if the user has a vendor account
+        if (currentUser != null) {
+            boolean hasVendorAccount = tkbhService.findByUser(currentUser.getUser()) != null;
+            model.addAttribute("hasVendorAccount", hasVendorAccount);
+        }
+
         return "index";
     }
 

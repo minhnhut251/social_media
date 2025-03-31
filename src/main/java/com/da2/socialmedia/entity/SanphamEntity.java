@@ -13,7 +13,7 @@ import java.util.Date;
 public class SanphamEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int masp;
+    private Long masp;
     private String tensp;
     private int sl;
     private double gia;
@@ -31,6 +31,6 @@ public class SanphamEntity {
 //    private ChiTietHoaDonEntity chiTietHoaDon;
 
     @ManyToOne
-    @JoinColumn(name = "matk", nullable = false)
-    private User users;
+    @JoinColumn(name = "matkbh", nullable = false)
+    private TaiKhoanBanHangEntity tkbh;
 }
