@@ -74,7 +74,7 @@ public class FriendController {
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "Lời mời kết bạn không tồn tại!");
         }
-        return "redirect:/friend_requests";
+        return "redirect:/friend-request";
     }
 
     // Từ chối lời mời kết bạn
@@ -86,7 +86,7 @@ public class FriendController {
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "Lời mời kết bạn không tồn tại!");
         }
-        return "redirect:/friend_requests";
+        return "redirect:/friend-requests";
     }
 
     // Hiển thị danh sách lời mời kết bạn
@@ -103,7 +103,7 @@ public class FriendController {
         List<FriendEntity> pendingRequests = friendService.getPendingRequests(user);
 
         model.addAttribute("pendingRequests", pendingRequests);
-        return "friend_requests"; // Chú ý: bỏ dấu "/" ở trước nếu dùng template engine như Thymeleaf
+        return "friend_requests";
     }
 
 
@@ -113,6 +113,23 @@ public class FriendController {
         List<User> friends = friendService.getFriends(user);
         model.addAttribute("friends", friends);
         return "/friend_list";
+    }
+
+
+    @GetMapping("/unfriend")
+    public String unfriend(@AuthenticationPrincipal CustomUserDetails currentUser,
+                           @RequestParam("id") Long friendId,
+                           RedirectAttributes redirectAttributes) {
+        User user = currentUser.getUser();
+        boolean success = friendService.unfriend(user, friendId);
+
+        if (success) {
+            redirectAttributes.addFlashAttribute("successMessage", "Bạn đã hủy kết bạn thành công!");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Không thể hủy kết bạn!");
+        }
+
+        return "redirect:/list"; // Chuyển hướng về danh sách bạn bè
     }
 
 }

@@ -79,4 +79,33 @@ public class FriendService {
         }
         return friends;
     }
+
+    public boolean removeFriend(User user, Long friendId) {
+        User friend = userRepository.findById(friendId).orElse(null);
+        if (friend == null) return false;
+
+        Optional<FriendEntity> friendship = friendRepository.findByUser1AndUser2OrUser2AndUser1(user, friend, friend, user);
+        if (friendship.isPresent()) {
+            friendRepository.delete(friendship.get());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean unfriend(User user, Long friendId) {
+        User friend = userRepository.findById(friendId).orElse(null);
+        if (friend == null) {
+            return false;
+        }
+
+        // Tìm mối quan hệ bạn bè
+        Optional<FriendEntity> friendship = friendRepository.findByUser1AndUser2OrUser2AndUser1(user, friend, friend, user);
+
+        if (friendship.isPresent()) {
+            friendRepository.delete(friendship.get()); // Xóa khỏi database
+            return true;
+        }
+        return false;
+    }
+
 }
