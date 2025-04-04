@@ -168,7 +168,7 @@
                         <b sec:authentication="principal.fullName"></b>
                     </a>
                 </p>
-                <img th:src ="${#authentication.getPrincipal().getUser().getAvatar()}" style="max-width: 40px; max-height: 40px">
+                <img th:src ="${#authentication.getPrincipal().getUser().getAvatar()}" style="width: 40px; height: 40px; border-radius: 50%;">
                 <form th:action="@{/logout}" method="post">
                     <input type="submit" value="Sign Out" />
                 </form>

@@ -42,6 +42,8 @@ public class PostController {
         List<PostEntity> posts = postService.getAllPosts();
         postViewService.preparePostsForDisplay(model, posts, currentUser);
 
+        model.addAttribute("newpost", new PostEntity());
+
         // Check if the user has a vendor account
         if (currentUser != null) {
             boolean hasVendorAccount = tkbhService.findByUser(currentUser.getUser()) != null;

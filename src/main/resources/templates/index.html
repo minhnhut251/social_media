@@ -39,35 +39,6 @@
         font-size: 20px;
     }
 
-
-
-    /*.sidebar {*/
-    /*    position: fixed;*/
-    /*    top: 56px;*/
-    /*    width: 350px;*/
-    /*    height: calc(100vh - 56px);*/
-    /*    overflow-y: auto;*/
-    /*    background: white;*/
-    /*    padding: 15px;*/
-    /*    box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/
-    /*}*/
-    .main-content {
-        margin-left: 280px;
-        margin-right: 280px;
-        padding-top: 80px;
-        min-height: 100vh;
-    }
-    /*.right-sidebar {*/
-    /*    position: fixed;*/
-    /*    top: 56px;*/
-    /*    right: 0;*/
-    /*    width: 350px;*/
-    /*    height: calc(100vh - 56px);*/
-    /*    overflow-y: auto;*/
-    /*    background: white;*/
-    /*    padding: 15px;*/
-    /*    box-shadow: 0 2px 4px rgba(0,0,0,0.1);*/
-    /*}*/
     .right-sidebar {
         position: fixed;
         top: 56px;
@@ -141,6 +112,65 @@
     .post-image{
     height: 100px;
     }
+
+
+
+    .main-content{
+        padding-top: 50px;
+    }
+
+    .new-post-card {
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    .new-post-input {
+        border: none;
+        border-radius: 20px;
+        background-color: #f0f2f5;
+        padding: 10px 15px;
+        width: 100%;
+    }
+
+    .new-post-input:focus {
+        outline: none;
+    }
+
+    .post-actions {
+        border-top: 1px solid #e4e6eb;
+        padding-top: 8px;
+        margin-top: 10px;
+    }
+
+    .post-action-btn {
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s;
+    }
+
+    .post-action-btn:hover {
+        background-color: #f0f2f5;
+    }
+
+    .post-action-btn i {
+        margin-right: 6px;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .livestream-btn {
+        color: #e41e3f;
+    }
 </style>
 <body >
 <div th:replace="~{fragments/navbar :: navbar}"></div>
@@ -188,28 +218,57 @@
 
 <div class="container">
         <div class="main-content">
-            <div class="container">
+            <div class="container col-md-8">
                 <!-- Friend Suggestions Section -->
-                <div class="card p-3 friend-suggestions-container">
-                    <h5 class="text-center">Gợi ý kết bạn</h5>
-                    <div class="d-flex friend-suggestions">
-                        <div class="friend-card">
-                            <img src="img/benngoaich.webp" alt="Quen không">
-                            <p class="mb-1 small">Quen không</p>
-                            <button class="btn btn-dark btn-sm">Kết bạn</button>
+<!--                <div class="card p-3 friend-suggestions-container">-->
+<!--                    <h5 class="text-center">Gợi ý kết bạn</h5>-->
+<!--                    <div class="d-flex friend-suggestions">-->
+<!--                        <div class="friend-card">-->
+<!--                            <img src="img/benngoaich.webp" alt="Quen không">-->
+<!--                            <p class="mb-1 small">Quen không</p>-->
+<!--                            <button class="btn btn-dark btn-sm">Kết bạn</button>-->
+<!--                        </div>-->
+<!--                        <div class="friend-card">-->
+<!--                            <img src="img/ceccb544-0d55-4734-8292-1b608bfcee81.webp" alt="Hù">-->
+<!--                            <p class="mb-1 small">Hù</p>-->
+<!--                            <button class="btn btn-dark btn-sm">Kết bạn</button>-->
+<!--                        </div>-->
+<!--                        <div class="friend-card">-->
+<!--                            <img src="/api/placeholder/80/80" alt="Ai đây">-->
+<!--                            <p class="mb-1 small">Ai đây</p>-->
+<!--                            <button class="btn btn-dark btn-sm">Kết bạn</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+                <!-- New Post Form -->
+                <div class="card new-post-card p-3 mb-4 my-4" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/add_post}" method="post" enctype="multipart/form-data" th:object="${newpost}">
+                        <div class="d-flex align-items-center mb-3">
+                            <img class="user-avatar" th:src="${#authentication.getPrincipal().getUser().getAvatar() != null ? #authentication.getPrincipal().getUser().getAvatar() : '/api/placeholder/40/40'}" alt="User Avatar">
+                            <input type="text" th:field="*{noiDung}" class="new-post-input" placeholder="Bạn đang nghĩ gì?" required>
                         </div>
-                        <div class="friend-card">
-                            <img src="img/ceccb544-0d55-4734-8292-1b608bfcee81.webp" alt="Hù">
-                            <p class="mb-1 small">Hù</p>
-                            <button class="btn btn-dark btn-sm">Kết bạn</button>
+                        <div class="post-actions">
+                            <div class="row g-2">
+                                <div class="col">
+                                    <label for="image-upload" class="post-action-btn btn w-100">
+                                        <i class="fa-solid fa-image text-success"></i> Ảnh
+                                    </label>
+                                    <input id="image-upload" type="file" name="image" accept="image/*" style="display: none">
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="post-action-btn btn w-100 livestream-btn">
+                                        <i class="fa-solid fa-video"></i> Phát trực tiếp
+                                    </button>
+                                </div>
+                                <div class="col">
+                                    <button type="submit" class="btn btn-primary w-100">Đăng</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="friend-card">
-                            <img src="/api/placeholder/80/80" alt="Ai đây">
-                            <p class="mb-1 small">Ai đây</p>
-                            <button class="btn btn-dark btn-sm">Kết bạn</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
+
                 <div th:each="post: ${listPosts}" class="my-4">
                     <div th:replace="~{fragments/postCard :: postCard(${post})}"></div>
                 </div>
