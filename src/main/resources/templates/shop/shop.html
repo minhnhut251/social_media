@@ -290,8 +290,12 @@
                             <p class="card-text text-danger" th:text="${product.gia}">399.000đ</p>
                             <p class="card-text text-danger" th:text="${product.tkbh.tenStore}">399.000đ</p>
                             <div class="d-flex justify-content-between">
+                                <a th:href="@{/cart/add/{masp} (masp=${product.masp})}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-edit"></i> them vao gio
+                                </a>
                                 <button class="btn btn-primary w-100 me-2">
-                                    <i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ
+
+                                    <i class="fa-solid fa-cart-plus"  ></i> Thêm vào giỏ
                                 </button>
                                 <button class="btn btn-outline-secondary">
                                     <i class="fa-solid fa-heart"></i>
