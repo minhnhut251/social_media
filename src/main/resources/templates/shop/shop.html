@@ -290,9 +290,20 @@
                             <p class="card-text text-danger" th:text="${product.gia}">399.000đ</p>
                             <p class="card-text text-danger" th:text="${product.tkbh.tenStore}">399.000đ</p>
                             <div class="d-flex justify-content-between">
-                                <button class="btn btn-primary w-100 me-2">
-                                    <i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ
-                                </button>
+                                <form th:action="@{/cart/add/{masp}(masp=${product.masp})}" method="post">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="btn btn-primary w-100 me-2">
+                                        <i class="fas fa-edit"></i> them vao gio
+                                    </button>
+                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                </form>
+<!--                                <a th:href="@{/cart/add/{masp} (masp=${product.masp})}" class="btn btn-sm btn-primary">-->
+<!--                                    <i class="fas fa-edit"></i> them vao gio-->
+<!--                                </a>-->
+<!--                                <button class="btn btn-primary w-100 me-2">-->
+
+<!--                                    <i class="fa-solid fa-cart-plus"  ></i> Thêm vào giỏ-->
+<!--                                </button>-->
                                 <button class="btn btn-outline-secondary">
                                     <i class="fa-solid fa-heart"></i>
                                 </button>
