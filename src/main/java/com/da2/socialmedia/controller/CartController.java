@@ -56,7 +56,7 @@ public class CartController {
             CartItemEntity cartItem = cartService.addToCart(currentUser.getUser(), productId, quantity);
             response.put("success", true);
             response.put("message", "Sản phẩm đã được thêm vào giỏ hàng");
-            response.put("cartItem", cartItem);
+            response.put("cartItem", cartItem.getId());
         } catch (Exception e) {
             response.put("success", false);
             response.put("message", e.getMessage());
