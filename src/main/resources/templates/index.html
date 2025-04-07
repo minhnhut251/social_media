@@ -257,9 +257,9 @@
                                     <input id="image-upload" type="file" name="image" accept="image/*" style="display: none">
                                 </div>
                                 <div class="col">
-                                    <button type="button" class="post-action-btn btn w-100 livestream-btn">
+                                    <a th:href="@{/new_livestream}" class="post-action-btn btn w-100 livestream-btn">
                                         <i class="fa-solid fa-video"></i> Phát trực tiếp
-                                    </button>
+                                    </a>
                                 </div>
                                 <div class="col">
                                     <button type="submit" class="btn btn-primary w-100">Đăng</button>
@@ -270,7 +270,12 @@
                 </div>
 
                 <div th:each="post: ${listPosts}" class="my-4">
-                    <div th:replace="~{fragments/postCard :: postCard(${post})}"></div>
+                    <div th:if="${post.loaiBaiDang.name() != 'LIVESTREAM'}">
+                        <div th:replace="~{fragments/postCard :: postCard(${post})}"></div>
+                    </div>
+                    <div th:if="${post.loaiBaiDang.name() == 'LIVESTREAM'}">
+                        <div th:replace="~{fragments/livestream :: livestream(${post})}"></div>
+                    </div>
                 </div>
             </div>
         </div>

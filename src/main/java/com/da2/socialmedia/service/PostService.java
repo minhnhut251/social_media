@@ -75,6 +75,11 @@ public class PostService {
         postRepository.save(existingPost);
     }
 
+//    save an updated post for livestream
+    public void savePost(PostEntity post) {
+        postRepository.save(post);
+    }
+
     public void deletePost(Long id) {
         PostEntity post = getPostById(id);
 

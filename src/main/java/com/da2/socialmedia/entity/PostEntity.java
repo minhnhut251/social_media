@@ -40,4 +40,18 @@ public class PostEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> comments;
+
+    @Enumerated(EnumType.STRING)
+    private postType loaiBaiDang = postType.TEXT;
+
+    public enum postType {
+        TEXT,
+        IMAGE,
+        VIDEO,
+        LIVESTREAM
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "masp", nullable = true)
+    private SanphamEntity sanPham;
 }
