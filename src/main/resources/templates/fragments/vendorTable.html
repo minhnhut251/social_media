@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Vendor Table Fragment -->
+    <tbody id="vendorTable" th:fragment="vendorTable">
+        <tr th:each="vendor : ${vendors}">
+            <td th:text="${vendor.matkbh}"></td>
+            <td>
+                <img th:if="${vendor.avatar}" th:src="${vendor.avatar}" class="vendor-image" alt="Avatar">
+                <img th:unless="${vendor.avatar}" src="/img/default-avatar.png" class="vendor-image" alt="Default Avatar">
+            </td>
+            <td th:text="${vendor.tenStore}"></td>
+            <td th:text="${vendor.user.username}"></td>
+            <td th:text="${vendor.diaChi}"></td>
+            <td th:text="${#temporals.format(vendor.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+            <td>
+                <span th:class="${'status-' + #strings.toLowerCase(vendor.status.name())}"
+                      th:text="${vendor.status == T(com.da2.socialmedia.entity.TaiKhoanBanHangEntity.VendorStatus).PENDING_APPROVAL ? 'Chờ duyệt' :
+                               vendor.status == T(com.da2.socialmedia.entity.TaiKhoanBanHangEntity.VendorStatus).ACTIVE ? 'Đang hoạt động' :
+                               'Đã tạm ngưng'}">
+                </span>
+            </td>
+            <td>
+                <div class="action-buttons">
+                    <button th:if="${vendor.status == T(com.da2.socialmedia.entity.TaiKhoanBanHangEntity.VendorStatus).PENDING_APPROVAL}"
+                            class="btn btn-success btn-sm approve-btn"
+                            th:data-id="${vendor.matkbh}">
+                        <i class="fas fa-check"></i> Duyệt
+                    </button>
+
+                    <button th:if="${vendor.status == T(com.da2.socialmedia.entity.TaiKhoanBanHangEntity.VendorStatus).ACTIVE}"
+                            class="btn btn-warning btn-sm suspend-btn"
+                            th:data-id="${vendor.matkbh}">
+                        <i class="fas fa-pause"></i> Tạm ngưng
+                    </button>
+
+                    <button th:if="${vendor.status == T(com.da2.socialmedia.entity.TaiKhoanBanHangEntity.VendorStatus).SUSPENDED}"
+                            class="btn btn-info btn-sm activate-btn"
+                            th:data-id="${vendor.matkbh}">
+                        <i class="fas fa-play"></i> Kích hoạt
+                    </button>
+
+                    <button class="btn btn-primary btn-sm view-btn"
+                            th:data-id="${vendor.matkbh}">
+                        <i class="fas fa-eye"></i> Xem
+                    </button>
+                </div>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(vendors)}">
+            <td colspan="8" class="text-center">Không có tài khoản bán hàng nào</td>
+        </tr>
+    </tbody>
+</body>
+</html>

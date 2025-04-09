@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TKBHService {
@@ -34,8 +35,35 @@ public class TKBHService {
         return tkbhRepository.findByUser(user);
     }
 
-//    public TaiKhoanBanHangEntity getTkbhByMatk(Long id) {
-//        return tkbhRepository.findByUser(id);
-//    }
+    public void updateTkbh(TaiKhoanBanHangEntity taiKhoanBanHang) {
+        tkbhRepository.save(taiKhoanBanHang);
+    }
+
+    // New methods for admin functionality
+
+    public List<TaiKhoanBanHangEntity> findAllVendors() {
+        return tkbhRepository.findAll();
+    }
+
+    public List<TaiKhoanBanHangEntity> findVendorsByStatus(TaiKhoanBanHangEntity.VendorStatus status) {
+        return tkbhRepository.findByStatus(status);
+    }
+
+    public Optional<TaiKhoanBanHangEntity> findById(Long id) {
+        return tkbhRepository.findById(id);
+    }
+
+    public boolean updateVendorStatus(Long vendorId, TaiKhoanBanHangEntity.VendorStatus status) {
+        Optional<TaiKhoanBanHangEntity> vendorOpt = tkbhRepository.findById(vendorId);
+
+        if (vendorOpt.isPresent()) {
+            TaiKhoanBanHangEntity vendor = vendorOpt.get();
+            vendor.setStatus(status);
+            tkbhRepository.save(vendor);
+            return true;
+        }
+
+        return false;
+    }
 
 }

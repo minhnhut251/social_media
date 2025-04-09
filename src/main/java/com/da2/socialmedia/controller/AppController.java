@@ -18,16 +18,6 @@ public class AppController {
     @Autowired
     private UserRepository userRepo;
 
-    @GetMapping("/admin/login")
-    public String viewAdminLoginPage() {
-        return "admin/admin_login";
-    }
-
-    @GetMapping({"/admin", "/admin/"})
-    public String viewAdminHomePage() {
-        return "admin/admin_home";
-    }
-
 //    @GetMapping("/friends")
 //    public String viewFriend() {
 //

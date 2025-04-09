@@ -102,6 +102,32 @@ public class UserController {
         return "redirect:/profile/" + currentUser.getId();
     }
 
+    @GetMapping("/profile/edit_banner")
+    public String showEditBannerForm(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        String banner = userService.getUserById(currentUser.getId()).getBanner();
+        model.addAttribute("current_avatar", banner);
+        model.addAttribute("id", currentUser.getId());
+        return "taikhoan/edit-banner";
+    }
+
+    @PostMapping("/profile/update_banner")
+    public String updateBanner(@RequestParam(value = "new_banner", required = false) MultipartFile banner_file,
+                               @AuthenticationPrincipal CustomUserDetails currentUser) {
+
+        Long id = currentUser.getId();
+        userService.updateBanner(id, banner_file);
+
+        // Refresh authentication principal
+        User updatedUser = userService.getUserById(id);
+        userService.refreshAuthenticationPrincipal(updatedUser);
+
+        return "redirect:/profile/" + currentUser.getId();
+    }
+
 //    @GetMapping("/vendor")
 //    public String vendorPage(){
 //        return "shop/vendor";

@@ -68,17 +68,24 @@
 
 
     <!-- Vendor Information Section -->
-    <div>
+    <div class="vendor-section mb-4">
         <div class="row align-items-center">
-<!--            <div class="col-md-4 text-center">-->
-<!--                &lt;!&ndash; Placeholder for vendor avatar, you can add logic to show a default image if no avatar &ndash;&gt;-->
-<!--                <img th:src="${vendorInfo.avatar != null and !#strings.isEmpty(vendorInfo.avatar)}-->
-<!--                     ? ${vendorInfo.avatar}-->
-<!--                     : '/images/default-vendor-avatar.png'"-->
-<!--                     alt="Vendor Avatar" class="vendor-avatar">-->
-<!--            </div>-->
+            <div class="col-md-4 text-center">
+                <!-- Vendor avatar -->
+                <img th:if="${vendorInfo.avatar != null && !#strings.isEmpty(vendorInfo.avatar)}"
+                     th:src="${vendorInfo.avatar}"
+                     alt="Vendor Avatar" class="vendor-avatar img-fluid rounded-circle" style="max-width: 200px; max-height: 200px;">
+                <img th:unless="${vendorInfo.avatar != null && !#strings.isEmpty(vendorInfo.avatar)}"
+                     src="/images/default-vendor-avatar.png"
+                     alt="Default Avatar" class="vendor-avatar img-fluid rounded-circle" style="max-width: 200px; max-height: 200px;">
+            </div>
             <div class="col-md-8">
-                <h2 th:text="${vendorInfo.tenStore}">Tên Cửa Hàng</h2>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 th:text="${vendorInfo.tenStore}">Tên Cửa Hàng</h2>
+                    <a th:href="@{/vendor/edit}" class="btn btn-outline-primary">
+                        <i class="fas fa-edit"></i> Chỉnh sửa
+                    </a>
+                </div>
                 <p class="text-muted mb-3">
                     <i class="fas fa-map-marker-alt me-2"></i>
                     <span th:text="${vendorInfo.diaChi}">Địa Chỉ Cửa Hàng</span>
@@ -86,9 +93,20 @@
                 <div class="mb-3">
                     <strong>Giới Thiệu:</strong>
                     <p th:text="${vendorInfo.gioiThieu}">Mô tả về cửa hàng</p>
-                    <p th:text="${vendorInfo.status.name()}">Mô tả về cửa hàng</p>
                 </div>
-                <!-- Additional vendor details can be added here -->
+                <div class="mb-3">
+                    <strong>Trạng thái:</strong>
+                    <span th:if="${vendorInfo.status.name() == 'ACTIVE'}" class="badge bg-success">Đã xác nhận</span>
+                    <span th:if="${vendorInfo.status.name() == 'PENDING_APPROVAL'}" class="badge bg-warning">Đang chờ xác nhận</span>
+                    <span th:if="${vendorInfo.status.name() == 'SUSPENDED'}" class="badge bg-danger">Đã bị đình chỉ</span>
+                </div>
+                <!-- Display giayTo image if available -->
+                <div class="mb-3" th:if="${vendorInfo.giayTo != null && !#strings.isEmpty(vendorInfo.giayTo)}">
+                    <strong>Giấy tờ kinh doanh:</strong>
+                    <div class="mt-2">
+                        <img th:src="${vendorInfo.giayTo}" alt="Giấy tờ kinh doanh" class="img-fluid" style="max-width: 300px;">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
