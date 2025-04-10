@@ -41,7 +41,20 @@ public class CartController {
         model.addAttribute("storeGroups", storeGroups);
 
 
-        return "giohang";
+        return "shop/cart";
+    }
+
+    @GetMapping("/count")
+    @ResponseBody
+    public Map<String, Integer> getCartCount(@AuthenticationPrincipal CustomUserDetails currentUser) {
+        Map<String, Integer> response = new HashMap<>();
+        int count = 0;
+
+        if (currentUser != null) {
+            count = cartService.getCartItemCount(currentUser.getUser());
+        }
+        response.put("count", count);
+        return response;
     }
 
     @PostMapping("/add/{productId}")

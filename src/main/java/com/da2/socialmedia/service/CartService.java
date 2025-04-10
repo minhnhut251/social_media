@@ -24,6 +24,11 @@ public class CartService {
         this.productService = productService;
     }
 
+    public int getCartItemCount(User user) {
+        List<CartItemEntity> cartItems = getCartItems(user);
+        return cartItems.size();
+    }
+
     public List<CartItemEntity> getCartItems(User user) {
         return cartItemRepository.findByUser(user);
     }

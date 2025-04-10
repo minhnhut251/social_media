@@ -8,9 +8,17 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+//@Entity
+//@Table(name = "taikhoanbanhang")
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
 @Entity
 @Table(name = "taikhoanbanhang")
-@Data
+@Getter
+@Setter
+@ToString(exclude = "user")  // Loại bỏ user khỏi toString()
+@EqualsAndHashCode(exclude = "user")  // Loại bỏ user khỏi hashCode và equals
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaiKhoanBanHangEntity {

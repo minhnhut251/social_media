@@ -12,10 +12,18 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+//
+//@Entity
+//@Table(name = "users")
+//@Data
+//@NoArgsConstructor
+//@AllArgsConstructor
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
+@ToString(exclude = "tkbh")  // Loại bỏ tkbh khỏi toString()
+@EqualsAndHashCode(exclude = "tkbh")  // Loại bỏ tkbh khỏi hashCode và equals
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
