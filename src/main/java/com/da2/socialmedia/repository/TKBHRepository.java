@@ -6,7 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface TKBHRepository extends JpaRepository<TaiKhoanBanHangEntity, Long> {
     @Query("SELECT t FROM TaiKhoanBanHangEntity t WHERE t.user = :user")
     TaiKhoanBanHangEntity findByUser(@Param("user") User user);
+
+    List<TaiKhoanBanHangEntity> findByStatus(TaiKhoanBanHangEntity.VendorStatus status);
 }

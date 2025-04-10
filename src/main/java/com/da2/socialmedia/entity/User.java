@@ -1,5 +1,6 @@
 package com.da2.socialmedia.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -67,6 +68,7 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostEntity> posts;
 
@@ -82,12 +84,8 @@ public class User {
         return this.lastName + " " + this.firstName;
     }
 
-
+    @JsonIgnore
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private TaiKhoanBanHangEntity tkbh;
-
-
-
-
 
 }

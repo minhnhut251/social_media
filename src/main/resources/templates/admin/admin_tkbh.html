@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản Lý Tài Khoản Bán Hàng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <style>
+        body { background-color: #ffffff; color: #000000; }
+        .sidebar { width: 250px; height: 100vh; position: fixed; left: 0; top: 0; padding: 60px 20px; background: #f8f9fa; }
+        .au { margin-left: 270px; padding: 60px 20px; }
+        .sidebar a { color: #000000; text-decoration: none; display: block; padding: 10px; border-radius: 5px; }
+        .sidebar a:hover { background: #e2e6ea; color: #007bff; }
+
+        .btn-custom { background: #007bff; color: white; border: none; }
+        .btn-custom:hover { background: #0056b3; }
+
+        .status-pending { background-color: #fff3cd; color: #856404; padding: 5px 10px; border-radius: 4px; }
+        .status-active { background-color: #d4edda; color: #155724; padding: 5px 10px; border-radius: 4px; }
+        .status-suspended { background-color: #f8d7da; color: #721c24; padding: 5px 10px; border-radius: 4px; }
+
+        .vendor-image { width: 50px; height: 50px; object-fit: cover; border-radius: 50%; }
+        .action-buttons { display: flex; gap: 5px; }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div th:replace="~{fragments/sidebar_admin :: sidebar_admin}"></div>
+
+<div class="content au">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Quản Lý Tài Khoản Bán Hàng</h1>
+        <div>
+            <select id="statusFilter" class="form-select">
+                <option value="">Tất cả trạng thái</option>
+                <option value="PENDING_APPROVAL">Chờ duyệt</option>
+                <option value="ACTIVE">Đang hoạt động</option>
+                <option value="SUSPENDED">Đã tạm ngưng</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Ảnh đại diện</th>
+                        <th>Tên cửa hàng</th>
+                        <th>Người dùng</th>
+                        <th>Địa chỉ</th>
+                        <th>Ngày đăng ký</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody id="vendorTable">
+                    <tr th:each="vendor : ${vendors}">
+                        <td th:text="${vendor.matkbh}"></td>
+                        <td>
+                            <img th:if="${vendor.avatar}" th:src="${vendor.avatar}" class="vendor-image" alt="Avatar">
+                            <img th:unless="${vendor.avatar}" src="/img/default-avatar.png" class="vendor-image" alt="Default Avatar">
+                        </td>
+                        <td th:text="${vendor.tenStore}"></td>
+                        <td th:text="${vendor.user.fullName}"></td>
+                        <td th:text="${vendor.diaChi}"></td>
+                        <td th:text="${#temporals.format(vendor.createdAt, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td>
+                                <span th:class="${'status-' + #strings.toLowerCase(vendor.status.name())}"
+                                      th:text="${vendor.status.name() == 'PENDING_APPROVAL' ? 'Chờ duyệt' :
+                                               vendor.status.name() == 'ACTIVE' ? 'Đang hoạt động' :
+                                               'Đã tạm ngưng'}">
+                                </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <button th:if="${vendor.status.name() == 'PENDING_APPROVAL'}"
+                                        class="btn btn-success btn-sm approve-btn"
+                                        th:data-id="${vendor.matkbh}">
+                                    <i class="fas fa-check"></i> Duyệt
+                                </button>
+
+                                <button th:if="${vendor.status.name() == 'ACTIVE'}"
+                                        class="btn btn-warning btn-sm suspend-btn"
+                                        th:data-id="${vendor.matkbh}">
+                                    <i class="fas fa-pause"></i> Tạm ngưng
+                                </button>
+
+                                <button th:if="${vendor.status.name() == 'SUSPENDED'}"
+                                        class="btn btn-info btn-sm activate-btn"
+                                        th:data-id="${vendor.matkbh}">
+                                    <i class="fas fa-play"></i> Kích hoạt
+                                </button>
+
+                                <button class="btn btn-primary btn-sm view-btn"
+                                        th:data-id="${vendor.matkbh}">
+                                    <i class="fas fa-eye"></i> Xem
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(vendors)}">
+                        <td colspan="8" class="text-center">Không có tài khoản bán hàng nào</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Vendor Details -->
+<div class="modal fade" id="vendorDetailsModal" tabindex="-1" aria-labelledby="vendorDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="vendorDetailsModalLabel">Chi tiết tài khoản bán hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <img id="modalAvatar" src="" class="img-fluid mb-3" style="max-height: 200px; border-radius: 8px;" alt="Avatar">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <h5 id="modalTenStore" class="fw-bold"></h5>
+                            <p id="modalUsername" class="text-muted"></p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold">Giới thiệu:</label>
+                            <p id="modalGioiThieu"></p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold">Địa chỉ:</label>
+                            <p id="modalDiaChi"></p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold">Ngày đăng ký:</label>
+                            <p id="modalCreatedAt"></p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold">Trạng thái:</label>
+                            <p id="modalStatus"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <h6 class="fw-bold">Giấy tờ đăng ký:</h6>
+                    <div class="text-center">
+                        <img id="modalGiayTo" src="" class="img-fluid" style="max-height: 300px; border-radius: 8px;" alt="Giấy tờ">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" id="modalActionBtn" class="btn btn-success" data-id="">Duyệt</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        const token = $("meta[name='_csrf']").attr("content");
+        const header = $("meta[name='_csrf_header']").attr("content");
+
+        // Setup AJAX headers
+        $.ajaxSetup({
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader(header, token);
+            }
+        });
+
+        // Filter by status
+        $("#statusFilter").change(function() {
+            const status = $(this).val();
+
+            $.ajax({
+                url: "/admin/tkbh/filter",
+                type: "GET",
+                data: { status: status },
+                success: function(data) {
+                    $("#vendorTable").html(data);
+                },
+                error: function(xhr) {
+                    alert("Có lỗi xảy ra khi lọc dữ liệu.");
+                }
+            });
+        });
+
+        // Approve vendor
+        $(document).on("click", ".approve-btn", function() {
+            const vendorId = $(this).data("id");
+
+            if (confirm("Bạn có chắc muốn duyệt tài khoản bán hàng này?")) {
+                updateVendorStatus(vendorId, "ACTIVE");
+            }
+        });
+
+        // Suspend vendor
+        $(document).on("click", ".suspend-btn", function() {
+            const vendorId = $(this).data("id");
+
+            if (confirm("Bạn có chắc muốn tạm ngưng tài khoản bán hàng này?")) {
+                updateVendorStatus(vendorId, "SUSPENDED");
+            }
+        });
+
+        // Activate vendor
+        $(document).on("click", ".activate-btn", function() {
+            const vendorId = $(this).data("id");
+
+            if (confirm("Bạn có chắc muốn kích hoạt lại tài khoản bán hàng này?")) {
+                updateVendorStatus(vendorId, "ACTIVE");
+            }
+        });
+
+        // View vendor details
+        $(document).on("click", ".view-btn", function() {
+            const vendorId = $(this).data("id");
+
+            $.ajax({
+                url: "/admin/tkbh/" + vendorId,
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    // Fill modal with vendor details
+                    $("#modalTenStore").text(data.tenStore);
+                    $("#modalUsername").text("@" + data.user.username);
+                    $("#modalGioiThieu").text(data.gioiThieu || "Không có thông tin");
+                    $("#modalDiaChi").text(data.diaChi || "Không có thông tin");
+                    $("#modalCreatedAt").text(formatDate(data.createdAt));
+
+                    // Set status with appropriate styling
+                    let statusText, statusClass;
+                    switch(data.status) {
+                        case "PENDING_APPROVAL":
+                            statusText = "Chờ duyệt";
+                            statusClass = "status-pending";
+                            break;
+                        case "ACTIVE":
+                            statusText = "Đang hoạt động";
+                            statusClass = "status-active";
+                            break;
+                        case "SUSPENDED":
+                            statusText = "Đã tạm ngưng";
+                            statusClass = "status-suspended";
+                            break;
+                    }
+
+                    $("#modalStatus").html(`<span class="${statusClass}">${statusText}</span>`);
+
+                    // Set images
+                    $("#modalAvatar").attr("src", data.avatar || "/img/default-avatar.png");
+                    $("#modalGiayTo").attr("src", data.giayTo || "/img/no-document.png");
+
+                    // Configure action button based on status
+                    const actionBtn = $("#modalActionBtn");
+                    actionBtn.data("id", data.matkbh);
+
+                    if (data.status === "PENDING_APPROVAL") {
+                        actionBtn.text("Duyệt").removeClass("btn-warning btn-info").addClass("btn-success").show();
+                        actionBtn.off("click").on("click", function() {
+                            updateVendorStatus(data.matkbh, "ACTIVE");
+                            $("#vendorDetailsModal").modal("hide");
+                        });
+                    } else if (data.status === "ACTIVE") {
+                        actionBtn.text("Tạm ngưng").removeClass("btn-success btn-info").addClass("btn-warning").show();
+                        actionBtn.off("click").on("click", function() {
+                            updateVendorStatus(data.matkbh, "SUSPENDED");
+                            $("#vendorDetailsModal").modal("hide");
+                        });
+                    } else if (data.status === "SUSPENDED") {
+                        actionBtn.text("Kích hoạt").removeClass("btn-success btn-warning").addClass("btn-info").show();
+                        actionBtn.off("click").on("click", function() {
+                            updateVendorStatus(data.matkbh, "ACTIVE");
+                            $("#vendorDetailsModal").modal("hide");
+                        });
+                    }
+
+                    // Show modal
+                    $("#vendorDetailsModal").modal("show");
+                },
+                error: function(xhr) {
+                    alert("Có lỗi xảy ra khi tải thông tin chi tiết.");
+                }
+            });
+        });
+
+        // Update vendor status function
+        function updateVendorStatus(vendorId, status) {
+            $.ajax({
+                url: "/admin/tkbh/update-status",
+                type: "POST",
+                data: {
+                    vendorId: vendorId,
+                    status: status
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert("Cập nhật trạng thái thành công!");
+                        location.reload();
+                    } else {
+                        alert("Cập nhật trạng thái thất bại: " + response.message);
+                    }
+                },
+                error: function(xhr) {
+                    alert("Có lỗi xảy ra khi cập nhật trạng thái.");
+                }
+            });
+        }
+
+        // Format date helper function
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+    });
+</script>
+</body>
+</html>

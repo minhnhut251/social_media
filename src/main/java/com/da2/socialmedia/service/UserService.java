@@ -76,6 +76,24 @@ public class UserService {
 
     }
 
+    public void updateBanner(Long id, MultipartFile banner_file) {
+        System.out.println("Update avatar service");
+        User user = getUserById(id);
+
+        if (banner_file != null && !banner_file.isEmpty()) {
+
+            fileService.deleteFileIfExists(user.getBanner());
+
+            String bannerUrl = fileService.handleFileUpload((banner_file));
+            System.out.println(bannerUrl);
+            System.out.println(user.getId());
+            user.setBanner(bannerUrl);
+        }
+
+        userRepository.save(user);
+
+    }
+
     public void refreshAuthenticationPrincipal(User updatedUser) {
         // Get currently authenticated user
         Authentication currentAuth = SecurityContextHolder.getContext().getAuthentication();
