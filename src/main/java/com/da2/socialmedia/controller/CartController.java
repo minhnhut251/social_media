@@ -41,7 +41,7 @@ public class CartController {
         model.addAttribute("storeGroups", storeGroups);
 
 
-        return "shop/cart";
+        return "shop/giohang";
     }
 
     @GetMapping("/count")
