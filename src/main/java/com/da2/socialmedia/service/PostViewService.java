@@ -11,28 +11,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Service responsible for preparing post data for view templates
- */
 @Service
 public class PostViewService {
 
     private final LikeService likeService;
+    private final CommentService commentService; // Add this
 
     @Autowired
-    public PostViewService(LikeService likeService) {
+    public PostViewService(LikeService likeService, CommentService commentService) { // Update constructor
         this.likeService = likeService;
+        this.commentService = commentService; // Initialize commentService
     }
 
-    /**
-     * Prepares post data for display with like information
-     * @param model The model to add attributes to
-     * @param posts The list of posts to prepare
-     * @param currentUser The current user (can be null if not authenticated)
-     */
     public void preparePostsForDisplay(Model model, List<PostEntity> posts, CustomUserDetails currentUser) {
         Map<Long, Boolean> likedPosts = new HashMap<>();
         Map<Long, Long> likeCounts = new HashMap<>();
+        Map<Long, Long> commentCounts = new HashMap<>(); // Add this map for comment counts
 
         // If user is authenticated, check which posts they have liked
         if (currentUser != null) {
@@ -41,29 +35,27 @@ public class PostViewService {
             for (PostEntity post : posts) {
                 likedPosts.put(post.getMabd(), likeService.hasUserLikedPost(user, post));
                 likeCounts.put(post.getMabd(), likeService.countLikesForPost(post));
+                commentCounts.put(post.getMabd(), commentService.countCommentsForPost(post)); // Add this
             }
         } else {
-            // If not authenticated, just get like counts
+            // If not authenticated
             for (PostEntity post : posts) {
                 likedPosts.put(post.getMabd(), false);
                 likeCounts.put(post.getMabd(), likeService.countLikesForPost(post));
+                commentCounts.put(post.getMabd(), commentService.countCommentsForPost(post)); // Add this
             }
         }
 
         model.addAttribute("likedPosts", likedPosts);
         model.addAttribute("likeCounts", likeCounts);
+        model.addAttribute("commentCounts", commentCounts); // Add this to the model
         model.addAttribute("listPosts", posts);
     }
 
-    /**
-     * Prepares a single post for display with like information
-     * @param model The model to add attributes to
-     * @param post The post to prepare
-     * @param currentUser The current user (can be null if not authenticated)
-     */
     public void preparePostForDisplay(Model model, PostEntity post, CustomUserDetails currentUser) {
         Map<Long, Boolean> likedPosts = new HashMap<>();
         Map<Long, Long> likeCounts = new HashMap<>();
+        Map<Long, Long> commentCounts = new HashMap<>(); // Add this
 
         // If user is authenticated, check if they have liked this post
         if (currentUser != null) {
@@ -74,9 +66,11 @@ public class PostViewService {
         }
 
         likeCounts.put(post.getMabd(), likeService.countLikesForPost(post));
+        commentCounts.put(post.getMabd(), commentService.countCommentsForPost(post)); // Add this
 
         model.addAttribute("likedPosts", likedPosts);
         model.addAttribute("likeCounts", likeCounts);
+        model.addAttribute("commentCounts", commentCounts); // Add this to the model
         model.addAttribute("post", post);
     }
 }

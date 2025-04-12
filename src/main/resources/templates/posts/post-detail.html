@@ -51,9 +51,9 @@
                 </div>
                 <div class="card-body">
                     <!-- Comment form -->
-                    <form sec:authorize="isAuthenticated()" th:action="@{/post/{id}/comment(id=${post.mabd})}" method="post">
+                    <form id="comment-form" sec:authorize="isAuthenticated()" th:action="@{/post/{id}/comment(id=${post.mabd})}" method="post">
                         <div class="mb-3">
-                            <textarea class="form-control" name="commentContent" rows="3" placeholder="Write a comment..." required></textarea>
+                            <textarea id="comment-textarea" class="form-control" name="commentContent" rows="3" placeholder="Write a comment..." required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
@@ -87,5 +87,20 @@
 </div>
 
 <script src="/js/like.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if the URL has the comment-form fragment
+        if(window.location.hash === '#comment-form') {
+            // Focus on the textarea
+            const textarea = document.getElementById('comment-textarea');
+            if(textarea) {
+                textarea.focus();
+                // Scroll the textarea into view if needed
+                textarea.scrollIntoView();
+            }
+        }
+    });
+</script>
 </body>
 </html>
