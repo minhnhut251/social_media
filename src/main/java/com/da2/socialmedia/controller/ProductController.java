@@ -32,6 +32,15 @@ public class ProductController {
 
     @GetMapping("")
     public String vendorDashboard(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
+        // Get vendor information
+        TaiKhoanBanHangEntity vendorInfo = tkbhService.findByUser(currentUser.getUser());
+        model.addAttribute("vendorInfo", vendorInfo);
+
+        return "shop/vendor";
+    }
+
+    @GetMapping("/products")
+    public String vendorProducts(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
         List<SanphamEntity> products = productService.getProductsByTkbhMatkbh(tkbhService.findByUser(currentUser.getUser()).getMatkbh());
         model.addAttribute("products", products);
         model.addAttribute("product", new SanphamEntity()); // For the add product form
@@ -40,7 +49,7 @@ public class ProductController {
         TaiKhoanBanHangEntity vendorInfo = tkbhService.findByUser(currentUser.getUser());
         model.addAttribute("vendorInfo", vendorInfo);
 
-        return "shop/vendor";
+        return "shop/vendor-products";
     }
 
     @PostMapping("/product/add")
@@ -64,7 +73,7 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("error", "Lỗi: " + e.getMessage());
         }
 
-        return "redirect:/vendor";
+        return "redirect:/vendor/products";
     }
 
     @GetMapping("/product/{id}")
@@ -91,7 +100,7 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("error", "Lỗi: " + e.getMessage());
         }
 
-        return "redirect:/vendor";
+        return "redirect:/vendor/products";
     }
 
     @GetMapping("/product/delete/{id}")
@@ -104,7 +113,7 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("error", "Lỗi: " + e.getMessage());
         }
 
-        return "redirect:/vendor";
+        return "redirect:/vendor/products";
     }
 
 
