@@ -92,20 +92,36 @@ public class FriendService {
         return false;
     }
 
-    public boolean unfriend(User user, Long friendId) {
-        User friend = userRepository.findById(friendId).orElse(null);
-        if (friend == null) {
-            return false;
-        }
+//    public boolean unfriend(User user, Long friendId) {
+//        User friend = userRepository.findById(friendId).orElse(null);
+//        if (friend == null) {
+//            return false;
+//        }
+//
+//        // Tìm mối quan hệ bạn bè
+//        Optional<FriendEntity> friendship = friendRepository.findByUser1AndUser2OrUser2AndUser1(user, friend, friend, user);
+//
+//        if (friendship.isPresent()) {
+//            friendRepository.delete(friendship.get()); // Xóa khỏi database
+//            return true;
+//        }
+//        return false;
+//    }
+        public boolean unfriend(User currentUser, Long otherUserId) {
+            Optional<User> otherUserOpt = userRepository.findById(otherUserId);
+            if (otherUserOpt.isEmpty()) return false;
 
-        // Tìm mối quan hệ bạn bè
-        Optional<FriendEntity> friendship = friendRepository.findByUser1AndUser2OrUser2AndUser1(user, friend, friend, user);
+            User otherUser = otherUserOpt.get();
 
-        if (friendship.isPresent()) {
-            friendRepository.delete(friendship.get()); // Xóa khỏi database
-            return true;
+            // Tìm mối quan hệ bạn bè bất kể chiều nào
+            Optional<FriendEntity> friendship = friendRepository.findFriendship(currentUser, otherUser);
+
+            if (friendship.isPresent()) {
+                friendRepository.delete(friendship.get());
+                return true;
+            }
+
+            return false; // Không có mối quan hệ thì không làm gì
         }
-        return false;
-    }
 
 }
