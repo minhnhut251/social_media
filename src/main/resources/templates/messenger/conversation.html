@@ -128,7 +128,7 @@
                  class="message-wrapper d-flex align-items-end mb-2">
                 <div th:if="${message.sender.id != #authentication.getPrincipal().getUser().getId()}" class="message-avatar me-2">
 <!--                    <img src="/api/placeholder/40/40" class="rounded-circle" alt="Profile" style="width: 40px; height: 40px;">-->
-                    <img th:src="${message.sender.avatar}" class="rounded-circle" alt="Profile" style="width: 40px; height: 40px;">
+                    <img th:src="${message.sender.avatar}" class="rounded-circle" alt="Profile" style="width: 40px; height: 40px; object-fit: cover">
                 </div>
                 <div class="message p-2 rounded">
                     <span th:text="${message.noiDung}"></span>
@@ -136,7 +136,7 @@
                 </div>
                 <div th:if="${message.sender.id == #authentication.getPrincipal().getUser().getId()}" class="message-avatar ms-2">
 <!--                    <img src="/api/placeholder/40/40" class="rounded-circle" alt="Profile" style="width: 40px; height: 40px;">-->
-                    <img th:src="${message.sender.avatar}" class="rounded-circle" alt="Profile" style="width: 40px; height: 40px;">
+                    <img th:src="${message.sender.avatar}" class="rounded-circle" alt="Profile" style="width: 40px; height: 40px; object-fit: cover">
                 </div>
             </div>
         </div>
