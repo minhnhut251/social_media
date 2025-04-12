@@ -46,12 +46,9 @@
 
                 <h5 class="mt-2" th:text="${userDTO.user.fullName}">Tên người dùng</h5>
 
-                <!-- Hiện trạng thái -->
                 <div th:if="${userDTO.friendStatus == 'Pending'}">
                     <button class="btn btn-secondary btn-sm w-100" disabled>Đã gửi lời mời</button>
                 </div>
-
-                <!-- Nút thêm bạn nếu chưa có trạng thái -->
                 <div th:if="${userDTO.friendStatus == null}">
                     <a th:href="@{/add-friend(id=${userDTO.user.id})}"
                        class="btn btn-primary btn-sm w-100">Thêm bạn bè</a>
@@ -61,32 +58,6 @@
     </div>
 
 </div>
-
-<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
-<!--<script>-->
-<!--    $(document).ready(function() {-->
-<!--        $('.add-friend-btn').click(function(e) {-->
-<!--            e.preventDefault(); // Ngăn trình duyệt chuyển trang-->
-
-<!--            const btn = $(this);-->
-<!--            const url = btn.attr('href');-->
-
-<!--            $.ajax({-->
-<!--                url: url,-->
-<!--                type: 'GET',-->
-<!--                success: function(response) {-->
-<!--                    // Sau khi gửi lời mời thành công-->
-<!--                    btn.text('Đã gửi lời mời kết bạn');-->
-<!--                    btn.removeClass('btn-custom').addClass('btn-secondary');-->
-<!--                    btn.prop('disabled', true);-->
-<!--                },-->
-<!--                error: function() {-->
-<!--                    alert('Gửi lời mời thất bại. Vui lòng thử lại.');-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
 
 </body>
 </html>

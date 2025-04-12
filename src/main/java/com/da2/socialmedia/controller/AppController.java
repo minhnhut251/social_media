@@ -41,6 +41,11 @@ public class AppController {
 
         return "/video";
     }
+    @GetMapping("/profiles")
+    public String viewprofile() {
+
+        return "/profile";
+    }
 
 //    @GetMapping("")
 //    public String viewHomePage() {
