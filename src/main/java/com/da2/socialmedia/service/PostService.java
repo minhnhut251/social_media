@@ -59,23 +59,25 @@ public class PostService {
 public void createPost(PostEntity post, User user, MultipartFile file) {
     post.setUsers(user);
 
-    if (file != null && !file.isEmpty()) {
-        // Get the file path
-        String mediaUrl = fileService.handleFileUpload(file);
-        post.setMediaURL(mediaUrl);
+    if (post.getLoaiBaiDang() != PostEntity.postType.LIVESTREAM) {
+        if (file != null && !file.isEmpty()) {
+            // Get the file path
+            String mediaUrl = fileService.handleFileUpload(file);
+            post.setMediaURL(mediaUrl);
 
-        // Determine the file type based on content type
-        String contentType = file.getContentType();
-        if (contentType != null) {
-            if (contentType.startsWith("video/")) {
-                post.setLoaiBaiDang(PostEntity.postType.VIDEO);
-            } else if (contentType.startsWith("image/")) {
-                post.setLoaiBaiDang(PostEntity.postType.IMAGE);
+            // Determine the file type based on content type
+            String contentType = file.getContentType();
+            if (contentType != null) {
+                if (contentType.startsWith("video/")) {
+                    post.setLoaiBaiDang(PostEntity.postType.VIDEO);
+                } else if (contentType.startsWith("image/")) {
+                    post.setLoaiBaiDang(PostEntity.postType.IMAGE);
+                }
             }
+        } else {
+            // If no file is uploaded, it's a TEXT post
+            post.setLoaiBaiDang(PostEntity.postType.TEXT);
         }
-    } else {
-        // If no file is uploaded, it's a TEXT post
-        post.setLoaiBaiDang(PostEntity.postType.TEXT);
     }
 
     postRepository.save(post);
