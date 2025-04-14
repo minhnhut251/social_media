@@ -2,52 +2,51 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Thêm Bài Đăng</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
+
+<!-- Navbar -->
 <div th:replace="fragments/navbar :: navbar"></div>
 
-<div class="container text-center">
-    <div>
-        <h1>Them Bai Dang</h1>
-    </div>
-
-<!--    <div sec:authorize="isAuthenticated()">-->
-<!--        <form th:action="@{/logout}" method="post">-->
-<!--            <p>-->
-<!--                Welcome <b><span sec:authentication="principal.fullName"></span></b>-->
-<!--            <div th:text="${#authentication.getPrincipal().getId()}"></div>-->
-<!--            </p>-->
-<!--            <input type="submit" value="Sign Out" />-->
-<!--        </form>-->
-<!--    </div>-->
-
-    <form th:action="@{/add_post}" th:object="${post}"
-          method="post" style="max-width: 600px; margin: 0 auto;"
-          enctype="multipart/form-data">
-        <div class="m-3">
-            <div class="form-group row">
-                <label class="col-4 col-form-label">noiDung: </label>
-                <div class="col-8">
-                    <input type="text" th:field="*{noiDung}" class="form-control" required />
+<!-- Main Container -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow rounded-4">
+                <div class="card-header text-center bg-primary text-white rounded-top-4">
+                    <h4><i class="fas fa-plus-circle me-2"></i>Thêm Bài Đăng</h4>
                 </div>
-            </div>
+                <div class="card-body">
+                    <form th:action="@{/add_post}" th:object="${post}" method="post" enctype="multipart/form-data">
+                        <!-- Nội dung -->
+                        <div class="mb-3">
+                            <label class="form-label">Nội dung <span class="text-danger">*</span></label>
+                            <input type="text" th:field="*{noiDung}" class="form-control" placeholder="Nhập nội dung bài đăng..." required>
+                        </div>
 
-            <div class="form-group row mt-3">
-                <label class="col-4 col-form-label">Image (optional): </label>
-                <div class="col-8">
-                    <input type="file" name="image" class="form-control" accept="image/*" />
+                        <!-- File -->
+                        <div class="mb-3">
+                            <label class="form-label">Hình ảnh / Video (tùy chọn)</label>
+                            <input type="file" name="image" class="form-control" accept="image/*,video/*">
+                        </div>
+
+                        <!-- Nút Thêm -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-upload me-2"></i>Đăng Bài
+                            </button>
+                        </div>
+                    </form>
                 </div>
-            </div>
-
-            <div class="mt-3">
-                <button type="submit" class="btn btn-primary">Them</button>
             </div>
         </div>
-    </form>
+    </div>
 </div>
+
 </body>
 </html>
