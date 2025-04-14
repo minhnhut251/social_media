@@ -120,7 +120,29 @@ public class PostController {
         return "redirect:/";
     }
 
-    // Add these methods to your PostController.java
+
+
+
+    @GetMapping("/livestream/{id}")
+    public String showLivestreamDetail(@PathVariable("id") long id, Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
+        PostEntity post = postService.getPostById(id);
+        postViewService.preparePostForDisplay(model, post, currentUser);
+
+        if (post == null) {
+            return "redirect:/";
+        }
+
+        // Get comments for this post
+        List<CommentEntity> comments = commentService.getCommentsForPost(post);
+        // Add to model
+        model.addAttribute("post", post);
+        model.addAttribute("comments", comments);
+
+        // Add any other attributes your view needs
+        // e.g. Like counts, etc.
+
+        return "posts/livestream-detail";
+    }
 
     @GetMapping("/new_livestream")
     public String showNewLivestreamPage(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
