@@ -1,6 +1,7 @@
 package com.da2.socialmedia.controller;
 
 import com.da2.socialmedia.entity.*;
+import com.da2.socialmedia.repository.PostRepository;
 import com.da2.socialmedia.security.CustomUserDetails;
 import com.da2.socialmedia.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,10 @@ public class PostController {
     private final TKBHService tkbhService;
     private final ProductService productService;
 
+
+
     @Autowired
-    public PostController(PostService postService, PostViewService postViewService ,CommentService commentService, TKBHService tkbhService, ProductService productService) {
+    public PostController(PostService postService, PostViewService postViewService , CommentService commentService, TKBHService tkbhService, ProductService productService) {
         this.postService = postService;
         this.postViewService = postViewService;
         this.commentService = commentService;
@@ -86,6 +89,7 @@ public class PostController {
         model.addAttribute("post", new PostEntity());
         return "posts/new-post";
     }
+
 
     @PostMapping("/add_post")
     public String addUser(PostEntity post, @RequestParam(value = "image", required = false) MultipartFile file,
@@ -198,4 +202,8 @@ public class PostController {
 
         return "redirect:/";
     }
+
+
+    // Add this to your PostService class
+
 }

@@ -124,27 +124,59 @@
     <a href="#"><i class="fas fa-bookmark"></i> Video đã lưu</a>
 </div>
 <!-- Main Content -->
+<!--<div class="content">-->
+<!--    <h3 class="mb-4">Video mới dành cho bạn</h3>-->
+<!--    <div class="video-container">-->
+<!--        <div class="d-flex align-items-center user-info">-->
+<!--            <img src="user-avatar.jpg" alt="Avatar">-->
+<!--            <div class="ms-2">-->
+<!--                <strong>Huỳnh Khoa</strong>-->
+<!--                <p class="text-muted mb-0">28 Tháng 11, 2024</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <p>Bộ :))</p>-->
+<!--        <video width="100%" controls>-->
+<!--            <source src="sample-video.mp4" type="video/mp4">-->
+<!--            Trình duyệt của bạn không hỗ trợ video.-->
+<!--        </video>-->
+<!--        <div class="video-controls">-->
+<!--            <span>👍 26K</span>-->
+<!--            <span>💬 189 bình luận</span>-->
+<!--            <span>🔁 Chia sẻ</span>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 <div class="content">
     <h3 class="mb-4">Video mới dành cho bạn</h3>
-    <div class="video-container">
-        <div class="d-flex align-items-center user-info">
-            <img src="user-avatar.jpg" alt="Avatar">
-            <div class="ms-2">
-                <strong>Huỳnh Khoa</strong>
-                <p class="text-muted mb-0">28 Tháng 11, 2024</p>
-            </div>
-        </div>
-        <p>Bộ :))</p>
-        <video width="100%" controls>
-            <source src="sample-video.mp4" type="video/mp4">
-            Trình duyệt của bạn không hỗ trợ video.
-        </video>
-        <div class="video-controls">
-            <span>👍 26K</span>
-            <span>💬 189 bình luận</span>
-            <span>🔁 Chia sẻ</span>
-        </div>
+<!--    <div th:each="video : ${videos}" class="video-container">-->
+<!--        <div class="d-flex align-items-center user-info">-->
+<!--            <img th:src="@{/uploads/avatar/default.jpg}" alt="Avatar">-->
+<!--            <div class="ms-2">-->
+<!--                <strong th:text="${video.users.fullName}">Tên</strong>-->
+<!--                <p class="text-muted mb-0" th:text="${#dates.format(video.createdAt, 'dd/MM/yyyy')}">Ngày</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <p th:text="${video.noiDung}">Nội dung video</p>-->
+<!--        <a th:href="@{'/video/' + ${video.mabd}}">-->
+<!--            <video width="100%" controls>-->
+<!--                <source th:src="@{${video.mediaURL}}" type="video/mp4">-->
+<!--                Trình duyệt của bạn không hỗ trợ video.-->
+<!--            </video>-->
+<!--        </a>-->
+<!--    </div>-->
+    <h3 class="mb-4 mt-4">Videos</h3>
+
+    <!-- Nếu không có video -->
+    <div th:if="${listVideos.isEmpty()}" class="alert alert-info">
+        This user hasn't posted any videos yet.
     </div>
+
+    <!-- Danh sách video động -->
+    <div th:each="post: ${listVideos}" class="mb-4">
+        <div th:replace="~{fragments/videoCard :: videoCard(${post})}"></div>
+    </div>
+
 </div>
+
 </body>
 </html>

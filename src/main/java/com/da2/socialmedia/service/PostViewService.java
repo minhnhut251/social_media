@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Service responsible for preparing post data for view templates
@@ -79,4 +80,36 @@ public class PostViewService {
         model.addAttribute("likeCounts", likeCounts);
         model.addAttribute("post", post);
     }
+
+    public void prepareVideosForDisplay(Model model, List<PostEntity> posts, CustomUserDetails currentUser) {
+        Map<Long, Boolean> likedPosts = new HashMap<>();
+        Map<Long, Long> likeCounts = new HashMap<>();
+
+        // Lọc các bài đăng có loại là video
+        List<PostEntity> videoPosts = posts.stream()
+                .filter(post -> PostEntity.postType.VIDEO.equals(post.getLoaiBaiDang()))  // Lọc bài đăng có loại video
+                .collect(Collectors.toList());
+
+        // Nếu người dùng đã đăng nhập, kiểm tra bài đăng nào đã được thích
+        if (currentUser != null) {
+            User user = currentUser.getUser();
+
+            for (PostEntity post : videoPosts) {
+                likedPosts.put(post.getMabd(), likeService.hasUserLikedPost(user, post));
+                likeCounts.put(post.getMabd(), likeService.countLikesForPost(post));
+            }
+        } else {
+            // Nếu người dùng chưa đăng nhập, chỉ lấy số lượt thích
+            for (PostEntity post : videoPosts) {
+                likedPosts.put(post.getMabd(), false);
+                likeCounts.put(post.getMabd(), likeService.countLikesForPost(post));
+            }
+        }
+
+        // Cập nhật dữ liệu vào model
+        model.addAttribute("likedPosts", likedPosts);
+        model.addAttribute("likeCounts", likeCounts);
+        model.addAttribute("listVideos", videoPosts);  // Chỉ gửi bài đăng video vào model
+    }
+
 }

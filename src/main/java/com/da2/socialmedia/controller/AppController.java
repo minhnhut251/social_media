@@ -30,17 +30,20 @@ public class AppController {
         return "/shop/cart";
     }
 
-//    @GetMapping("/shop")
-//    public String viewshop() {
-//
-//        return "/shop/shop";
-//    }
+    @GetMapping("/shop")
+    public String viewshop() {
+
+        return "/shop/shop";
+    }
 
     @GetMapping("/video")
-    public String viewvideo() {
+    public String viewvideo(Model model) {
+//        model.addAttribute("user", new User());
 
         return "/video";
     }
+
+
     @GetMapping("/profiles")
     public String viewprofile() {
 
