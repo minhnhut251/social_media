@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Post card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <style>
+        .post {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .user {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .post-content {
+            margin-bottom: 15px;
+        }
+        .post-img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+        .liked {
+            color: #1877f2;
+        }
+    </style>
+
+</head>
+<body>
+<div th:fragment="postCard(post)" class="post-card card mb-3">
+    <div class="card-body">
+        <div class="d-flex align-items-center mb-2">
+            <img th:src="@{${post.users.avatar}}" alt="Avatar" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; object-fit: cover;">
+            <div>
+                <div>
+                    <a th:href="@{/profile/{id}(id=${post.users.id})}" th:text="${post.users.lastName} + ' ' + ${post.users.firstName}">Username</a>
+                    <a th:href="@{/post/{id}(id=${post.mabd})}" class="text-muted" th:if="${post.createdAt != null}" th:text="${#temporals.format(post.createdAt, 'MMM dd, yyyy HH:mm')}">Date</a>
+                </div>
+            </div>
+        </div>
+        <div th:if="${post.mediaURL != null && !post.mediaURL.isEmpty()}" class="text-center mb-3">
+            <!-- Hiển thị ảnh cho loại bài đăng IMAGE -->
+            <img th:if="${post.loaiBaiDang.name() == 'IMAGE'}"
+                 th:src="@{${post.mediaURL}}" class="img-fluid rounded" alt="Post image" style="max-height: 500px;">
+            <!-- Hiển thị video cho loại bài đăng VIDEO với link đến trang chi tiết -->
+<!--            <a th:if="${post.loaiBaiDang.name() == 'VIDEO'}" th:href="@{'/video/' + ${post.mabd}}">-->
+<!--                <video controls class="img-fluid rounded" style="max-height: 500px;">-->
+<!--                    <source th:src="@{${post.mediaURL}}" type="video/mp4">-->
+<!--                    Trình duyệt của bạn không hỗ trợ video.-->
+<!--                </video>-->
+<!--            </a>-->
+            <a th:if="${post.loaiBaiDang.name() == 'VIDEO'}" th:href="@{'/video/' + ${post.mabd}}">
+                <video controls class="img-fluid rounded" style="max-height: 500px;">
+                    <source th:src="@{${post.mediaURL}}" type="video/mp4">
+                    Trình duyệt của bạn không hỗ trợ video.
+                </video>
+            </a>
+
+        </div>
+<!--        <div th:if="${post.mediaURL != null && !post.mediaURL.isEmpty()}" class="text-center mb-3">-->
+<!--            &lt;!&ndash; Hiển thị ảnh cho loại bài đăng IMAGE &ndash;&gt;-->
+<!--            <img th:if="${post.loaiBaiDang.name() == 'IMAGE'}"-->
+<!--                 th:src="@{${post.mediaURL}}" class="img-fluid rounded" alt="Post image" style="max-height: 500px;">-->
+<!--            &lt;!&ndash; Hiển thị video cho loại bài đăng VIDEO với link đến trang chi tiết &ndash;&gt;-->
+<!--            <a th:if="${post.loaiBaiDang.name() == 'VIDEO'}" th:href="@{'/video/' + ${post.mabd}}">-->
+<!--                <video controls class="img-fluid rounded" style="max-height: 500px;">-->
+<!--                    <source th:src="@{${post.mediaURL}}" type="video/mp4">-->
+<!--                    Trình duyệt của bạn không hỗ trợ video.-->
+<!--                </video>-->
+<!--            </a>-->
+<!--        </div>-->
+
+        <p class="card-text" th:text="${post.noiDung}">Content goes here</p>
+<!--        Không có đăng nhập cũng xuất hiện-->
+        <div class="d-flex justify-content-between">
+            <!--                Số lượt like-->
+            <div class="d-flex">
+                <span class="ms-3">
+                    <i class="fas fa-heart"></i>
+                    <span th:id="'likeCount-' + ${post.mabd}"
+                          th:text="${likeCounts != null} ? ${likeCounts[post.mabd]} : '0'">0</span> likes
+                </span>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between" sec:authorize="isAuthenticated()">
+            <button th:id="'likeBtn-' + ${post.mabd}"
+                    th:class="${likedPosts != null && likedPosts[post.mabd]} ? 'btn btn-primary btn-sm' : 'btn btn-outline-primary btn-sm'"
+                    th:onclick="'toggleLike(' + ${post.mabd} + ')'">
+                <i th:class="${likedPosts != null && likedPosts[post.mabd]} ? 'fas fa-thumbs-up' : 'far fa-thumbs-up'"></i>
+                <span th:id="'likeText-' + ${post.mabd}">
+                    <span th:if="${likedPosts != null && likedPosts[post.mabd]}">Unlike</span>
+                    <span th:unless="${likedPosts != null && likedPosts[post.mabd]}">Like</span>
+                </span>
+            </button>
+            <button class="btn btn-light"><i class="far fa-comment me-1"></i>Bình luận</button>
+            <button class="btn btn-light"><i class="far fa-share-square me-1"></i>Chia sẻ</button>
+        </div>
+    </div>
+    <div class="card-footer" sec:authorize="isAuthenticated()" th:if="${post.users.id == #authentication.getPrincipal().getId()}">
+        <div class="btn-group btn-group-sm">
+            <a th:href="@{/post_edit/{id}(id=${post.mabd})}" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Edit
+            </a>
+            <a th:href="@{/post_delete/{id}(id=${post.mabd})}" class="btn btn-danger">
+                <i class="bi bi-trash"></i> Delete
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
