@@ -109,7 +109,7 @@ public class UserController {
         }
 
         String banner = userService.getUserById(currentUser.getId()).getBanner();
-        model.addAttribute("current_avatar", banner);
+        model.addAttribute("current_banner", banner);
         model.addAttribute("id", currentUser.getId());
         return "taikhoan/edit-banner";
     }

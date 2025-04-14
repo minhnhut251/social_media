@@ -68,44 +68,11 @@
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <div class="container" style="margin-top:100px;">
-<!--    <div class="row">-->
-<!--        <div class="card">-->
-<!--            <div class="banner-container">-->
-<!--                <img th:if="${profileUser.banner != null}" th:src="${profileUser.banner}" class="profile-banner" alt="User Banner" style="width: 100px">-->
-<!--                <img th:unless="${profileUser.banner != null}" src="/img/default-banner.jpg" class="profile-banner" alt="Default Banner">-->
-
-<!--                <div th:if="${isOwnProfile}" class="edit-banner" data-bs-toggle="modal" data-bs-target="#bannerModal">-->
-<!--                    <i class="fas fa-camera"></i>-->
-<!--                </div>-->
-
-<!--                <a th:if="${isOwnProfile}" th:href="@{/profile/edit_banner}" class="btn btn-sm btn-primary">-->
-<!--                    <i class="fas fa-edit"></i> Sửa banner-->
-<!--                </a>-->
-<!--            </div>-->
-
-<!--            <div class="avatar-container">-->
-<!--                <img th:if="${profileUser.avatar != null}" th:src="${profileUser.avatar}" class="profile-avatar" alt="User Avatar" style="width: 100px">-->
-<!--                <img th:unless="${profileUser.avatar != null}" src="/img/default-avatar.jpg" class="profile-avatar" alt="Default Avatar">-->
-
-<!--                <div th:if="${isOwnProfile}" class="edit-avatar" data-bs-toggle="modal" data-bs-target="#avatarModal">-->
-<!--                    <i class="fas fa-camera"></i>-->
-<!--                </div>-->
-
-<!--                <a th:if="${isOwnProfile}" th:href="@{/profile/edit_avatar}" class="btn btn-sm btn-primary">-->
-<!--                    <i class="fas fa-edit"></i> Sửa avatar-->
-<!--                </a>-->
-<!--            </div>-->
-
-<!--            <div class="text-center mt-3 mb-4">-->
-<!--                <h3 th:text="${profileUser.lastName + ' ' + profileUser.firstName}">Username</h3>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
     <div class="container mt-profile">
         <div class="cover-photo position-relative">
             <img th:if="${profileUser.banner != null}" th:src="@{${profileUser.banner}}" class="w-100 h-100 object-fit-cover" alt="User Banner">
             <img th:unless="${profileUser.banner != null}" src="/img/default-banner.jpg" class="w-100 h-100 object-fit-cover" alt="Default Banner">
-            <a th:if="${isOwnProfile}" th:href="@{/profile/edit_banner}" class="btn btn-sm position-absolute end-0 m-3 btn-primary" data-bs-toggle="modal" data-bs-target="#bannerModal">
+            <a th:if="${isOwnProfile}" th:href="@{/profile/edit_banner}" class="btn btn-sm position-absolute end-0 m-3 btn-primary">
                 <i class="fa fa-camera"></i> Thêm ảnh bìa
             </a>
             <div class="avatar-wrapper position-relative">
@@ -159,16 +126,16 @@
         <div class="col-md-8">
 
             <!-- Ô đăng bài -->
-            <div class="mt-4">
-                <div class="p-3 rounded">
-                    <input type="text" class="form-control bg-secondary text-white" placeholder="Bạn đang nghĩ gì?">
-                    <div class="d-flex mt-2">
-                        <button class="btn flex-grow-1"><i class="fa fa-video"></i> Video trực tiếp</button>
-                        <button class="btn flex-grow-1 mx-1"><i class="fa fa-image"></i> Ảnh/Video</button>
-                        <button class="btn flex-grow-1"><i class="fa fa-calendar"></i> Sự kiện</button>
-                    </div>
-                </div>
-            </div>
+<!--            <div class="mt-4">-->
+<!--                <div class="p-3 rounded">-->
+<!--                    <input type="text" class="form-control bg-secondary text-white" placeholder="Bạn đang nghĩ gì?">-->
+<!--                    <div class="d-flex mt-2">-->
+<!--                        <button class="btn flex-grow-1"><i class="fa fa-video"></i> Video trực tiếp</button>-->
+<!--                        <button class="btn flex-grow-1 mx-1"><i class="fa fa-image"></i> Ảnh/Video</button>-->
+<!--                        <button class="btn flex-grow-1"><i class="fa fa-calendar"></i> Sự kiện</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
             <!-- Danh sách bài viết -->
             <h3 class="mb-4 mt-4">Posts</h3>

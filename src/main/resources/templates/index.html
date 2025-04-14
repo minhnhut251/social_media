@@ -253,9 +253,9 @@
                             <div class="row g-2">
                                 <div class="col">
                                     <label for="image-upload" class="post-action-btn btn w-100">
-                                        <i class="fa-solid fa-image text-success"></i> Ảnh
+                                        <i class="fa-solid fa-image text-success"></i> Ảnh/Video
                                     </label>
-                                    <input id="image-upload" type="file" name="image" accept="image/*" style="display: none">
+                                    <input id="image-upload" type="file" name="image" accept="image/*,video/*" style="display: none">
                                 </div>
                                 <div class="col">
                                     <a th:href="@{/new_livestream}" class="post-action-btn btn w-100 livestream-btn">
@@ -271,12 +271,7 @@
                 </div>
 
                 <div th:each="post: ${listPosts}" class="my-4">
-                    <div th:if="${post.loaiBaiDang.name() != 'LIVESTREAM'}">
-                        <div th:replace="~{fragments/postCard :: postCard(${post})}"></div>
-                    </div>
-                    <div th:if="${post.loaiBaiDang.name() == 'LIVESTREAM'}">
-                        <div th:replace="~{fragments/livestream :: livestream(${post})}"></div>
-                    </div>
+                    <div th:replace="~{fragments/postCard :: postCard(${post})}"></div>
                 </div>
             </div>
         </div>
