@@ -1,7 +1,11 @@
 package com.da2.socialmedia.controller;
 
+import com.da2.socialmedia.entity.PostEntity;
 import com.da2.socialmedia.entity.TaiKhoanBanHangEntity;
+import com.da2.socialmedia.entity.User;
+import com.da2.socialmedia.service.PostService;
 import com.da2.socialmedia.service.TKBHService;
+import com.da2.socialmedia.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,10 +22,16 @@ import java.util.Optional;
 public class AdminDashboardController {
 
     private final TKBHService tkbhService;
+    private final UserService userService;
+    private final PostService postService;
+
+
 
     @Autowired
-    public AdminDashboardController(TKBHService tkbhService) {
+    public AdminDashboardController(TKBHService tkbhService,UserService userService,PostService postService) {
         this.tkbhService = tkbhService;
+        this.userService=userService;
+        this.postService=postService;
     }
 
     @GetMapping("login")
@@ -38,6 +48,21 @@ public class AdminDashboardController {
 //    public String viewAdminTKBH() {
 //        return "admin/admin_tkbh";
 //    }
+
+    @GetMapping("/users")
+    public String showUsersPage(Model model) {
+        List<User> users = userService.getAllUsers();
+        model.addAttribute("users", users);
+        return "admin/admin_user"; // File Thymeleaf trong thư mục templates/admin/
+    }
+
+    @GetMapping("/posts")
+    public String showPostPage(Model model) {
+        List<PostEntity> postEntities = postService.getAllPosts();
+        model.addAttribute("posts", postEntities);
+        return "admin/admin_post"; // File Thymeleaf trong thư mục templates/admin/
+    }
+
 
     @GetMapping("/tkbh")
     public String showTKBHPage(Model model) {
