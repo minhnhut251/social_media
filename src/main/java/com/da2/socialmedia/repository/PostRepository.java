@@ -19,4 +19,7 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
 
     // Add this to your PostRepository interface
     List<PostEntity> findByLoaiBaiDang(PostEntity.postType loaiBaiDang);
+
+//    List<PostEntity> findByTrangThai(PostStatus trangThai);
+
 }

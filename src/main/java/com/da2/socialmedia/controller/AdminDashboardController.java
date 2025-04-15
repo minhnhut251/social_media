@@ -53,15 +53,50 @@ public class AdminDashboardController {
     public String showUsersPage(Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
-        return "admin/admin_user"; // File Thymeleaf trong thư mục templates/admin/
+        return "admin/admin_user";
     }
+    @GetMapping("/users/delete/{id}")
+    public String deleteUsers(@PathVariable Long id, @RequestParam(required = false) boolean confirm, Model model) {
+        User user = userService.getUserById(id);
+
+        if (user.getTkbh() != null) {
+            model.addAttribute("error", "Không thể xoá. Đây là tài khoản bán hàng!");
+            return "admin/admin_user";
+        }
+
+        if (!confirm && user.getPosts() != null && !user.getPosts().isEmpty()) {
+            model.addAttribute("user", user);
+            return "admin/confirm_delete_user";
+        }
+
+        userService.forceDeleteUser(user);
+        return "redirect:/admin/users";
+    }
+
+
+//    @GetMapping("/users/delete/{id}")
+//    public String deleteUsers(@PathVariable Long id) {
+//        userService.deleteUserById(id);
+//        return "redirect:/admin/users";
+//    }
+
+
 
     @GetMapping("/posts")
     public String showPostPage(Model model) {
         List<PostEntity> postEntities = postService.getAllPosts();
         model.addAttribute("posts", postEntities);
-        return "admin/admin_post"; // File Thymeleaf trong thư mục templates/admin/
+        return "admin/admin_post";
     }
+
+
+    @GetMapping("/posts/delete/{id}")
+    public String deletePost(@PathVariable Long id) {
+        postService.deletePostById(id);
+        return "redirect:/admin/posts";
+    }
+
+
 
 
     @GetMapping("/tkbh")

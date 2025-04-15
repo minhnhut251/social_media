@@ -4,6 +4,7 @@ import com.da2.socialmedia.entity.PostEntity;
 import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.repository.UserRepository;
 import com.da2.socialmedia.security.CustomUserDetails;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,11 +19,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final FileService fileService;
+    private final PostService postService;
 
     @Autowired
-    public UserService(UserRepository userRepository, FileService fileService) {
+    public UserService(UserRepository userRepository, FileService fileService,PostService postService) {
         this.userRepository = userRepository;
         this.fileService = fileService;
+        this.postService=postService;
     }
 
     public User getUserById(Long id) {
@@ -110,5 +113,55 @@ public class UserService {
         // Set the new authentication object
         SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
+
+//    public void deleteUserById(Long id) {
+//        userRepository.deleteById(id);
+//    }
+
+    public void deleteUserById(Long id) {
+        User user = getUserById(id);
+
+        if (user.getPosts() != null) {
+            user.getPosts().clear();  //
+
+        if (user.getTkbh() != null) {
+            user.setTkbh(null);
+        }
+
+        userRepository.delete(user);
+        }
+    }
+//    @Transactional
+//    public void forceDeleteUser(User user) {
+//        // Xóa avatar và banner nếu có
+//        fileService.deleteFileIfExists(user.getAvatar());
+//        fileService.deleteFileIfExists(user.getBanner());
+//
+//        // Nếu bài đăng có liên kết ngược thì xóa bài đăng (cascade đã có)
+//        userRepository.delete(user); // do cascade = ALL và orphanRemoval = true
+//    }
+@Transactional
+public void forceDeleteUser(User user) {
+    // Kiểm tra và xóa avatar nếu tồn tại
+    if (user.getAvatar() != null) {
+        fileService.deleteFileIfExists(user.getAvatar());
+    }
+
+    // Kiểm tra và xóa banner nếu tồn tại
+    if (user.getBanner() != null) {
+        fileService.deleteFileIfExists(user.getBanner());
+    }
+
+    // Nếu bài đăng có liên kết ngược thì xóa bài đăng trước (nếu cascade không làm việc như mong muốn)
+    if (user.getPosts() != null && !user.getPosts().isEmpty()) {
+        for (PostEntity postEntity : user.getPosts()) {
+            postService.deletePost(postEntity); // Giả sử bạn có phương thức xóa bài viết trong service
+        }
+    }
+
+    // Xóa user (cascade sẽ tự xử lý xóa các bài đăng liên quan)
+    userRepository.delete(user);
+}
+
 
 }
