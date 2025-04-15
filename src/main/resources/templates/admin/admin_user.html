@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <meta charset="UTF-8">
+  <title>Quản Lý Tài Khoản Bán Hàng</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+  <style>
+    body { background-color: #ffffff; color: #000000; }
+    .sidebar { width: 250px; height: 100vh; position: fixed; left: 0; top: 0; padding: 60px 20px; background: #f8f9fa; }
+    .au { margin-left: 270px; padding: 60px 20px; }
+    .sidebar a { color: #000000; text-decoration: none; display: block; padding: 10px; border-radius: 5px; }
+    .sidebar a:hover { background: #e2e6ea; color: #007bff; }
+
+    .btn-custom { background: #007bff; color: white; border: none; }
+    .btn-custom:hover { background: #0056b3; }
+
+    .status-pending { background-color: #fff3cd; color: #856404; padding: 5px 10px; border-radius: 4px; }
+    .status-active { background-color: #d4edda; color: #155724; padding: 5px 10px; border-radius: 4px; }
+    .status-suspended { background-color: #f8d7da; color: #721c24; padding: 5px 10px; border-radius: 4px; }
+
+    .user-image, .banner-image {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .action-buttons { display: flex; gap: 5px; }
+  </style>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div th:replace="~{fragments/sidebar_admin :: sidebar_admin}"></div>
+
+<div class="content au">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h4">Quản Lý Tài Khoản Người Dùng</h1>
+<!--    <div style="max-width: 200px;">-->
+<!--      <select id="statusFilter" class="form-select">-->
+<!--        <option value="">Tất cả trạng thái</option>-->
+<!--        <option value="PENDING_APPROVAL">Chờ duyệt</option>-->
+<!--        <option value="ACTIVE">Đang hoạt động</option>-->
+<!--        <option value="SUSPENDED">Đã tạm ngưng</option>-->
+<!--      </select>-->
+<!--    </div>-->
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle text-center">
+          <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Họ và tên</th>
+            <th>SĐT</th>
+            <th>Ngày sinh</th>
+            <th>Giới tính</th>
+            <th>Địa chỉ</th>
+            <th>Học vấn</th>
+            <th>Nơi làm việc</th>
+            <th>Avatar</th>
+            <th>Banner</th>
+            <th>Ngày tạo</th>
+            <th>Ngày cập nhật</th>
+          </tr>
+          </thead>
+          <tbody id="vendorTable">
+          <tr th:each="user : ${users}">
+            <td th:text="${user.id}">1</td>
+            <td th:text="${user.email}">example@example.com</td>
+            <td th:text="${user.lastName + ' ' + user.firstName}">Nguyen Van A</td>
+            <td th:text="${user.sdt}">0123456789</td>
+            <td th:text="${user.ngaysinh}">1999-01-01</td>
+            <td th:text="${user.sex}">Nam</td>
+            <td th:text="${user.diaChi}">Cần Thơ</td>
+            <td th:text="${user.hocVan}">Đại học</td>
+            <td th:text="${user.noiLamViec}">FPT</td>
+            <td><img th:src="${user.avatar}" alt="avatar" class="user-image"/></td>
+            <td><img th:src="${user.banner}" alt="banner" class="banner-image"/></td>
+
+            <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${#temporals.format(user.updatedAt, 'yyyy-MM-dd HH:mm')}"></td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(users)}">
+            <td colspan="13" class="text-center text-muted">Không có tài khoản nào</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
