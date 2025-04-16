@@ -124,41 +124,41 @@ public class CartController {
 
 
 
-    @PostMapping("/checkout")
-    public ResponseEntity<Map<String, Object>> checkout(
-            @RequestBody Map<String, Object> checkoutData,
-            @AuthenticationPrincipal CustomUserDetails currentUser) {
-
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            // Extract checkout data
-            List<Map<String, Object>> items = (List<Map<String, Object>>) checkoutData.get("items");
-            Long addressId = Long.parseLong(checkoutData.get("addressId").toString());
-
-            // Here you would integrate with your order service
-            // For now, we'll just provide a successful response
-
-            response.put("success", true);
-            response.put("message", "Đơn hàng đã được tạo thành công");
-            response.put("redirectUrl", "/orders");
-
-            // Clear the selected items from cart
-            // This part depends on your order implementation
-            // You might only want to remove items that were successfully ordered
-
-            /*
-            for (Map<String, Object> item : items) {
-                Long itemId = Long.parseLong(item.get("id").toString());
-                cartService.removeFromCart(itemId, currentUser.getUser());
-            }
-            */
-
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("message", e.getMessage());
-        }
-
-        return ResponseEntity.ok(response);
-    }
+//    @PostMapping("/checkout")
+//    public ResponseEntity<Map<String, Object>> checkout(
+//            @RequestBody Map<String, Object> checkoutData,
+//            @AuthenticationPrincipal CustomUserDetails currentUser) {
+//
+//        Map<String, Object> response = new HashMap<>();
+//
+//        try {
+//            // Extract checkout data
+//            List<Map<String, Object>> items = (List<Map<String, Object>>) checkoutData.get("items");
+//            Long addressId = Long.parseLong(checkoutData.get("addressId").toString());
+//
+//            // Here you would integrate with your order service
+//            // For now, we'll just provide a successful response
+//
+//            response.put("success", true);
+//            response.put("message", "Đơn hàng đã được tạo thành công");
+//            response.put("redirectUrl", "/orders");
+//
+//            // Clear the selected items from cart
+//            // This part depends on your order implementation
+//            // You might only want to remove items that were successfully ordered
+//
+//            /*
+//            for (Map<String, Object> item : items) {
+//                Long itemId = Long.parseLong(item.get("id").toString());
+//                cartService.removeFromCart(itemId, currentUser.getUser());
+//            }
+//            */
+//
+//        } catch (Exception e) {
+//            response.put("success", false);
+//            response.put("message", e.getMessage());
+//        }
+//
+//        return ResponseEntity.ok(response);
+//    }
 }
