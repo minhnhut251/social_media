@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Thanh toán</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .checkout-container {
+            padding-top: 80px;
+            padding-bottom: 40px;
+        }
+
+        .checkout-section {
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .product-item {
+            display: flex;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .product-item:last-child {
+            border-bottom: none;
+        }
+
+        .product-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 5px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .product-details {
+            flex-grow: 1;
+        }
+
+        .product-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .store-name {
+            font-size: 13px;
+            color: #6c757d;
+        }
+
+        .product-price {
+            color: #dc3545;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .payment-method {
+            padding: 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-method:hover {
+            border-color: #adb5bd;
+        }
+
+        .payment-method.selected {
+            border-color: #0d6efd;
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+
+        .payment-method-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .summary-row.total {
+            font-weight: 600;
+            font-size: 16px;
+            padding-top: 10px;
+            margin-top: 10px;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .summary-row.total .value {
+            color: #dc3545;
+        }
+
+        .address-card {
+            padding: 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .address-card.selected {
+            border-color: #0d6efd;
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+
+        @media (max-width: 767.98px) {
+            .order-summary {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container checkout-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Thanh toán</h2>
+    </div>
+
+    <!-- Alert messages -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <form id="checkout-form" th:action="@{/checkout/confirm}" method="post">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-lg-8">
+                <!-- Shipping Address Section -->
+                <div class="checkout-section">
+                    <h4 class="section-title">Địa chỉ giao hàng</h4>
+
+                    <div th:if="${#lists.isEmpty(addresses)}" class="text-center py-3">
+                        <p class="text-muted">Bạn chưa có địa chỉ nào.</p>
+                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                            <i class="fa-solid fa-plus"></i> Thêm địa chỉ mới
+                        </button>
+                    </div>
+
+                    <div th:unless="${#lists.isEmpty(addresses)}" class="row">
+                        <div th:each="address, status : ${addresses}" class="col-md-6 mb-3">
+                            <div class="address-card" th:classappend="${status.index == 0 ? 'selected' : ''}">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="addressId"
+                                           th:id="${'address-' + address.id}" th:value="${address.id}"
+                                           th:checked="${status.index == 0}">
+                                    <label class="form-check-label" th:for="${'address-' + address.id}">
+                                        <div class="fw-bold" th:text="${address.recipientName}">Tên người nhận</div>
+                                        <div th:text="${address.phone}">Số điện thoại</div>
+                                        <div class="text-muted small" th:text="${address.addressDetail + ', ' + address.ward + ', ' + address.district + ', ' + address.province}">
+                                            Địa chỉ chi tiết
+                                        </div>
+                                        <div th:if="${address.isDefault}" class="badge bg-primary mt-1">Mặc định</div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-2">
+                            <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                                <i class="fa-solid fa-plus"></i> Thêm địa chỉ mới
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Section -->
+                <div class="checkout-section">
+                    <h4 class="section-title">Sản phẩm</h4>
+
+                    <div th:each="storeGroup : ${storeGroups}" class="mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fa-solid fa-store me-2"></i>
+                            <strong th:text="${storeGroup.name}">Tên cửa hàng</strong>
+                        </div>
+
+                        <div th:each="item : ${storeGroup.items}" class="product-item">
+                            <img th:if="${item.product.img != null && !item.product.img.isEmpty()}"
+                                 th:src="${item.product.img}" class="product-image" alt="Product Image">
+                            <img th:unless="${item.product.img != null && !item.product.img.isEmpty()}"
+                                 src="/images/product-placeholder.jpg" class="product-image" alt="No Image">
+
+                            <div class="product-details">
+                                <div class="product-name" th:text="${item.product.tensp}">Tên sản phẩm</div>
+                                <div class="store-name" th:text="${item.product.tkbh.tenStore}">Tên cửa hàng</div>
+                                <div class="mt-2">
+                                    <span class="product-price" th:text="${#numbers.formatDecimal(item.product.gia, 0, 'COMMA', 0, 'POINT') + ' VND'}">Giá sản phẩm</span>
+                                    <span class="ms-3 text-muted" th:text="${'x' + item.quantity}">x1</span>
+                                </div>
+                            </div>
+
+                            <div class="text-end">
+                                <div class="fw-bold product-price" th:text="${#numbers.formatDecimal(item.product.gia * item.quantity, 0, 'COMMA', 0, 'POINT') + ' VND'}">150.000 VND</div>
+                            </div>
+                            <input type="hidden" name="itemIds" th:value="${item.id}">
+                            <input type="hidden" th:name="'quantities[' + ${item.id} + ']'" th:value="${item.quantity}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Method Section -->
+                <div class="checkout-section">
+                    <h4 class="section-title">Phương thức thanh toán</h4>
+
+                    <div class="payment-method selected" data-payment-method="COD">
+                        <div class="d-flex align-items-center">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="payment-cod" value="COD" checked>
+                            </div>
+                            <div class="payment-method-icon text-warning">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                            </div>
+                            <div>
+                                <label class="form-check-label fw-bold" for="payment-cod">
+                                    Thanh toán khi nhận hàng (COD)
+                                </label>
+                                <div class="text-muted small">Thanh toán bằng tiền mặt khi nhận được hàng</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payment-method" data-payment-method="BANKING">
+                        <div class="d-flex align-items-center">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="payment-banking" value="BANKING">
+                            </div>
+                            <div class="payment-method-icon text-primary">
+                                <i class="fa-solid fa-building-columns"></i>
+                            </div>
+                            <div>
+                                <label class="form-check-label fw-bold" for="payment-banking">
+                                    Chuyển khoản ngân hàng
+                                </label>
+                                <div class="text-muted small">Chuyển khoản qua tài khoản ngân hàng</div>
+                            </div>
+                        </div>
+                        <div class="mt-3 ps-5 banking-details" style="display: none;">
+                            <div class="alert alert-primary">
+                                <p class="mb-1"><strong>Ngân hàng:</strong> Vietcombank</p>
+                                <p class="mb-1"><strong>Số tài khoản:</strong> 1234567890</p>
+                                <p class="mb-1"><strong>Chủ tài khoản:</strong> CÔNG TY TNHH XYZ</p>
+                                <p class="mb-0"><strong>Nội dung chuyển khoản:</strong> <span th:text="${'DH' + orderCode}">DH12345</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payment-method" data-payment-method="MOMO">
+                        <div class="d-flex align-items-center">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod" id="payment-momo" value="MOMO">
+                            </div>
+                            <div class="payment-method-icon text-danger">
+                                <i class="fa-solid fa-wallet"></i>
+                            </div>
+                            <div>
+                                <label class="form-check-label fw-bold" for="payment-momo">
+                                    Ví MoMo
+                                </label>
+                                <div class="text-muted small">Thanh toán qua ví điện tử MoMo</div>
+                            </div>
+                        </div>
+                        <div class="mt-3 ps-5 momo-details" style="display: none;">
+                            <div class="alert alert-danger">
+                                <p class="mb-1">Quét mã QR bên dưới để thanh toán:</p>
+                                <div class="text-center my-3">
+                                    <img src="/api/placeholder/150/150" alt="Mã QR MoMo" class="img-fluid" style="max-width: 150px;">
+                                </div>
+                                <p class="mb-0"><strong>Nội dung chuyển khoản:</strong> <span th:text="${'DH' + orderCode}">DH12345</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Note Section -->
+                <div class="checkout-section">
+                    <h4 class="section-title">Ghi chú</h4>
+                    <textarea class="form-control" name="note" rows="3" placeholder="Nhập ghi chú cho đơn hàng (nếu có)"></textarea>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="checkout-section position-sticky" style="top: 80px;">
+                    <h4 class="section-title">Tóm tắt đơn hàng</h4>
+
+                    <div class="summary-row">
+                        <div>Tổng tiền hàng:</div>
+                        <div th:text="${#numbers.formatDecimal(subtotal, 0, 'COMMA', 0, 'POINT') + ' VND'}">150.000 VND</div>
+                    </div>
+
+                    <div class="summary-row">
+                        <div>Phí vận chuyển:</div>
+                        <div th:text="${#numbers.formatDecimal(shippingFee, 0, 'COMMA', 0, 'POINT') + ' VND'}">20.000 VND</div>
+                    </div>
+
+                    <div class="summary-row" th:if="${discount > 0}">
+                        <div>Giảm giá:</div>
+                        <div th:text="${#numbers.formatDecimal(discount, 0, 'COMMA', 0, 'POINT') + ' VND'}">0 VND</div>
+                    </div>
+
+                    <div class="summary-row total">
+                        <div>Tổng thanh toán:</div>
+                        <div class="value" th:text="${#numbers.formatDecimal(total, 0, 'COMMA', 0, 'POINT') + ' VND'}">170.000 VND</div>
+                    </div>
+
+                    <input type="hidden" name="subtotal" th:value="${subtotal}">
+                    <input type="hidden" name="shippingFee" th:value="${shippingFee}">
+                    <input type="hidden" name="discount" th:value="${discount}">
+                    <input type="hidden" name="total" th:value="${total}">
+
+                    <button type="submit" class="btn btn-primary w-100 mt-4">
+                        <i class="fa-solid fa-check me-2"></i> Xác nhận đặt hàng
+                    </button>
+
+                    <a href="/cart" class="btn btn-outline-secondary w-100 mt-2">
+                        <i class="fa-solid fa-arrow-left me-2"></i> Quay lại giỏ hàng
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Add Address Modal (copy from giohang.html) -->
+<div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAddressModalLabel">Thêm địa chỉ mới</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addressForm" th:action="@{/cart/add-address}" method="post">
+                    <div class="mb-3">
+                        <label for="recipientName" class="form-label">Tên người nhận</label>
+                        <input type="text" class="form-control" id="recipientName" name="recipientName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Số điện thoại</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="province" class="form-label">Tỉnh/Thành phố</label>
+                        <select class="form-select" id="province" name="province" required>
+                            <option value="">Chọn Tỉnh/Thành phố</option>
+                            <!-- Options will be loaded via JavaScript -->
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="district" class="form-label">Quận/Huyện</label>
+                        <select class="form-select" id="district" name="district" required disabled>
+                            <option value="">Chọn Quận/Huyện</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ward" class="form-label">Phường/Xã</label>
+                        <select class="form-select" id="ward" name="ward" required disabled>
+                            <option value="">Chọn Phường/Xã</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addressDetail" class="form-label">Địa chỉ cụ thể</label>
+                        <textarea class="form-control" id="addressDetail" name="addressDetail" rows="2" required></textarea>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="isDefault" name="isDefault">
+                        <label class="form-check-label" for="isDefault">Đặt làm địa chỉ mặc định</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-primary" id="saveAddressBtn">Lưu địa chỉ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const token = document.querySelector("meta[name='_csrf']").getAttribute("content");
+        const header = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+
+        // Handle payment method selection
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
+
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', function() {
+                // Set selected class
+                paymentMethods.forEach(m => m.classList.remove('selected'));
+                this.classList.add('selected');
+
+                // Check the radio button
+                const paymentMethod = this.getAttribute('data-payment-method');
+                document.getElementById('payment-' + paymentMethod.toLowerCase()).checked = true;
+
+                // Show/hide payment details
+                document.querySelector('.banking-details').style.display = paymentMethod === 'BANKING' ? 'block' : 'none';
+                document.querySelector('.momo-details').style.display = paymentMethod === 'MOMO' ? 'block' : 'none';
+            });
+        });
+
+        // Handle address selection
+        const addressCards = document.querySelectorAll('.address-card');
+        const addressRadios = document.querySelectorAll('input[name="addressId"]');
+
+        addressCards.forEach(card => {
+            card.addEventListener('click', function() {
+                // Find the radio inside this card
+                const radio = this.querySelector('input[type="radio"]');
+                radio.checked = true;
+
+                // Set selected class
+                addressCards.forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Load provinces from API (copy from giohang.html)
+        fetch('/api/provinces')
+            .then(response => response.json())
+            .then(data => {
+                const provinceSelect = document.getElementById('province');
+                data.forEach(province => {
+                    const option = document.createElement('option');
+                    option.value = province.code;
+                    option.textContent = province.name;
+                    provinceSelect.appendChild(option);
+                });
+            });
+
+        // Province change handler
+        document.getElementById('province').addEventListener('change', function() {
+            const provinceCode = this.value;
+            const districtSelect = document.getElementById('district');
+
+            // Reset district and ward
+            districtSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+            document.getElementById('ward').innerHTML = '<option value="">Chọn Phường/Xã</option>';
+            document.getElementById('ward').disabled = true;
+
+            if (provinceCode) {
+                districtSelect.disabled = false;
+
+                // Load districts based on province
+                fetch(`/api/districts?provinceCode=${provinceCode}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(district => {
+                            const option = document.createElement('option');
+                            option.value = district.code;
+                            option.textContent = district.name;
+                            districtSelect.appendChild(option);
+                        });
+                    });
+            } else {
+                districtSelect.disabled = true;
+            }
+        });
+
+        // District change handler
+        document.getElementById('district').addEventListener('change', function() {
+            const districtCode = this.value;
+            const wardSelect = document.getElementById('ward');
+
+            // Reset ward
+            wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+
+            if (districtCode) {
+                wardSelect.disabled = false;
+
+                // Load wards based on district
+                fetch(`/api/wards?districtCode=${districtCode}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(ward => {
+                            const option = document.createElement('option');
+                            option.value = ward.code;
+                            option.textContent = ward.name;
+                            wardSelect.appendChild(option);
+                        });
+                    });
+            } else {
+                wardSelect.disabled = true;
+            }
+        });
+
+        // Save address button handler
+        document.getElementById('saveAddressBtn').addEventListener('click', function() {
+            const form = document.getElementById('addressForm');
+
+            // Simple validation
+            const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+
+            if (isValid) {
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        [header]: token
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Close modal and reload page to show the new address
+                        bootstrap.Modal.getInstance(document.getElementById('addAddressModal')).hide();
+                        window.location.reload();
+                    } else {
+                        alert(data.message || 'Có lỗi xảy ra khi thêm địa chỉ mới.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi thêm địa chỉ mới.');
+                });
+            }
+        });
+
+        // Form submit validation
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            const addressSelected = document.querySelector('input[name="addressId"]:checked');
+
+            if (!addressSelected) {
+                e.preventDefault();
+                alert('Vui lòng chọn địa chỉ giao hàng.');
+                return false;
+            }
+
+            // Check if at least one payment method is selected
+            const paymentSelected = document.querySelector('input[name="paymentMethod"]:checked');
+
+            if (!paymentSelected) {
+                e.preventDefault();
+                alert('Vui lòng chọn phương thức thanh toán.');
+                return false;
+            }
+
+            return true;
+        });
+    });
+</script>
+</body>
+</html>
