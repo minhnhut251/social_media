@@ -45,7 +45,7 @@ public class OrderDetailController {
     public String viewAllOrders(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
         User user = currentUser.getUser();
         model.addAttribute("orders", orderService.getAllOrdersByUser(user));
-        return "shop/danhsachdonhang";
+        return "shop/chitietdonhang";
     }
 
     @PostMapping("/cancel/{orderCode}")
