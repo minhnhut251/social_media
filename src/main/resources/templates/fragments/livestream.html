@@ -12,7 +12,7 @@
 
 <body>
 
-<div th:fragment="livestream(post)" class="livestream-container card mb-3">
+<div th:fragment="livestream(post)" class="livestream-container card mb-3" style="background-color: transparent">
     <style>
         :root {
             --overlay-bg: rgba(0,0,0,0.5);
@@ -34,11 +34,11 @@
             width: 820px;
             height: 800px;
             position: relative;
-            background-image: url('https://picsum.photos/420/750');
             background-size: cover;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             overflow: hidden;
         }
+
 
         /* Top Icons Section */
         .top-navigation {
@@ -118,62 +118,7 @@
             width: calc(100% - 20px);
         }
 
-<!--        .comment-interface {-->
-<!--            display: flex;-->
-<!--            align-items: center;-->
-<!--            gap: 10px;-->
-<!--            background: var(&#45;&#45;overlay-bg);-->
-<!--            color: var(&#45;&#45;primary-text-color);-->
-<!--            border-radius: 20px;-->
-<!--            padding: 12px 25px;-->
-<!--            flex-grow: 1;-->
-<!--        }-->
 
-<!--        .comment-interface input {-->
-<!--            flex-grow: 1;-->
-<!--            border: none;-->
-<!--            background: none;-->
-<!--            color: var(&#45;&#45;primary-text-color);-->
-<!--            outline: none;-->
-<!--        }-->
-
-<!--        /* Comments Section */-->
-<!--        .comments-container {-->
-<!--            position: absolute;-->
-<!--            bottom: 100px;-->
-<!--            left: 10px;-->
-<!--            width: 80%;-->
-<!--            height: 200px;-->
-<!--            display: flex;-->
-<!--            flex-direction: column;-->
-<!--            overflow: hidden;-->
-<!--        }-->
-
-<!--        .comment {-->
-<!--            display: flex;-->
-<!--            align-items: center;-->
-<!--            background: var(&#45;&#45;overlay-bg);-->
-<!--            color: var(&#45;&#45;primary-text-color);-->
-<!--            padding: 10px;-->
-<!--            border-radius: 10px;-->
-<!--            margin-bottom: 5px;-->
-<!--            animation: slideUp 5s linear forwards;-->
-<!--        }-->
-
-<!--        .comment img {-->
-<!--            width: 35px;-->
-<!--            height: 35px;-->
-<!--            border-radius: 50%;-->
-<!--            margin-right: 10px;-->
-<!--            object-fit: cover;-->
-<!--        }-->
-
-<!--        @keyframes slideUp {-->
-<!--            0% { opacity: 0; transform: translateY(20px); }-->
-<!--            20% { opacity: 1; transform: translateY(0); }-->
-<!--            80% { opacity: 1; }-->
-<!--            100% { opacity: 0; transform: translateY(-30px); }-->
-<!--        }-->
 
 <!--   Dấu 3 chấm     -->
                 .post-dropdown .dropdown-toggle::after {
@@ -189,7 +134,51 @@
         .post-dropdown .dropdown-toggle:focus {
             color: #333;
         }
+
+
+
+        <!-- Add these styles to the <style> section in livestream.html (for livestreaming video)-->
+
+
+/* Ensure all interactive UI elements have a higher z-index */
+.top-navigation, .product-showcase, .interaction-bar {
+    position: relative;
+}
+
+/* Style for the livestream video */
+.livestream-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -10;
+}
+
+/* Style for the ended message */
+.livestream-ended {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    z-index: -9;
+}
     </style>
+
+    <!-- Replace the video and ended div with these -->
+    <video th:id="'livestreamVideo-' + ${post.mabd}" class="livestream-video" autoplay></video>
+    <div th:id="'livestreamEnded-' + ${post.mabd}" class="livestream-ended" style="display: none;">
+        Livestream đã kết thúc
+    </div>
+
     <!-- Top Navigation -->
     <div class="top-navigation">
         <div class="nav-icons">
@@ -252,7 +241,7 @@
 <!--             class="rounded-circle" style="width: 30px; height: 30px;" alt="User avatar">-->
 <!--        <span th:text="${post.users.lastName + ' ' + post.users.firstName}">Username</span>-->
 <!--    </a>-->
-    <h5 class="card-title" th:text="${post.noiDung}">Livestream Title</h5>
+    <h5 class="card-title livestream-title" style="padding: 10px;" th:text="${post.noiDung}">Livestream Title</h5>
 
 
     <!-- Comments Section -->
@@ -353,6 +342,39 @@
 <!--        const livestreamUI = new LivestreamInterface(commentData);-->
 <!--        livestreamUI.startCommentStream();-->
 <!--    </script>-->
+
+
+    <!-- Add this at the end of the body tag in livestream.html -->
+    <!-- Update the script in livestream.html -->
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const postId = [[${post.mabd}]];
+            const videoElement = document.getElementById('livestreamVideo-' + postId);
+            const livestreamEndedElement = document.getElementById('livestreamEnded-' + postId);
+
+            // Check if this livestream is marked as ended in localStorage
+            const endedLivestreams = JSON.parse(localStorage.getItem('endedLivestreams') || '[]');
+
+            if (endedLivestreams.includes(postId)) {
+                videoElement.style.display = 'none';
+                livestreamEndedElement.style.display = 'flex';
+                return;
+            }
+
+            // Access user's camera
+            navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+                .then(function(stream) {
+                    videoElement.srcObject = stream;
+                    // Store the stream in localStorage to access it later
+                    window.localStorage.setItem(`livestream-${postId}`, 'active');
+                })
+                .catch(function(err) {
+                    console.error("Error accessing camera: ", err);
+                    alert("Could not access camera. Please check your permissions.");
+                });
+        });
+    </script>
+
 </div>
 
 </body>

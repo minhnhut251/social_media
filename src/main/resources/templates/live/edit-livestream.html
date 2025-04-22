@@ -34,6 +34,13 @@
                             </select>
                         </div>
 
+                        <!-- Add this right before the submit button in the form -->
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="button" id="endLivestreamBtn" class="btn btn-danger">
+                                <i class="fas fa-stop-circle me-2"></i>End Livestream
+                            </button>
+                        </div>
+
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save me-2"></i>Lưu thay đổi
@@ -46,5 +53,31 @@
         </div>
     </div>
 </div>
+
+<!-- Add this script at the end of the body in edit-livestream.html -->
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        const endLivestreamBtn = document.getElementById('endLivestreamBtn');
+        const postId = [[${post.mabd}]];
+
+        endLivestreamBtn.addEventListener('click', function() {
+            if (confirm('Are you sure you want to end this livestream?')) {
+                // Mark this livestream as ended in localStorage
+                const endedLivestreams = JSON.parse(localStorage.getItem('endedLivestreams') || '[]');
+                if (!endedLivestreams.includes(postId)) {
+                    endedLivestreams.push(postId);
+                    localStorage.setItem('endedLivestreams', JSON.stringify(endedLivestreams));
+                }
+
+                // Remove any active status
+                localStorage.removeItem(`livestream-${postId}`);
+
+                alert('Livestream has been ended.');
+                window.location.href = '/'; // Redirect to home page
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
