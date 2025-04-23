@@ -197,21 +197,21 @@
                     <span class="order-code">Đơn hàng #<span th:text="${order.orderCode}">12345</span></span>
                     <span class="order-date ms-3" th:text="${#dates.format(order.createdAt, 'dd/MM/yyyy HH:mm')}">15/04/2025 14:30</span>
                 </div>
-                <div>
-                    <span class="order-status" th:classappend="${
-                        order.status == 'PENDING' ? 'status-pending' :
-                        order.status == 'PROCESSING' ? 'status-processing' :
-                        order.status == 'SHIPPING' ? 'status-shipping' :
-                        order.status == 'COMPLETED' ? 'status-completed' :
-                        order.status == 'CANCELLED' ? 'status-cancelled' : ''
-                    }" th:text="${
-                        order.status == 'PENDING' ? 'Chờ xác nhận' :
-                        order.status == 'PROCESSING' ? 'Đang xử lý' :
-                        order.status == 'SHIPPING' ? 'Đang giao hàng' :
-                        order.status == 'COMPLETED' ? 'Đã giao hàng' :
-                        order.status == 'CANCELLED' ? 'Đã hủy' : order.status
-                    }">Trạng thái</span>
-                </div>
+<!--                <div>-->
+<!--                    <span class="order-status" th:classappend="${-->
+<!--                        order.status == 'PENDING' ? 'status-pending' :-->
+<!--                        order.status == 'PROCESSING' ? 'status-processing' :-->
+<!--                        order.status == 'SHIPPING' ? 'status-shipping' :-->
+<!--                        order.status == 'COMPLETED' ? 'status-completed' :-->
+<!--                        order.status == 'CANCELLED' ? 'status-cancelled' : ''-->
+<!--                    }" th:text="${-->
+<!--                        order.status == 'PENDING' ? 'Chờ xác nhận' :-->
+<!--                        order.status == 'PROCESSING' ? 'Đang xử lý' :-->
+<!--                        order.status == 'SHIPPING' ? 'Đang giao hàng' :-->
+<!--                        order.status == 'COMPLETED' ? 'Đã giao hàng' :-->
+<!--                        order.status == 'CANCELLED' ? 'Đã hủy' : order.status-->
+<!--                    }">Trạng thái</span>-->
+<!--                </div>-->
             </div>
 
             <div class="order-content">
@@ -255,11 +255,11 @@
                     </a>
 
                     <!-- Cancel button for pending orders -->
-                    <button th:if="${order.status == 'PENDING'}" class="btn btn-outline-danger ms-2"
-                            data-bs-toggle="modal" data-bs-target="#cancelOrderModal"
-                            th:data-order-code="${order.orderCode}">
-                        Hủy đơn hàng
-                    </button>
+<!--                    <button th:if="${order.status == 'PENDING'}" class="btn btn-outline-danger ms-2"-->
+<!--                            data-bs-toggle="modal" data-bs-target="#cancelOrderModal"-->
+<!--                            th:data-order-code="${order.orderCode}">-->
+<!--                        Hủy đơn hàng-->
+<!--                    </button>-->
 
                     <!-- Buy again button for completed orders -->
                     <button th:if="${order.status == 'COMPLETED'}" class="btn btn-outline-success ms-2">

@@ -80,4 +80,14 @@ public class OrderDetailController {
 
         return ResponseEntity.ok(response);
     }
+
+
+    @GetMapping("/trahang/{id}")
+    public String traHang(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal CustomUserDetails currentUser ) {
+        orderService.setOrderItemDaTra(id);
+        String orderCode = orderService.getOrderItemById(id).getOrder().getOrderCode();
+
+        return "redirect:/orders/" + orderCode;
+
+    }
 }

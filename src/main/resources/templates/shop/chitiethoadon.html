@@ -275,10 +275,10 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="order-info-item">
-                            <span>Trạng thái thanh toán:</span>
-                            <span class="text-value" th:text="${order.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}">Chưa thanh toán</span>
-                        </div>
+<!--                        <div class="order-info-item">-->
+<!--                            <span>Trạng thái thanh toán:</span>-->
+<!--                            <span class="text-value" th:text="${order.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}">Chưa thanh toán</span>-->
+<!--                        </div>-->
                         <div class="order-info-item" th:if="${order.note != null && !order.note.isEmpty()}">
                             <span>Ghi chú:</span>
                             <span class="text-value" th:text="${order.note}">Ghi chú từ khách hàng</span>
@@ -291,13 +291,10 @@
             <div class="order-section">
                 <h4 class="order-section-title">Sản phẩm</h4>
 
-                <div th:each="storeGroup : ${order.storeGroups}" class="mb-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="fa-solid fa-store me-2"></i>
-                        <strong th:text="${storeGroup.name}">Tên cửa hàng</strong>
-                    </div>
 
-                    <div th:each="item : ${storeGroup.items}" class="order-item">
+
+
+                    <div th:each="item : ${order.items}" class="order-item">
                         <img th:if="${item.product.img != null && !item.product.img.isEmpty()}"
                              th:src="${item.product.img}" class="order-item-image" alt="Product Image">
                         <img th:unless="${item.product.img != null && !item.product.img.isEmpty()}"
@@ -315,47 +312,77 @@
                         <div class="text-end">
                             <div class="fw-bold order-item-price" th:text="${#numbers.formatDecimal(item.product.gia * item.quantity, 0, 'COMMA', 0, 'POINT') + ' VND'}">150.000 VND</div>
                         </div>
+
+                        <td th:text="${item.status.name()}"></td>
+                        <a th:if="${item.status.name() == 'DA_GIAO'}" th:href="@{/orders/trahang/{id} (id=${item.id})}" class="btn btn-primary">Trả hàng</a>
                     </div>
-                </div>
+
+
+<!--                <div th:each="storeGroup : ${order.storeGroups}" class="mb-4">-->
+<!--                    <div class="d-flex align-items-center mb-3">-->
+<!--                        <i class="fa-solid fa-store me-2"></i>-->
+<!--                        <strong th:text="${storeGroup.name}">Tên cửa hàng</strong>-->
+<!--                    </div>-->
+
+<!--                    <div th:each="item : ${storeGroup.items}" class="order-item">-->
+<!--                        <img th:if="${item.product.img != null && !item.product.img.isEmpty()}"-->
+<!--                             th:src="${item.product.img}" class="order-item-image" alt="Product Image">-->
+<!--                        <img th:unless="${item.product.img != null && !item.product.img.isEmpty()}"-->
+<!--                             src="/images/product-placeholder.jpg" class="order-item-image" alt="No Image">-->
+
+<!--                        <div class="order-item-details">-->
+<!--                            <div class="order-item-name" th:text="${item.product.tensp}">Tên sản phẩm</div>-->
+<!--                            <div class="order-item-store" th:text="${item.product.tkbh.tenStore}">Tên cửa hàng</div>-->
+<!--                            <div class="mt-2">-->
+<!--                                <span class="order-item-price" th:text="${#numbers.formatDecimal(item.product.gia, 0, 'COMMA', 0, 'POINT') + ' VND'}">Giá sản phẩm</span>-->
+<!--                                <span class="ms-3 text-muted" th:text="${'x' + item.quantity}">x1</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+<!--                        <div class="text-end">-->
+<!--                            <div class="fw-bold order-item-price" th:text="${#numbers.formatDecimal(item.product.gia * item.quantity, 0, 'COMMA', 0, 'POINT') + ' VND'}">150.000 VND</div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
 
             <!-- Order Timeline -->
-            <div class="order-section">
-                <h4 class="order-section-title">Trạng thái đơn hàng</h4>
+<!--            <div class="order-section">-->
+<!--                <h4 class="order-section-title">Trạng thái đơn hàng</h4>-->
 
-                <div class="order-timeline">
-                    <div class="timeline-item active">
-                        <h5>Đặt hàng thành công</h5>
-                        <div class="timeline-date" th:text="${#dates.format(order.createdAt, 'dd/MM/yyyy HH:mm')}">15/04/2025 14:30</div>
-                        <p>Đơn hàng của bạn đã được đặt thành công</p>
-                    </div>
+<!--                <div class="order-timeline">-->
+<!--                    <div class="timeline-item active">-->
+<!--                        <h5>Đặt hàng thành công</h5>-->
+<!--                        <div class="timeline-date" th:text="${#dates.format(order.createdAt, 'dd/MM/yyyy HH:mm')}">15/04/2025 14:30</div>-->
+<!--                        <p>Đơn hàng của bạn đã được đặt thành công</p>-->
+<!--                    </div>-->
 
-                    <div class="timeline-item" th:classappend="${order.status == 'PROCESSING' || order.status == 'SHIPPING' || order.status == 'COMPLETED' ? 'active' : ''}">
-                        <h5>Đã xác nhận</h5>
-                        <div class="timeline-date" th:if="${order.confirmedAt}" th:text="${#dates.format(order.confirmedAt, 'dd/MM/yyyy HH:mm')}">15/04/2025 15:30</div>
-                        <p>Đơn hàng của bạn đã được xác nhận</p>
-                    </div>
+<!--                    <div class="timeline-item" th:classappend="${order.status == 'PROCESSING' || order.status == 'SHIPPING' || order.status == 'COMPLETED' ? 'active' : ''}">-->
+<!--                        <h5>Đã xác nhận</h5>-->
+<!--                        <div class="timeline-date" th:if="${order.confirmedAt}" th:text="${#dates.format(order.confirmedAt, 'dd/MM/yyyy HH:mm')}">15/04/2025 15:30</div>-->
+<!--                        <p>Đơn hàng của bạn đã được xác nhận</p>-->
+<!--                    </div>-->
 
-                    <div class="timeline-item" th:classappend="${order.status == 'SHIPPING' || order.status == 'COMPLETED' ? 'active' : ''}">
-                        <h5>Đang giao hàng</h5>
-                        <div class="timeline-date" th:if="${order.shippingAt}" th:text="${#dates.format(order.shippingAt, 'dd/MM/yyyy HH:mm')}">16/04/2025 09:00</div>
-                        <p>Đơn hàng của bạn đang được giao</p>
-                    </div>
+<!--                    <div class="timeline-item" th:classappend="${order.status == 'SHIPPING' || order.status == 'COMPLETED' ? 'active' : ''}">-->
+<!--                        <h5>Đang giao hàng</h5>-->
+<!--                        <div class="timeline-date" th:if="${order.shippingAt}" th:text="${#dates.format(order.shippingAt, 'dd/MM/yyyy HH:mm')}">16/04/2025 09:00</div>-->
+<!--                        <p>Đơn hàng của bạn đang được giao</p>-->
+<!--                    </div>-->
 
-                    <div class="timeline-item" th:classappend="${order.status == 'COMPLETED' ? 'active' : ''}">
-                        <h5>Đã giao hàng</h5>
-                        <div class="timeline-date" th:if="${order.completedAt}" th:text="${#dates.format(order.completedAt, 'dd/MM/yyyy HH:mm')}">17/04/2025 14:00</div>
-                        <p>Đơn hàng của bạn đã được giao thành công</p>
-                    </div>
+<!--                    <div class="timeline-item" th:classappend="${order.status == 'COMPLETED' ? 'active' : ''}">-->
+<!--                        <h5>Đã giao hàng</h5>-->
+<!--                        <div class="timeline-date" th:if="${order.completedAt}" th:text="${#dates.format(order.completedAt, 'dd/MM/yyyy HH:mm')}">17/04/2025 14:00</div>-->
+<!--                        <p>Đơn hàng của bạn đã được giao thành công</p>-->
+<!--                    </div>-->
 
-                    <div class="timeline-item" th:if="${order.status == 'CANCELLED'}" th:classappend="${order.status == 'CANCELLED' ? 'active' : ''}">
-                        <h5>Đã hủy</h5>
-                        <div class="timeline-date" th:text="${#dates.format(order.cancelledAt, 'dd/MM/yyyy HH:mm')}">15/04/2025 16:00</div>
-                        <p>Đơn hàng đã bị hủy</p>
-                        <p th:if="${order.cancelReason}" th:text="${'Lý do: ' + order.cancelReason}">Lý do: Yêu cầu từ khách hàng</p>
-                    </div>
-                </div>
-            </div>
+<!--                    <div class="timeline-item" th:if="${order.status == 'CANCELLED'}" th:classappend="${order.status == 'CANCELLED' ? 'active' : ''}">-->
+<!--                        <h5>Đã hủy</h5>-->
+<!--                        <div class="timeline-date" th:text="${#dates.format(order.cancelledAt, 'dd/MM/yyyy HH:mm')}">15/04/2025 16:00</div>-->
+<!--                        <p>Đơn hàng đã bị hủy</p>-->
+<!--                        <p th:if="${order.cancelReason}" th:text="${'Lý do: ' + order.cancelReason}">Lý do: Yêu cầu từ khách hàng</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
 
         <!-- Order Summary -->
@@ -384,11 +411,11 @@
                 </div>
 
                 <!-- Action buttons -->
-                <div class="mt-4" th:if="${order.status == 'PENDING'}">
-                    <button class="btn btn-cancel-order w-100" data-bs-toggle="modal" data-bs-target="#cancelOrderModal">
-                        <i class="fa-solid fa-times me-2"></i> Hủy đơn hàng
-                    </button>
-                </div>
+<!--                <div class="mt-4" th:if="${order.status == 'PENDING'}">-->
+<!--                    <button class="btn btn-cancel-order w-100" data-bs-toggle="modal" data-bs-target="#cancelOrderModal">-->
+<!--                        <i class="fa-solid fa-times me-2"></i> Hủy đơn hàng-->
+<!--                    </button>-->
+<!--                </div>-->
 
                 <div class="mt-4" th:if="${order.status == 'COMPLETED'}">
                     <a href="#" class="btn btn-primary w-100">

@@ -51,4 +51,6 @@ public class TaiKhoanBanHangEntity {
         ACTIVE,
         SUSPENDED
     }
+
+    private double wallet = 0;
 }

@@ -22,14 +22,6 @@ public class SanphamEntity {
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
-//    @ManyToOne
-//    @JoinColumn(name = "matkbh", nullable = false)
-//    private TaiKhoanBanHangEntity taiKhoanBanHang;
-
-//    @ManyToOne
-//    @JoinColumn(name = "macthd", nullable = false)
-//    private ChiTietHoaDonEntity chiTietHoaDon;
-
     @ManyToOne
     @JoinColumn(name = "matkbh", nullable = false)
     private TaiKhoanBanHangEntity tkbh;

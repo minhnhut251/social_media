@@ -4,6 +4,7 @@ import com.da2.socialmedia.entity.*;
 import com.da2.socialmedia.repository.AddressRepository;
 import com.da2.socialmedia.repository.CartItemRepository;
 import com.da2.socialmedia.repository.OrderRepository;
+import com.da2.socialmedia.repository.TKBHRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,14 +18,16 @@ public class CheckoutService {
     private final CartItemRepository cartItemRepository;
     private final AddressRepository addressRepository;
     private final CartService cartService;
+    private final TKBHRepository tkbhRepository;
 
     @Autowired
     public CheckoutService(OrderRepository orderRepository, CartItemRepository cartItemRepository,
-                           AddressRepository addressRepository, CartService cartService) {
+                           AddressRepository addressRepository, CartService cartService, TKBHRepository tkbhRepository) {
         this.orderRepository = orderRepository;
         this.cartItemRepository = cartItemRepository;
         this.addressRepository = addressRepository;
         this.cartService = cartService;
+        this.tkbhRepository = tkbhRepository;
     }
 
     @Transactional
@@ -90,6 +93,12 @@ public class CheckoutService {
 
             // Thêm vào danh sách các mục đơn hàng
             savedOrder.getItems().add(orderItem);
+
+            // Them tien vao wallet tkbh
+            TaiKhoanBanHangEntity taiKhoanBanHang = tkbhRepository.findById(cartItem.getProduct().getTkbh().getMatkbh())
+                    .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy tkbh"));
+            taiKhoanBanHang.setWallet(taiKhoanBanHang.getWallet() + orderItem.getTotal());
+            tkbhRepository.save(taiKhoanBanHang);
         }
 
         // Lưu lại đơn hàng với các mục đơn hàng

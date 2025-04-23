@@ -1,10 +1,13 @@
 package com.da2.socialmedia.controller;
 
+import com.da2.socialmedia.entity.OrderItemEntity;
+import com.da2.socialmedia.entity.SanphamEntity;
 import com.da2.socialmedia.entity.TaiKhoanBanHangEntity;
 import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.security.CustomUserDetails;
 import com.da2.socialmedia.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -12,16 +15,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Controller
 public class TKBHController {
 
     private final TKBHService tkbhService;
     private final FileService fileService;
+    private final OrderService orderService;
 
     @Autowired
-    public TKBHController(TKBHService tkbhService, FileService fileService) {
+    public TKBHController(TKBHService tkbhService, FileService fileService, OrderService orderService) {
         this.tkbhService = tkbhService;
         this.fileService = fileService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/dangkybanhang")
@@ -109,5 +116,47 @@ public class TKBHController {
 
         tkbhService.updateTkbh(existingAccount);
         return "redirect:/vendor";
+    }
+
+
+    @GetMapping("/vendor/donhang")
+    public String getVendorOrderItems(Model model, @AuthenticationPrincipal CustomUserDetails currentUser ) {
+        TaiKhoanBanHangEntity vendorAccount = tkbhService.findByUser(currentUser.getUser());
+        List<OrderItemEntity> orderItems = orderService.getOrderItemsByVendorId(vendorAccount.getMatkbh());
+
+        model.addAttribute("orderItems", orderItems);
+
+
+        return "shop/vendor-donhang";
+
+    }
+
+    @GetMapping("/vendor/donhang/update_donhang/{id}")
+    public String setDaGiaoVendorOrderItems(@PathVariable("id") Long id, Model model, @AuthenticationPrincipal CustomUserDetails currentUser ) {
+        orderService.setOrderItemDaGiao(id);
+
+
+        return "redirect:/vendor/donhang";
+
+    }
+
+    @GetMapping("/vendor/vitien")
+    public String viTienTKBH(Model model, @AuthenticationPrincipal CustomUserDetails currentUser ) {
+        TaiKhoanBanHangEntity tkbh = tkbhService.findByUser(currentUser.getUser());
+
+
+        model.addAttribute("tkbh", tkbh);
+
+        return "shop/vendor-vitien";
+    }
+
+    @GetMapping("/vendor/vitien/ruttien")
+    public String rutTienTKBH(Model model, @AuthenticationPrincipal CustomUserDetails currentUser ) {
+        TaiKhoanBanHangEntity tkbh = tkbhService.findByUser(currentUser.getUser());
+        tkbh.setWallet(0);
+        tkbhService.updateTkbh(tkbh);
+
+
+        return "redirect:/vendor/vitien";
     }
 }
