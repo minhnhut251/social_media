@@ -4,6 +4,7 @@ import com.da2.socialmedia.entity.CartItemEntity;
 import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.security.CustomUserDetails;
 import com.da2.socialmedia.service.CartService;
+import com.da2.socialmedia.service.AddressService;
 import com.da2.socialmedia.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +23,50 @@ public class CartController {
 
     private final CartService cartService;
     private final ProductService productService;
-//
+    private final AddressService addressService;
 
     @Autowired
-    public CartController(CartService cartService, ProductService productService) {
+    public CartController(CartService cartService, ProductService productService, AddressService addressService) {
         this.cartService = cartService;
         this.productService = productService;
+        this.addressService = addressService;
+    }
+
+    @PostMapping("/add-address")
+    @ResponseBody
+    public Map<String, Object> addAddress(@RequestParam Map<String, String> addressData,
+                                          @AuthenticationPrincipal CustomUserDetails currentUser) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            // Gọi phương thức đã thêm vào AddressService
+            addressService.saveAddress(currentUser.getUser(), addressData);
+
+            response.put("success", true);
+            response.put("message", "Địa chỉ đã được thêm thành công");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+        }
+
+        return response;
+    }
+
+    @GetMapping("/checkout")
+    public String checkoutPage(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
+        User user = currentUser.getUser();
+        List<CartItemEntity> cartItems = cartService.getCartItems(user);
+
+        // Kiểm tra giỏ hàng trống
+        if (cartItems.isEmpty()) {
+            model.addAttribute("error", "Giỏ hàng của bạn đang trống!");
+            return "redirect:/cart";
+        }
+
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("addresses", addressService.getUserAddresses(user));
+
+        return "shop/checkout";
     }
 
     @GetMapping("")
@@ -36,10 +75,8 @@ public class CartController {
         List<CartItemEntity> cartItems = cartService.getCartItems(user);
         List<CartService.StoreGroup> storeGroups = cartService.getStoreGroups(user);
 
-
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("storeGroups", storeGroups);
-
 
         return "shop/giohang";
     }
@@ -122,43 +159,6 @@ public class CartController {
         return ResponseEntity.ok(response);
     }
 
-
-
-//    @PostMapping("/checkout")
-//    public ResponseEntity<Map<String, Object>> checkout(
-//            @RequestBody Map<String, Object> checkoutData,
-//            @AuthenticationPrincipal CustomUserDetails currentUser) {
-//
-//        Map<String, Object> response = new HashMap<>();
-//
-//        try {
-//            // Extract checkout data
-//            List<Map<String, Object>> items = (List<Map<String, Object>>) checkoutData.get("items");
-//            Long addressId = Long.parseLong(checkoutData.get("addressId").toString());
-//
-//            // Here you would integrate with your order service
-//            // For now, we'll just provide a successful response
-//
-//            response.put("success", true);
-//            response.put("message", "Đơn hàng đã được tạo thành công");
-//            response.put("redirectUrl", "/orders");
-//
-//            // Clear the selected items from cart
-//            // This part depends on your order implementation
-//            // You might only want to remove items that were successfully ordered
-//
-//            /*
-//            for (Map<String, Object> item : items) {
-//                Long itemId = Long.parseLong(item.get("id").toString());
-//                cartService.removeFromCart(itemId, currentUser.getUser());
-//            }
-//            */
-//
-//        } catch (Exception e) {
-//            response.put("success", false);
-//            response.put("message", e.getMessage());
-//        }
-//
-//        return ResponseEntity.ok(response);
-//    }
+    // Phần này nên được tích hợp với CheckoutController hoặc sử dụng CheckoutService
+    // Loại bỏ phần POST /checkout trùng lặp và thay thế bằng redirect đến CheckoutController
 }
