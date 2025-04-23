@@ -1,6 +1,7 @@
 package com.da2.socialmedia.controller;
 
 import com.da2.socialmedia.entity.*;
+import com.da2.socialmedia.repository.PostRepository;
 import com.da2.socialmedia.security.CustomUserDetails;
 import com.da2.socialmedia.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,10 @@ public class PostController {
     private final TKBHService tkbhService;
     private final ProductService productService;
 
+
+
     @Autowired
-    public PostController(PostService postService, PostViewService postViewService ,CommentService commentService, TKBHService tkbhService, ProductService productService) {
+    public PostController(PostService postService, PostViewService postViewService , CommentService commentService, TKBHService tkbhService, ProductService productService) {
         this.postService = postService;
         this.postViewService = postViewService;
         this.commentService = commentService;
@@ -87,6 +90,7 @@ public class PostController {
         return "posts/new-post";
     }
 
+
     @PostMapping("/add_post")
     public String addUser(PostEntity post, @RequestParam(value = "image", required = false) MultipartFile file,
                           @AuthenticationPrincipal CustomUserDetails currentUser) {
@@ -116,7 +120,29 @@ public class PostController {
         return "redirect:/";
     }
 
-    // Add these methods to your PostController.java
+
+
+
+    @GetMapping("/livestream/{id}")
+    public String showLivestreamDetail(@PathVariable("id") long id, Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
+        PostEntity post = postService.getPostById(id);
+        postViewService.preparePostForDisplay(model, post, currentUser);
+
+        if (post == null) {
+            return "redirect:/";
+        }
+
+        // Get comments for this post
+        List<CommentEntity> comments = commentService.getCommentsForPost(post);
+        // Add to model
+        model.addAttribute("post", post);
+        model.addAttribute("comments", comments);
+
+        // Add any other attributes your view needs
+        // e.g. Like counts, etc.
+
+        return "posts/livestream-detail";
+    }
 
     @GetMapping("/new_livestream")
     public String showNewLivestreamPage(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
@@ -198,4 +224,8 @@ public class PostController {
 
         return "redirect:/";
     }
+
+
+    // Add this to your PostService class
+
 }

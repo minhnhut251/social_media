@@ -3,6 +3,7 @@ package com.da2.socialmedia.service;
 import com.da2.socialmedia.entity.PostEntity;
 import com.da2.socialmedia.entity.User;
 import com.da2.socialmedia.repository.PostRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,34 +46,102 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid post Id: " + id));
     }
 
-    public void createPost(PostEntity post, User user, MultipartFile file) {
-        post.setUsers(user);
+//    public void createPost(PostEntity post, User user, MultipartFile file) {
+//        post.setUsers(user);
+//
+//        if (file != null && !file.isEmpty()) {
+////            String mediaUrl = handleFileUpload(file);
+//            String mediaUrl = fileService.handleFileUpload(file);
+//            post.setMediaURL(mediaUrl);
+//        }
+//
+//        postRepository.save(post);
+//    }
+public void createPost(PostEntity post, User user, MultipartFile file) {
+    post.setUsers(user);
 
+    if (post.getLoaiBaiDang() != PostEntity.postType.LIVESTREAM) {
         if (file != null && !file.isEmpty()) {
-//            String mediaUrl = handleFileUpload(file);
+            // Get the file path
             String mediaUrl = fileService.handleFileUpload(file);
             post.setMediaURL(mediaUrl);
-        }
 
-        postRepository.save(post);
+            // Determine the file type based on content type
+            String contentType = file.getContentType();
+            if (contentType != null) {
+                if (contentType.startsWith("video/")) {
+                    post.setLoaiBaiDang(PostEntity.postType.VIDEO);
+                } else if (contentType.startsWith("image/")) {
+                    post.setLoaiBaiDang(PostEntity.postType.IMAGE);
+                }
+            }
+        } else {
+            // If no file is uploaded, it's a TEXT post
+            post.setLoaiBaiDang(PostEntity.postType.TEXT);
+        }
     }
+
+    postRepository.save(post);
+}
+
+//    public void updatePost(Long id, PostEntity postDetails, MultipartFile file) {
+//        PostEntity existingPost = getPostById(id);
+//        existingPost.setNoiDung(postDetails.getNoiDung());
+//
+//        if (file != null && !file.isEmpty()) {
+//            // Delete old file if exists
+////            deleteFileIfExists(existingPost.getMediaURL());
+//            fileService.deleteFileIfExists(existingPost.getMediaURL());
+//
+//            // Upload new file
+////            String mediaUrl = handleFileUpload(file);
+//            String mediaUrl = fileService.handleFileUpload((file));
+//            existingPost.setMediaURL(mediaUrl);
+//        }
+//
+//        postRepository.save(existingPost);
+//    }
 
     public void updatePost(Long id, PostEntity postDetails, MultipartFile file) {
         PostEntity existingPost = getPostById(id);
         existingPost.setNoiDung(postDetails.getNoiDung());
 
         if (file != null && !file.isEmpty()) {
-            // Delete old file if exists
-//            deleteFileIfExists(existingPost.getMediaURL());
             fileService.deleteFileIfExists(existingPost.getMediaURL());
-
-            // Upload new file
-//            String mediaUrl = handleFileUpload(file);
-            String mediaUrl = fileService.handleFileUpload((file));
+            String mediaUrl = fileService.handleFileUpload(file);
             existingPost.setMediaURL(mediaUrl);
+
+            // Update type
+            String contentType = file.getContentType();
+            if (contentType != null) {
+                if (contentType.startsWith("video/")) {
+                    existingPost.setLoaiBaiDang(PostEntity.postType.VIDEO);
+                } else if (contentType.startsWith("image/")) {
+                    existingPost.setLoaiBaiDang(PostEntity.postType.IMAGE);
+                } else {
+                    existingPost.setLoaiBaiDang(PostEntity.postType.TEXT);
+                }
+            }
         }
 
+
         postRepository.save(existingPost);
+    }
+
+    @Transactional
+    public void deletePost(PostEntity post) {
+        postRepository.delete(post);  // Xóa bài viết
+    }
+
+    public void deletePostById(Long id) {
+        postRepository.deleteById(id);
+    }
+
+
+
+
+    public List<PostEntity> getAllVideosPosts() {
+        return postRepository.findByLoaiBaiDang(PostEntity.postType.VIDEO);
     }
 
 //    save an updated post for livestream

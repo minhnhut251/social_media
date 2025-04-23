@@ -41,14 +41,17 @@
 <hr>
 <div class="container mt-5">
     <div class="row">
-        <div class="col-md-8 mx-auto">
+
             <!-- Using the post card fragment for the single post -->
-            <div th:replace="fragments/postCard :: postCard(${post})"></div>
+            <div class="col-8">
+                <div th:replace="fragments/postCard :: postCard(${post})"></div>
+            </div>
 
             <!-- Comments section -->
-            <div class="card mt-4">
+            <div class="col-4">
+                <div class="card mt-4">
                 <div class="card-header">
-                    <h5>Comments</h5>
+                    <h5>Live Chat</h5>
                 </div>
                 <div class="card-body">
                     <!-- Comment form -->
@@ -83,7 +86,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
     </div>
 </div>
 

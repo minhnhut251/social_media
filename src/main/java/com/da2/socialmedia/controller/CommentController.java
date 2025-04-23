@@ -64,6 +64,9 @@ public class CommentController {
             redirectAttributes.addFlashAttribute("error", "Error adding comment: " + e.getMessage());
         }
 
+        if(postService.getPostById(postId).getLoaiBaiDang() == PostEntity.postType.LIVESTREAM){
+            return "redirect:/livestream/" + postId;
+        }
         return "redirect:/post/" + postId;
     }
 
@@ -91,6 +94,9 @@ public class CommentController {
             commentService.deleteComment(commentId);
 
             redirectAttributes.addFlashAttribute("success", "Comment deleted successfully");
+            if(comment.getPost().getLoaiBaiDang() == PostEntity.postType.LIVESTREAM){
+                return "redirect:/livestream/" + comment.getPost().getMabd();
+            }
             return "redirect:/post/" + comment.getPost().getMabd();
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error deleting comment: " + e.getMessage());
