@@ -159,4 +159,17 @@ public class TKBHController {
 
         return "redirect:/vendor/vitien";
     }
+
+
+    @GetMapping("/vendor/thongke")
+    public String tkbhThongKe(Model model, @AuthenticationPrincipal CustomUserDetails currentUser ) {
+        TaiKhoanBanHangEntity vendorAccount = tkbhService.findByUser(currentUser.getUser());
+        List<OrderItemEntity> orderItems = orderService.getOrderItemsByVendorId(vendorAccount.getMatkbh());
+
+        model.addAttribute("orderItems", orderItems);
+
+
+        return "shop/vendor-thongke";
+
+    }
 }
