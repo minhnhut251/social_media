@@ -105,6 +105,35 @@
             color: #007bff; /* Hover đổi màu xanh */
         }
 
+        /* Responsive styles for mobile */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none !important;
+            }
+            .content {
+                margin-left: 0 !important;
+                padding: 10px 3vw 10px 3vw !important;
+            }
+            .video-container {
+                padding: 8px;
+                border-radius: 8px;
+                margin-bottom: 12px;
+            }
+            .user-info img {
+                width: 32px;
+                height: 32px;
+            }
+            .video-controls {
+                flex-direction: column;
+                gap: 6px;
+                font-size: 15px;
+            }
+            h3.mb-4, h3.mb-4.mt-4 {
+                font-size: 1.1rem;
+                margin-top: 10px !important;
+                margin-bottom: 10px !important;
+            }
+        }
     </style>
 </head>
 <body>

@@ -14,12 +14,15 @@
     .sidebar {
         position: fixed;
         top: 56px;
+        left: 0;
         width: 300px;
         height: calc(100vh - 56px);
         overflow-y: auto;
         background: white;
         padding: 15px;
         box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+        transition: left 0.3s;
     }
 
     .sidebar a {
@@ -50,6 +53,14 @@
         background: white;
         padding: 15px;
         box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+        transition: right 0.3s;
+    }
+    @media (max-width: 991.98px) {
+        .sidebar,
+        .right-sidebar {
+            display: none !important;
+        }
     }
 
     .friend-item {
@@ -118,6 +129,9 @@
 
     .main-content{
         padding-top: 50px;
+        transition: margin 0.3s;
+        background: white;
+        min-height: 100vh;
     }
 
     .new-post-card {
@@ -172,10 +186,17 @@
     .livestream-btn {
         color: #e41e3f;
     }
+
+    /* Hide sidebars on mobile */
+    @media (max-width: 768px) {
+        .sidebar,
+        .right-sidebar {
+            display: none !important;
+        }
+    }
 </style>
 <body >
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-
     <div class="sidebar">
         <div sec:authorize="isAuthenticated()">
             <a class="h5 d-flex align-items-center" th:href="@{/profile/{userId}(userId=${#authentication.getPrincipal().getId()})}">
@@ -220,29 +241,6 @@
 <div class="container">
         <div class="main-content">
             <div class="container col-md-8">
-                <!-- Friend Suggestions Section -->
-<!--                <div class="card p-3 friend-suggestions-container">-->
-<!--                    <h5 class="text-center">Gợi ý kết bạn</h5>-->
-<!--                    <div class="d-flex friend-suggestions">-->
-<!--                        <div class="friend-card">-->
-<!--                            <img src="img/benngoaich.webp" alt="Quen không">-->
-<!--                            <p class="mb-1 small">Quen không</p>-->
-<!--                            <button class="btn btn-dark btn-sm">Kết bạn</button>-->
-<!--                        </div>-->
-<!--                        <div class="friend-card">-->
-<!--                            <img src="img/ceccb544-0d55-4734-8292-1b608bfcee81.webp" alt="Hù">-->
-<!--                            <p class="mb-1 small">Hù</p>-->
-<!--                            <button class="btn btn-dark btn-sm">Kết bạn</button>-->
-<!--                        </div>-->
-<!--                        <div class="friend-card">-->
-<!--                            <img src="/api/placeholder/80/80" alt="Ai đây">-->
-<!--                            <p class="mb-1 small">Ai đây</p>-->
-<!--                            <button class="btn btn-dark btn-sm">Kết bạn</button>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-                <!-- New Post Form -->
                 <div class="card new-post-card p-3 mb-4 my-4" sec:authorize="isAuthenticated()">
                     <form th:action="@{/add_post}" method="post" enctype="multipart/form-data" th:object="${newpost}">
                         <div class="d-flex align-items-center mb-3">
@@ -276,7 +274,6 @@
             </div>
         </div>
     </div>
-
     <div class="right-sidebar">
         <h5 class="mb-3">Bạn bè</h5>
         <ul class="list-unstyled">
