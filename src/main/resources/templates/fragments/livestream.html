@@ -259,12 +259,12 @@
             <form th:action="@{/cart/add/{masp}(masp=${post.sanPham.masp})}" method="post">
                 <input type="hidden" name="quantity" value="1">
                 <button type="submit" class="btn btn-primary btn-sm me-2">
-                    <i class="fas fa-edit"></i> them vao gio
+                    <i class="fas fa-edit"></i> Thêm vào giỏ
                 </button>
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             </form>
 <!--            <button class="btn btn-primary btn-sm me-2">Mua ngay</button>-->
-            <button class="btn btn-outline-secondary btn-sm">Thêm giỏ</button>
+            <button class="btn btn-outline-secondary btn-sm">Mua ngay</button>
 
         </div>
     </div>
