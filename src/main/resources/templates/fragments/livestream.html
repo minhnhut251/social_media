@@ -184,8 +184,9 @@
         <div class="nav-icons">
 <!--            <div class="nav-icon"><i class="fas fa-user"></i></div>-->
             <a th:href="@{/profile/{id}(id=${post.users.id})}">
-                <img th:src="${post.users.avatar != null ? post.users.avatar : '/api/placeholder/40/40'}"
-                     class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover;" alt="User avatar">
+                <img th:src="${post.users.avatar != null ? post.users.avatar : '/img/placeholder.jpg'}"
+                     class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" alt="User avatar">
+
             </a>
 
 
@@ -256,15 +257,18 @@
             <p th:text="${#numbers.formatDecimal(post.sanPham.gia, 0, 'COMMA', 0, 'POINT') + ' ₫'}" class="text-muted mb-0">50.000 đ</p>
         </div>
         <div>
-            <form th:action="@{/cart/add/{masp}(masp=${post.sanPham.masp})}" method="post">
-                <input type="hidden" name="quantity" value="1">
-                <button type="submit" class="btn btn-primary btn-sm me-2">
-                    <i class="fas fa-edit"></i> Thêm vào giỏ
-                </button>
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-            </form>
-<!--            <button class="btn btn-primary btn-sm me-2">Mua ngay</button>-->
-            <button class="btn btn-outline-secondary btn-sm">Mua ngay</button>
+<!--            <form th:action="@{/cart/add/{masp}(masp=${post.sanPham.masp})}" method="post">-->
+<!--                <input type="hidden" name="quantity" value="1">-->
+<!--                <button type="submit" class="btn btn-primary btn-sm me-2">-->
+<!--                    <i class="fas fa-edit"></i> Thêm vào giỏ-->
+<!--                </button>-->
+<!--                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
+<!--            </form>-->
+            <button type="button" class="btn btn-primary w-100 me-2 add-to-cart-btn" th:data-product-id="${post.sanPham.masp}">
+                <i class="fas fa-edit"></i> Thêm vào giỏ
+            </button>
+            <button type="button" class="btn btn-outline-secondary buy-now-btn" th:data-product-id="${post.sanPham.masp}">Mua ngay</button>
+
 
         </div>
     </div>
@@ -272,80 +276,9 @@
     <!-- Interaction Bar -->
     <div class="interaction-bar">
         <div class="nav-icon"><i class="fas fa-shopping-cart"></i></div>
-<!--        <div class="comment-interface">-->
-<!--            <i class="fas fa-comment"></i>-->
-<!--            <input type="text" placeholder="Nhập bình luận...">-->
-<!--        </div>-->
+
     </div>
 
-<!--    <div class="card-footer" sec:authorize="isAuthenticated()" th:if="${post.users.id == #authentication.getPrincipal().getId()}">-->
-<!--        <div class="btn-group btn-group-sm">-->
-<!--            <a th:href="@{/livestream_edit/{id}(id=${post.mabd})}" class="btn btn-primary">-->
-<!--                <i class="bi bi-pencil"></i> Edit-->
-<!--            </a>-->
-<!--            <a th:href="@{/post_delete/{id}(id=${post.mabd})}" class="btn btn-danger">-->
-<!--                <i class="bi bi-trash"></i> Delete-->
-<!--            </a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <script>-->
-<!--        // Comment Data-->
-<!--        const commentData = [-->
-<!--            { name: "Nguyễn Văn A", text: "Sản phẩm này đẹp quá!", img: "https://i.pravatar.cc/35?img=1" },-->
-<!--            { name: "Trần Thị B", text: "Có màu khác không ạ?", img: "https://i.pravatar.cc/35?img=2" },-->
-<!--            { name: "Lê Minh C", text: "Mình đã đặt 2 cái rồi!", img: "https://i.pravatar.cc/35?img=3" },-->
-<!--            { name: "Hoàng D", text: "Giao hàng mất bao lâu vậy?", img: "https://i.pravatar.cc/35?img=4" },-->
-<!--            { name: "Phạm E", text: "Còn size XL không shop?", img: "https://i.pravatar.cc/35?img=5" }-->
-<!--        ];-->
-
-<!--        class LivestreamInterface {-->
-<!--            constructor(comments) {-->
-<!--                this.comments = comments;-->
-<!--                this.commentsContainer = document.getElementById('comments-container');-->
-<!--            }-->
-
-<!--            addRandomComment() {-->
-<!--                const randomComment = this.comments[Math.floor(Math.random() * this.comments.length)];-->
-<!--                const commentElement = this.createCommentElement(randomComment);-->
-
-<!--                this.commentsContainer.appendChild(commentElement);-->
-
-<!--                // Remove comment after animation-->
-<!--                setTimeout(() => {-->
-<!--                    this.commentsContainer.removeChild(commentElement);-->
-<!--                }, 5000);-->
-<!--            }-->
-
-<!--            createCommentElement(comment) {-->
-<!--                const commentDiv = document.createElement('div');-->
-<!--                commentDiv.classList.add('comment');-->
-
-<!--                const avatarImg = document.createElement('img');-->
-<!--                avatarImg.src = comment.img;-->
-<!--                avatarImg.alt = comment.name;-->
-
-<!--                const textContent = document.createElement('div');-->
-<!--                textContent.innerHTML = `<strong>${comment.name}</strong><br>${comment.text}`;-->
-
-<!--                commentDiv.appendChild(avatarImg);-->
-<!--                commentDiv.appendChild(textContent);-->
-
-<!--                return commentDiv;-->
-<!--            }-->
-
-<!--            startCommentStream(interval = 2000) {-->
-<!--                setInterval(() => this.addRandomComment(), interval);-->
-<!--            }-->
-<!--        }-->
-
-<!--        // Initialize livestream interface-->
-<!--        const livestreamUI = new LivestreamInterface(commentData);-->
-<!--        livestreamUI.startCommentStream();-->
-<!--    </script>-->
-
-
-    <!-- Add this at the end of the body tag in livestream.html -->
-    <!-- Update the script in livestream.html -->
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function() {
             const postId = [[${post.mabd}]];

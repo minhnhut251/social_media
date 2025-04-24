@@ -61,7 +61,7 @@
                 <img th:src="${friend.avatar != null and !friend.avatar.isEmpty()} ? ${friend.avatar} : '/api/placeholder/150/150'"
                      th:alt="${friend.fullName}">
                 <h5 class="mt-2" th:text="${friend.fullName}">Tên bạn bè</h5>
-                <a th:href="@{/unfriend(id=${friend.id})}" class="btn btn-danger btn-sm mt-2">
+                <a th:href="@{/friends/unfriend(id=${friend.id})}" class="btn btn-danger btn-sm mt-2">
                     Hủy kết bạn
                 </a>
 

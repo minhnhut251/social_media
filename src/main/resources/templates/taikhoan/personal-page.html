@@ -71,14 +71,14 @@
     <div class="container mt-profile">
         <div class="cover-photo position-relative">
             <img th:if="${profileUser.banner != null}" th:src="@{${profileUser.banner}}" class="w-100 h-100 object-fit-cover" alt="User Banner">
-            <img th:unless="${profileUser.banner != null}" src="/img/default-banner.jpg" class="w-100 h-100 object-fit-cover" alt="Default Banner">
+            <img th:unless="${profileUser.banner != null}" src="/img/placeholder.jpg" class="w-100 h-100 object-fit-cover" alt="Default Banner">
             <a th:if="${isOwnProfile}" th:href="@{/profile/edit_banner}" class="btn btn-sm position-absolute end-0 m-3 btn-primary">
                 <i class="fa fa-camera"></i> Thêm ảnh bìa
             </a>
             <div class="avatar-wrapper position-relative">
                 <a th:if="${isOwnProfile}" th:href="@{/profile/edit_avatar}">
                     <img th:if="${profileUser.avatar != null}" th:src="@{${profileUser.avatar}}" class="avatar" alt="Avatar">
-                    <img th:unless="${profileUser.avatar != null}" src="/img/default-avatar.jpg" class="avatar" alt="Avatar">
+                    <img th:unless="${profileUser.avatar != null}" src="/img/placeholder.jpg" class="avatar" alt="Avatar">
                     <span class="edit-overlay"><i class="fas fa-camera"></i></span>
                 </a>
                 <img th:if="${!isOwnProfile}" th:src="@{${profileUser.avatar}}" class="avatar" alt="Avatar">
@@ -88,20 +88,21 @@
         <div class="mt-5 d-flex align-items-center justify-content-between">
             <div>
                 <h2 th:text="${profileUser.lastName + ' ' + profileUser.firstName}">Tên người dùng</h2>
-                <p th:text="${listFriendsCount + ' người bạn'}">Số bạn bè</p>
+<!--                <p th:text="${listFriendsCount + ' người bạn'}">Số bạn bè</p>-->
             </div>
-            <div class="profile-buttons">
-                <a th:if="${isOwnProfile}" th:href="@{/profile/edit}" class="btn btn-secondary"><i class="fa fa-edit"></i> Chỉnh sửa trang cá nhân</a>
-            </div>
+<!--            <div class="profile-buttons">-->
+<!--                <a th:if="${isOwnProfile}" th:href="@{/profile/edit}" class="btn btn-secondary"><i class="fa fa-edit"></i> Chỉnh sửa trang cá nhân</a>-->
+<!--            </div>-->
 
             <div >
-                <form  method="post" class="d-inline">
-                    <input type="hidden" name="userId"  />
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus"></i> Thêm bạn</button>
-                </form>
-                <a  class="btn btn-outline-secondary ms-2">
+<!--                <form  method="post" class="d-inline">-->
+<!--                    <input type="hidden" name="userId"  />-->
+<!--                    <button type="submit" class="btn btn-primary"><i class="fas fa-user-plus"></i> Thêm bạn</button>-->
+<!--                </form>-->
+                <a th:if="${!isOwnProfile}" th:href="@{/messenger/{id} (id=${profileUser.id})}" class="btn btn-primary">
                     <i class="fas fa-comment-dots"></i> Nhắn tin
                 </a>
+                <a th:href="@{/friends/list}" class="btn btn-outline-secondary ms-2">Bạn bè</a>
             </div>
         </div>
     </div>
@@ -156,5 +157,6 @@
 </div>
 
 <script src="/js/like.js"></script>
+<script src="/js/themgio.js"></script>
 </body>
 </html>

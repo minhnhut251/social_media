@@ -21,11 +21,12 @@
 </head>
 <body>
 <div th:fragment="sidebar_friend" class="sidebar">
+    <br>
     <h4>Bạn bè</h4>
-    <a th:href="@{/}"><i class="fas fa-home"></i> Trang chủ</a>
-    <a th:href="@{/friend-requests}"><i class="fas fa-user-plus"></i> Lời mời kết bạn</a>
+    <a th:href="@{/friends/list}"><i class="fas fa-address-book"></i> Tất cả bạn bè</a>
+    <a th:href="@{/friends/friend-requests}"><i class="fas fa-user-plus"></i> Lời mời kết bạn</a>
+    <a th:href="@{/friends/goiy}"><i class="fas fa-home"></i> Gợi ý kết bạn</a>
 <!--    <a href="#"><i class="fas fa-user-friends"></i> Gợi ý</a>-->
-    <a th:href="@{/list}"><i class="fas fa-address-book"></i> Tất cả bạn bè</a>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

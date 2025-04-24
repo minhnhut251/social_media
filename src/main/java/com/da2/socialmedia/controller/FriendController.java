@@ -19,7 +19,7 @@ import java.util.*;
 
 
 @Controller
-//@RequestMapping("/friend")
+@RequestMapping("/friends")
 public class FriendController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class FriendController {
     @Autowired
     private FriendRepository friendRepository;
 
-    @GetMapping("/friends")
+    @GetMapping("/goiy")
     public String showSuggestions(@AuthenticationPrincipal CustomUserDetails currentUser, Model model) {
         User user = currentUser.getUser();
 
@@ -76,7 +76,7 @@ public class FriendController {
             redirectAttributes.addFlashAttribute("errorMessage", "Lời mời kết bạn đã tồn tại!");
         }
 
-        return "redirect:/friends";
+        return "redirect:/friends/goiy";
     }
 
     // Chấp nhận lời mời kết bạn
@@ -98,7 +98,7 @@ public class FriendController {
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "Lời mời kết bạn không tồn tại!");
         }
-        return "redirect:/friend-requests"; // ✅ đúng route
+        return "redirect:/friends/friend-requests"; // ✅ đúng route
     }
 
 
@@ -139,7 +139,7 @@ public class FriendController {
 //        model.addAttribute("pendingRequests", pendingRequests);
 //        return "/friend_requests";
 //    }
-    @GetMapping("friend-requests")
+    @GetMapping("/friend-requests")
     public String showFriendRequests(@AuthenticationPrincipal CustomUserDetails currentUser, Model model) {
         User user = currentUser.getUser();
         List<FriendEntity> pendingRequests = friendService.getPendingRequests(user);
@@ -149,7 +149,7 @@ public class FriendController {
     }
 
 
-    @GetMapping("list")
+    @GetMapping("/list")
     public String friendList(@AuthenticationPrincipal CustomUserDetails currentUser, Model model) {
         User user = userService.getUserById(currentUser.getId());
         List<User> friends = friendService.getFriends(user);
@@ -179,7 +179,7 @@ public class FriendController {
             redirectAttributes.addFlashAttribute("errorMessage", "Không thể hủy kết bạn!");
         }
 
-        return "redirect:/list"; // Chuyển hướng về danh sách bạn bè
+        return "redirect:/friends/list"; // Chuyển hướng về danh sách bạn bè
     }
 
 }

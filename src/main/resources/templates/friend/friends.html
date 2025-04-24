@@ -27,16 +27,6 @@
 <!-- Main Content -->
 <div class="content au">
     <h3 class="mb-4">Những người bạn có thể biết</h3>
-<!--    <div class="row">-->
-<!--        <div th:each="user : ${suggestedUsers}" class="col-md-3 mb-3">-->
-<!--            <div class="friend-card">-->
-<!--                <img th:src="${user.avatar != null and !user.avatar.isEmpty()} ? ${user.avatar} : '/api/placeholder/150/150'"-->
-<!--                     th:alt="${user.fullName}">-->
-<!--                <h5 class="mt-2" th:text="${user.fullName}">Tên người dùng</h5>-->
-<!--                <a th:href="@{/add-friend(id=${user.id})}" class="btn btn-custom btn-sm w-100 mt-2 add-friend-btn">Thêm bạn bè</a>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
     <div class="row">
         <div th:each="userDTO : ${suggestedUsers}" class="col-md-3 mb-3">
             <div class="friend-card p-2 border rounded text-center">
@@ -50,7 +40,7 @@
                     <button class="btn btn-secondary btn-sm w-100" disabled>Đã gửi lời mời</button>
                 </div>
                 <div th:if="${userDTO.friendStatus == null}">
-                    <a th:href="@{/add-friend(id=${userDTO.user.id})}"
+                    <a th:href="@{/friends/add-friend(id=${userDTO.user.id})}"
                        class="btn btn-primary btn-sm w-100">Thêm bạn bè</a>
                 </div>
             </div>

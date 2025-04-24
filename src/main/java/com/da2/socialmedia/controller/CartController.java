@@ -97,13 +97,25 @@ public class CartController {
     @PostMapping("/add/{productId}")
     public ResponseEntity<Map<String, Object>> addToCart(
             @PathVariable Long productId,
-            @RequestParam(defaultValue = "1") Integer quantity,
+            @RequestBody(required = false) Map<String, Object> requestBody,
+            @RequestParam(required = false) Integer quantity,
             @AuthenticationPrincipal CustomUserDetails currentUser) {
 
         Map<String, Object> response = new HashMap<>();
 
         try {
-            CartItemEntity cartItem = cartService.addToCart(currentUser.getUser(), productId, quantity);
+            // Get quantity from either request body or request param
+            Integer actualQuantity = quantity;
+            if (requestBody != null && requestBody.containsKey("quantity")) {
+                actualQuantity = Integer.valueOf(requestBody.get("quantity").toString());
+            }
+
+            // Default to 1 if not specified
+            if (actualQuantity == null) {
+                actualQuantity = 1;
+            }
+
+            CartItemEntity cartItem = cartService.addToCart(currentUser.getUser(), productId, actualQuantity);
             response.put("success", true);
             response.put("message", "Sản phẩm đã được thêm vào giỏ hàng");
             response.put("cartItem", cartItem.getId());
@@ -114,6 +126,27 @@ public class CartController {
 
         return ResponseEntity.ok(response);
     }
+
+//    @PostMapping("/add/{productId}")
+//    public ResponseEntity<Map<String, Object>> addToCart(
+//            @PathVariable Long productId,
+//            @RequestParam(defaultValue = "1") Integer quantity,
+//            @AuthenticationPrincipal CustomUserDetails currentUser) {
+//
+//        Map<String, Object> response = new HashMap<>();
+//
+//        try {
+//            CartItemEntity cartItem = cartService.addToCart(currentUser.getUser(), productId, quantity);
+//            response.put("success", true);
+//            response.put("message", "Sản phẩm đã được thêm vào giỏ hàng");
+//            response.put("cartItem", cartItem.getId());
+//        } catch (Exception e) {
+//            response.put("success", false);
+//            response.put("message", e.getMessage());
+//        }
+//
+//        return ResponseEntity.ok(response);
+//    }
 
     @PostMapping("/update/{itemId}")
     public ResponseEntity<Map<String, Object>> updateCartItem(

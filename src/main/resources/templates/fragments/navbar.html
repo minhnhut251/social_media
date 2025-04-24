@@ -150,7 +150,7 @@
         </div>
         <div class="navbar-center">
             <a th:href="@{/}" class="nav-link"><i class="fas fa-home"></i></a>
-            <a th:href="@{/friends}" class="nav-link"><i class="fas fa-user-friends"></i></a>
+            <a th:href="@{/friends/list}" class="nav-link"><i class="fas fa-user-friends"></i></a>
             <a th:href="@{/video}" class="nav-link"><i class="fas fa-tv"></i></a>
             <a th:href="@{/vendor/shop}" class="nav-link"><i class="fas fa-store"></i></a>
             <a th:href="@{/cart}" class="nav-link"><i class="fa-solid fa-bag-shopping"></i></a>
@@ -170,7 +170,8 @@
                         <b sec:authentication="principal.fullName"></b>
                     </a>
                 </p>
-                <img th:src ="${#authentication.getPrincipal().getUser().getAvatar()}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                <img th:if="${#authentication.getPrincipal().getUser().getAvatar() != null}" th:src ="${#authentication.getPrincipal().getUser().getAvatar()}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                <img th:unless="${#authentication.getPrincipal().getUser().getAvatar() != null}" src="/img/placeholder.jpg" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                 <form th:action="@{/logout}" method="post">
                     <input type="submit" value="Sign Out" />
                 </form>
