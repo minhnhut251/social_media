@@ -189,7 +189,7 @@
                 </a>
             </li>
             <li>
-                <a th:href="@{/friends}" class="d-flex align-items-center">
+                <a th:href="@{/friends/list}" class="d-flex align-items-center">
                     <i class="fa-solid fa-users me-2"></i> Bạn bè
                 </a>
             </li>
@@ -279,20 +279,16 @@
 
     <div class="right-sidebar">
         <h5 class="mb-3">Bạn bè</h5>
-        <ul class="list-unstyled">
+        <ul th:each="friend: ${friends}" class="list-unstyled">
             <li class="friend-item">
-                <img src="img/card.jpg" alt="Avatar" class="friend-avatar">
-                <span class="friend-name">Nguyễn Văn A</span>
+                <img th:src="${friend.avatar != null and !friend.avatar.isEmpty()} ? ${friend.avatar} : '/img/placeholder.jpg'" alt="Avatar" class="friend-avatar">
+                <a th:href="@{/profile/{id}(id=${friend.id})}" th:text="${friend.fullName}" class="friend-name">Nguyễn Văn A</a>
             </li>
-            <li class="friend-item">
-                <img src="https://via.placeholder.com/40" alt="Avatar" class="friend-avatar">
-                <span class="friend-name">Nguyễn Thị B</span>
-            </li>
-            <li class="friend-item">
-                <img src="https://via.placeholder.com/40" alt="Avatar" class="friend-avatar">
-                <span class="friend-name">Trần Văn C</span>
-            </li>
+
         </ul>
+<!--        <div th:if="${friends.isNull()}">-->
+<!--            Chưa có bạn bè-->
+<!--        </div>-->
     </div>
 
 </div>

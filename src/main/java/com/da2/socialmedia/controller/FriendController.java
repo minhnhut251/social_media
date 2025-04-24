@@ -115,8 +115,7 @@ public class FriendController {
 //        return "redirect:/friend-requests";
 //    }
     @GetMapping("/reject-friend")
-    @ResponseBody
-    public Map<String, Object> rejectFriendRequest(@RequestParam("id") Long requestId) {
+    public String rejectFriendRequest(@RequestParam("id") Long requestId) {
         Map<String, Object> response = new HashMap<>();
         boolean success = friendService.rejectFriendRequest(requestId);
 
@@ -128,7 +127,7 @@ public class FriendController {
             response.put("message", "Lời mời kết bạn không tồn tại!");
         }
 
-        return response;
+        return "redirect:/friends/friend-requests";
     }
 
     // Hiển thị danh sách lời mời kết bạn
@@ -156,16 +155,7 @@ public class FriendController {
         model.addAttribute("friends", friends);
         return "/friend/friend_list";
     }
-//    @GetMapping("/list")
-//    public String viewlistfriend() {
-//
-//        return "/friend/friend_list";
-//    }
-//    @GetMapping("/friend-requests")
-//    public String viewrequest() {
-//
-//        return "/friend/friend_requests";
-//    }
+
     @GetMapping("/unfriend")
     public String unfriend(@AuthenticationPrincipal CustomUserDetails currentUser,
                            @RequestParam("id") Long friendId,

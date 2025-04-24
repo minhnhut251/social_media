@@ -25,16 +25,20 @@ public class PostController {
     private final CommentService commentService;
     private final TKBHService tkbhService;
     private final ProductService productService;
+    private final UserService userService;
+    private final FriendService friendService;
 
 
 
     @Autowired
-    public PostController(PostService postService, PostViewService postViewService , CommentService commentService, TKBHService tkbhService, ProductService productService) {
+    public PostController(PostService postService, PostViewService postViewService , CommentService commentService, TKBHService tkbhService, ProductService productService, UserService userService, FriendService friendService) {
         this.postService = postService;
         this.postViewService = postViewService;
         this.commentService = commentService;
         this.tkbhService = tkbhService;
         this.productService = productService;
+        this.userService = userService;
+        this.friendService = friendService;
     }
 
     @GetMapping("/")
@@ -48,6 +52,13 @@ public class PostController {
         if (currentUser != null) {
             boolean hasVendorAccount = tkbhService.findByUser(currentUser.getUser()) != null;
             model.addAttribute("hasVendorAccount", hasVendorAccount);
+        }
+
+        // Lay danh sach ban be
+        if (currentUser!=null) {
+            User user = userService.getUserById(currentUser.getId());
+            List<User> friends = friendService.getFriends(user);
+            model.addAttribute("friends", friends);
         }
 
         return "index";
