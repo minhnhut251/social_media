@@ -17,9 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.time.Month;
+import java.time.Year;
+import java.time.format.TextStyle;
+import java.util.*;
 
 @Controller
 public class TKBHController {
@@ -163,51 +164,61 @@ public class TKBHController {
 
         return "redirect:/vendor/vitien";
     }
+    @GetMapping("/vendor/thongke")
+    public String tkbhThongKe(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
+        TaiKhoanBanHangEntity vendorAccount = tkbhService.findByUser(currentUser.getUser());
+        List<OrderItemEntity> orderItems = orderService.getOrderItemsByVendorId(vendorAccount.getMatkbh());
 
+        Map<String, BigDecimal> revenueByMonth = new LinkedHashMap<>();
+        Map<String, BigDecimal> revenueByYear = new TreeMap<>();
+        Map<String, BigDecimal> revenueByQuarter = new TreeMap<>();
 
-//    @GetMapping("/vendor/thongke")
-//    public String tkbhThongKe(Model model, @AuthenticationPrincipal CustomUserDetails currentUser ) {
-//        TaiKhoanBanHangEntity vendorAccount = tkbhService.findByUser(currentUser.getUser());
-//        List<OrderItemEntity> orderItems = orderService.getOrderItemsByVendorId(vendorAccount.getMatkbh());
-//
-//        model.addAttribute("orderItems", orderItems);
-//
-//
-//        return "shop/vendor-thongke";
-//
-//    }
-@GetMapping("/vendor/thongke")
-public String tkbhThongKe(Model model, @AuthenticationPrincipal CustomUserDetails currentUser ) {
-    TaiKhoanBanHangEntity vendorAccount = tkbhService.findByUser(currentUser.getUser());
-    List<OrderItemEntity> orderItems = orderService.getOrderItemsByVendorId(vendorAccount.getMatkbh());
+        Year currentYear = Year.now();
+        for (int i = 1; i <= 12; i++) {
+            String monthName = Month.of(i).getDisplayName(TextStyle.FULL, Locale.forLanguageTag("vi-VN"));
+            revenueByMonth.put(monthName, BigDecimal.ZERO);
+        }
 
-    // Tổng doanh thu theo tháng
-    Map<String, BigDecimal> revenueByMonth = new TreeMap<>();
-    Map<String, BigDecimal> revenueByYear = new TreeMap<>();
-    Map<String, BigDecimal> revenueByQuarter = new TreeMap<>();
+        for (int year = currentYear.getValue() - 4; year <= currentYear.getValue() + 1; year++) {
+            revenueByYear.put(String.valueOf(year), BigDecimal.ZERO);
+        }
 
-    for (OrderItemEntity item : orderItems) {
-        LocalDateTime createdAt = item.getCreatedAt();
-        BigDecimal total = BigDecimal.valueOf(item.getPrice())
-                .multiply(BigDecimal.valueOf(item.getQuantity()));
-        // hoặc item.getPrice().multiply(item.getQuantity())
+        for (int year = currentYear.getValue() - 1; year <= currentYear.getValue() + 1; year++) {
+            for (int q = 1; q <= 4; q++) {
+                revenueByQuarter.put("Q" + q + "-" + year, BigDecimal.ZERO);
+            }
+        }
 
-        String monthKey = createdAt.getMonth().toString(); // JANUARY, FEBRUARY...
-        String yearKey = String.valueOf(createdAt.getYear());
-        int quarter = (createdAt.getMonthValue() - 1) / 3 + 1;
-        String quarterKey = "Q" + quarter + "-" + createdAt.getYear();
+        for (OrderItemEntity item : orderItems) {
+            LocalDateTime createdAt = item.getCreatedAt();
+            BigDecimal total = BigDecimal.valueOf(item.getPrice())
+                    .multiply(BigDecimal.valueOf(item.getQuantity()));
 
-        revenueByMonth.merge(monthKey, total, BigDecimal::add);
-        revenueByYear.merge(yearKey, total, BigDecimal::add);
-        revenueByQuarter.merge(quarterKey, total, BigDecimal::add);
+            String monthKey = createdAt.getMonth().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("vi-VN"));
+            String yearKey = String.valueOf(createdAt.getYear());
+            int quarter = (createdAt.getMonthValue() - 1) / 3 + 1;
+            String quarterKey = "Q" + quarter + "-" + createdAt.getYear();
+
+            if (revenueByMonth.containsKey(monthKey)) {
+                revenueByMonth.merge(monthKey, total, BigDecimal::add);
+            }
+
+            if (revenueByYear.containsKey(yearKey)) {
+                revenueByYear.merge(yearKey, total, BigDecimal::add);
+            }
+
+            if (revenueByQuarter.containsKey(quarterKey)) {
+                revenueByQuarter.merge(quarterKey, total, BigDecimal::add);
+            }
+        }
+
+        model.addAttribute("orderItems", orderItems);
+        model.addAttribute("revenueByMonth", revenueByMonth);
+        model.addAttribute("revenueByYear", revenueByYear);
+        model.addAttribute("revenueByQuarter", revenueByQuarter);
+
+        return "shop/vendor-thongke";
     }
 
-    model.addAttribute("orderItems", orderItems);
-    model.addAttribute("revenueByMonth", revenueByMonth);
-    model.addAttribute("revenueByYear", revenueByYear);
-    model.addAttribute("revenueByQuarter", revenueByQuarter);
-
-    return "shop/vendor-thongke";
-}
 
 }

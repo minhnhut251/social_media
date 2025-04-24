@@ -1,107 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Quản lý sản phẩm</title>-->
-<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">-->
-<!--    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>-->
-<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">-->
-<!--    <meta name="_csrf" th:content="${_csrf.token}"/>-->
-<!--    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
-<!--    <style>-->
-<!--        body { background-color: #ffffff; color: #000000; }-->
-
-<!--        .au { margin-left: 270px; padding: 60px 20px; }-->
-
-<!--        /* Reset */-->
-<!--        * {-->
-<!--            margin: 0;-->
-<!--            padding: 0;-->
-<!--            box-sizing: border-box;-->
-<!--            font-family: Arial, sans-serif;-->
-<!--        }-->
-
-<!--        .product-img {-->
-<!--            width: 100px;-->
-<!--            height: 100px;-->
-<!--            object-fit: cover;-->
-<!--        }-->
-
-<!--        .product-card {-->
-<!--            transition: all 0.3s ease;-->
-<!--        }-->
-
-<!--        .product-card:hover {-->
-<!--            transform: translateY(-5px);-->
-<!--            box-shadow: 0 10px 20px rgba(0,0,0,0.1);-->
-<!--        }-->
-
-<!--        .form-section, .products-section {-->
-<!--            background-color: #fff;-->
-<!--            border-radius: 8px;-->
-<!--            box-shadow: 0 0 10px rgba(0,0,0,0.1);-->
-<!--            padding: 20px;-->
-<!--            margin-bottom: 20px;-->
-<!--        }-->
-
-<!--        .alert-float {-->
-<!--            position: fixed;-->
-<!--            top: 20px;-->
-<!--            right: 20px;-->
-<!--            z-index: 1000;-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body class="bg-light">-->
-<!--<div th:replace="~{fragments/navbar :: navbar}"></div>-->
-<!--<div th:replace="~{fragments/sidebar_vendor :: sidebar_vendor}"></div>-->
-
-<!--<hr>-->
-<!--<hr>-->
-<!--<hr>-->
-
-<!--<div class="container mt-5">-->
-<!--    &lt;!&ndash; Alert messages &ndash;&gt;-->
-
-<!--    <h3>Thống kê</h3>-->
-<!--    <div th:if="${orderItems.empty}">-->
-<!--        <p class="empty-message">No order items found for this vendor.</p>-->
-<!--    </div>-->
-
-<!--    <table class="table" th:if="${!orderItems.empty}">-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <th>ID</th>-->
-<!--            <th>Product</th>-->
-<!--            <th>Quantity</th>-->
-<!--            <th>Price</th>-->
-<!--            <th>Total</th>-->
-<!--            <th>Order ID</th>-->
-<!--            <th>Created At</th>-->
-<!--            <th>Updated At</th>-->
-<!--            <th>Status</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--        <tr th:each="item : ${orderItems}">-->
-<!--            <td th:text="${item.id}"></td>-->
-<!--            <td th:text="${item.product.tensp}"></td>-->
-<!--            <td th:text="${item.quantity}"></td>-->
-<!--            <td th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 2, 'POINT')}"></td>-->
-<!--            <td th:text="${#numbers.formatDecimal(item.total, 0, 'COMMA', 2, 'POINT')}"></td>-->
-<!--            <td th:text="${item.order.id}"></td>-->
-<!--            <td th:text="${#temporals.format(item.createdAt, 'dd-MM-yyyy HH:mm')}"></td>-->
-<!--            <td th:text="${#temporals.format(item.updatedAt, 'dd-MM-yyyy HH:mm')}"></td>-->
-<!--            <td th:text="${item.status.name()}"></td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
-
-
-<!--</div>-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
@@ -128,17 +24,7 @@
         .table tbody tr:hover { background-color: #f1f1f1; }
         h3 { margin-bottom: 20px; }
 
-        .main-content {
-            margin-left: 250px; /* hoặc giá trị bằng chiều rộng sidebar */
-            padding-top: 80px;   /* để tránh navbar */
-            padding-right: 20px;
-            padding-left: 20px;
-        }
 
-        /* Căn giữa các biểu đồ + thêm khoảng cách */
-        .main-content .row > div {
-            margin-bottom: 30px;
-        }
     </style>
 </head>
 <body>
@@ -261,17 +147,10 @@
     const revenueByYear = [[${revenueByYear}]];
     const revenueByQuarter = [[${revenueByQuarter}]];
 
-    // Chuyển dữ liệu thành mảng cho Chart.js
+    // Pie - 12 tháng
     const monthLabels = Object.keys(revenueByMonth);
     const monthData = Object.values(revenueByMonth);
 
-    const yearLabels = Object.keys(revenueByYear);
-    const yearData = Object.values(revenueByYear);
-
-    const quarterLabels = Object.keys(revenueByQuarter);
-    const quarterData = Object.values(revenueByQuarter);
-
-    // Biểu đồ tròn: Doanh số theo tháng
     new Chart(document.getElementById('monthlyChart'), {
         type: 'pie',
         data: {
@@ -279,15 +158,18 @@
             datasets: [{
                 label: 'Doanh thu theo tháng',
                 data: monthData,
-                backgroundColor: [
-                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40',
-                    '#F7464A', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360', '#E7E9ED'
-                ]
+                backgroundColor: monthLabels.map((_, i) => `hsl(${i * 30}, 70%, 60%)`)
             }]
+        },
+        options: {
+            plugins: {
+                title: { display: true, text: 'Doanh thu theo 12 tháng' }
+            }
         }
     });
+    const yearLabels = Object.keys(revenueByYear);
+    const yearData = Object.values(revenueByYear);
 
-    // Biểu đồ cột: Doanh số theo năm
     new Chart(document.getElementById('yearlyChart'), {
         type: 'bar',
         data: {
@@ -299,15 +181,19 @@
             }]
         },
         options: {
+            plugins: {
+                title: { display: true, text: 'Doanh thu theo năm' }
+            },
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+                y: { beginAtZero: true }
             }
         }
     });
 
-    // Biểu đồ đường: Doanh số theo quý
+    // Line - 4 quý mỗi năm
+    const quarterLabels = Object.keys(revenueByQuarter);
+    const quarterData = Object.values(revenueByQuarter);
+
     new Chart(document.getElementById('quarterlyChart'), {
         type: 'line',
         data: {
@@ -315,16 +201,17 @@
             datasets: [{
                 label: 'Doanh thu theo quý',
                 data: quarterData,
-                fill: false,
                 borderColor: '#FF6384',
-                tension: 0.1
+                fill: false,
+                tension: 0.3
             }]
         },
         options: {
+            plugins: {
+                title: { display: true, text: 'Doanh thu theo quý' }
+            },
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+                y: { beginAtZero: true }
             }
         }
     });
