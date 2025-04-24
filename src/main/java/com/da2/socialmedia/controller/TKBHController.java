@@ -15,7 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Controller
 public class TKBHController {
@@ -161,15 +165,49 @@ public class TKBHController {
     }
 
 
-    @GetMapping("/vendor/thongke")
-    public String tkbhThongKe(Model model, @AuthenticationPrincipal CustomUserDetails currentUser ) {
-        TaiKhoanBanHangEntity vendorAccount = tkbhService.findByUser(currentUser.getUser());
-        List<OrderItemEntity> orderItems = orderService.getOrderItemsByVendorId(vendorAccount.getMatkbh());
+//    @GetMapping("/vendor/thongke")
+//    public String tkbhThongKe(Model model, @AuthenticationPrincipal CustomUserDetails currentUser ) {
+//        TaiKhoanBanHangEntity vendorAccount = tkbhService.findByUser(currentUser.getUser());
+//        List<OrderItemEntity> orderItems = orderService.getOrderItemsByVendorId(vendorAccount.getMatkbh());
+//
+//        model.addAttribute("orderItems", orderItems);
+//
+//
+//        return "shop/vendor-thongke";
+//
+//    }
+@GetMapping("/vendor/thongke")
+public String tkbhThongKe(Model model, @AuthenticationPrincipal CustomUserDetails currentUser ) {
+    TaiKhoanBanHangEntity vendorAccount = tkbhService.findByUser(currentUser.getUser());
+    List<OrderItemEntity> orderItems = orderService.getOrderItemsByVendorId(vendorAccount.getMatkbh());
 
-        model.addAttribute("orderItems", orderItems);
+    // Tổng doanh thu theo tháng
+    Map<String, BigDecimal> revenueByMonth = new TreeMap<>();
+    Map<String, BigDecimal> revenueByYear = new TreeMap<>();
+    Map<String, BigDecimal> revenueByQuarter = new TreeMap<>();
 
+    for (OrderItemEntity item : orderItems) {
+        LocalDateTime createdAt = item.getCreatedAt();
+        BigDecimal total = BigDecimal.valueOf(item.getPrice())
+                .multiply(BigDecimal.valueOf(item.getQuantity()));
+        // hoặc item.getPrice().multiply(item.getQuantity())
 
-        return "shop/vendor-thongke";
+        String monthKey = createdAt.getMonth().toString(); // JANUARY, FEBRUARY...
+        String yearKey = String.valueOf(createdAt.getYear());
+        int quarter = (createdAt.getMonthValue() - 1) / 3 + 1;
+        String quarterKey = "Q" + quarter + "-" + createdAt.getYear();
 
+        revenueByMonth.merge(monthKey, total, BigDecimal::add);
+        revenueByYear.merge(yearKey, total, BigDecimal::add);
+        revenueByQuarter.merge(quarterKey, total, BigDecimal::add);
     }
+
+    model.addAttribute("orderItems", orderItems);
+    model.addAttribute("revenueByMonth", revenueByMonth);
+    model.addAttribute("revenueByYear", revenueByYear);
+    model.addAttribute("revenueByQuarter", revenueByQuarter);
+
+    return "shop/vendor-thongke";
+}
+
 }
