@@ -15,7 +15,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.Year;
+import java.time.format.TextStyle;
+import java.util.*;
 
 @Controller
 public class TKBHController {
@@ -159,17 +164,61 @@ public class TKBHController {
 
         return "redirect:/vendor/vitien";
     }
-
-
     @GetMapping("/vendor/thongke")
-    public String tkbhThongKe(Model model, @AuthenticationPrincipal CustomUserDetails currentUser ) {
+    public String tkbhThongKe(Model model, @AuthenticationPrincipal CustomUserDetails currentUser) {
         TaiKhoanBanHangEntity vendorAccount = tkbhService.findByUser(currentUser.getUser());
         List<OrderItemEntity> orderItems = orderService.getOrderItemsByVendorId(vendorAccount.getMatkbh());
 
-        model.addAttribute("orderItems", orderItems);
+        Map<String, BigDecimal> revenueByMonth = new LinkedHashMap<>();
+        Map<String, BigDecimal> revenueByYear = new TreeMap<>();
+        Map<String, BigDecimal> revenueByQuarter = new TreeMap<>();
 
+        Year currentYear = Year.now();
+        for (int i = 1; i <= 12; i++) {
+            String monthName = Month.of(i).getDisplayName(TextStyle.FULL, Locale.forLanguageTag("vi-VN"));
+            revenueByMonth.put(monthName, BigDecimal.ZERO);
+        }
+
+        for (int year = currentYear.getValue() - 4; year <= currentYear.getValue() + 1; year++) {
+            revenueByYear.put(String.valueOf(year), BigDecimal.ZERO);
+        }
+
+        for (int year = currentYear.getValue() - 1; year <= currentYear.getValue() + 1; year++) {
+            for (int q = 1; q <= 4; q++) {
+                revenueByQuarter.put("Q" + q + "-" + year, BigDecimal.ZERO);
+            }
+        }
+
+        for (OrderItemEntity item : orderItems) {
+            LocalDateTime createdAt = item.getCreatedAt();
+            BigDecimal total = BigDecimal.valueOf(item.getPrice())
+                    .multiply(BigDecimal.valueOf(item.getQuantity()));
+
+            String monthKey = createdAt.getMonth().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("vi-VN"));
+            String yearKey = String.valueOf(createdAt.getYear());
+            int quarter = (createdAt.getMonthValue() - 1) / 3 + 1;
+            String quarterKey = "Q" + quarter + "-" + createdAt.getYear();
+
+            if (revenueByMonth.containsKey(monthKey)) {
+                revenueByMonth.merge(monthKey, total, BigDecimal::add);
+            }
+
+            if (revenueByYear.containsKey(yearKey)) {
+                revenueByYear.merge(yearKey, total, BigDecimal::add);
+            }
+
+            if (revenueByQuarter.containsKey(quarterKey)) {
+                revenueByQuarter.merge(quarterKey, total, BigDecimal::add);
+            }
+        }
+
+        model.addAttribute("orderItems", orderItems);
+        model.addAttribute("revenueByMonth", revenueByMonth);
+        model.addAttribute("revenueByYear", revenueByYear);
+        model.addAttribute("revenueByQuarter", revenueByQuarter);
 
         return "shop/vendor-thongke";
-
     }
+
+
 }
