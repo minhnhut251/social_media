@@ -29,118 +29,120 @@
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<div th:replace="~{fragments/sidebar_vendor :: sidebar_vendor}"></div>
 
-<div class="container">
 
-    <h4 class="mt-5">Biểu đồ thống kê</h4>
+<div class="d-flex">
+    <div th:replace="~{fragments/sidebar_vendor :: sidebar_vendor}"></div>
 
-    <div class="row">
-        <div class="col-md-4">
-            <h5 class="text-center">Doanh số theo tháng</h5>
-            <canvas id="monthlyChart"></canvas>
+    <div class="container">
+        <h4 class="mt-5">Biểu đồ thống kê</h4>
+
+        <div class="row">
+            <div class="col-md-4">
+                <h5 class="text-center">Doanh số theo tháng</h5>
+                <canvas id="monthlyChart"></canvas>
+            </div>
+            <div class="col-md-4">
+                <h5 class="text-center">Doanh số theo năm</h5>
+                <canvas id="yearlyChart"></canvas>
+            </div>
+            <div class="col-md-4">
+                <h5 class="text-center">Doanh số theo quý</h5>
+                <canvas id="quarterlyChart"></canvas>
+            </div>
         </div>
-        <div class="col-md-4">
-            <h5 class="text-center">Doanh số theo năm</h5>
-            <canvas id="yearlyChart"></canvas>
-        </div>
-        <div class="col-md-4">
-            <h5 class="text-center">Doanh số theo quý</h5>
-            <canvas id="quarterlyChart"></canvas>
-        </div>
-    </div>
-    <hr>
+        <hr>
 
-    <!-- Doanh thu theo tháng -->
-    <div class="stat-card">
-        <h4>Doanh thu theo tháng</h4>
-        <table class="table table-sm table-bordered">
+        <!-- Doanh thu theo tháng -->
+        <div class="stat-card">
+            <h4>Doanh thu theo tháng</h4>
+            <table class="table table-sm table-bordered">
+                <thead>
+                <tr>
+                    <th>Tháng</th>
+                    <th>Tổng doanh thu</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="entry : ${revenueByMonth}">
+                    <td th:text="${entry.key}"></td>
+                    <td th:text="${#numbers.formatDecimal(entry.value, 0, 'COMMA', 2, 'POINT')} + ' ₫'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Doanh thu theo quý -->
+        <div class="stat-card">
+            <h4>Doanh thu theo quý</h4>
+            <table class="table table-sm table-bordered">
+                <thead>
+                <tr>
+                    <th>Quý</th>
+                    <th>Tổng doanh thu</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="entry : ${revenueByQuarter}">
+                    <td th:text="${entry.key}"></td>
+                    <td th:text="${#numbers.formatDecimal(entry.value, 0, 'COMMA', 2, 'POINT')} + ' ₫'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Doanh thu theo năm -->
+        <div class="stat-card">
+            <h4>Doanh thu theo năm</h4>
+            <table class="table table-sm table-bordered">
+                <thead>
+                <tr>
+                    <th>Năm</th>
+                    <th>Tổng doanh thu</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="entry : ${revenueByYear}">
+                    <td th:text="${entry.key}"></td>
+                    <td th:text="${#numbers.formatDecimal(entry.value, 0, 'COMMA', 2, 'POINT')} + ' ₫'"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Thống kê đơn hàng</h3>
+        <div th:if="${orderItems.empty}">
+            <div class="alert alert-warning">Không có đơn hàng nào.</div>
+        </div>
+        <table class="table table-bordered" th:if="${!orderItems.empty}">
             <thead>
             <tr>
-                <th>Tháng</th>
-                <th>Tổng doanh thu</th>
+                <th>ID</th>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Thành tiền</th>
+                <th>Đơn hàng</th>
+                <th>Ngày tạo</th>
+                <th>Ngày cập nhật</th>
+                <th>Trạng thái</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="entry : ${revenueByMonth}">
-                <td th:text="${entry.key}"></td>
-                <td th:text="${#numbers.formatDecimal(entry.value, 0, 'COMMA', 2, 'POINT')} + ' ₫'"></td>
+            <tr th:each="item : ${orderItems}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.product.tensp}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 2, 'POINT')} + ' ₫'"></td>
+                <td th:text="${#numbers.formatDecimal(item.price * item.quantity, 0, 'COMMA', 2, 'POINT')} + ' ₫'"></td>
+                <td th:text="${item.order.id}"></td>
+                <td th:text="${#temporals.format(item.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+                <td th:text="${#temporals.format(item.updatedAt, 'dd-MM-yyyy HH:mm')}"></td>
+                <td th:text="${item.status.name()}"></td>
             </tr>
             </tbody>
         </table>
     </div>
-
-    <!-- Doanh thu theo quý -->
-    <div class="stat-card">
-        <h4>Doanh thu theo quý</h4>
-        <table class="table table-sm table-bordered">
-            <thead>
-            <tr>
-                <th>Quý</th>
-                <th>Tổng doanh thu</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="entry : ${revenueByQuarter}">
-                <td th:text="${entry.key}"></td>
-                <td th:text="${#numbers.formatDecimal(entry.value, 0, 'COMMA', 2, 'POINT')} + ' ₫'"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Doanh thu theo năm -->
-    <div class="stat-card">
-        <h4>Doanh thu theo năm</h4>
-        <table class="table table-sm table-bordered">
-            <thead>
-            <tr>
-                <th>Năm</th>
-                <th>Tổng doanh thu</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="entry : ${revenueByYear}">
-                <td th:text="${entry.key}"></td>
-                <td th:text="${#numbers.formatDecimal(entry.value, 0, 'COMMA', 2, 'POINT')} + ' ₫'"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <h3>Thống kê đơn hàng</h3>
-    <div th:if="${orderItems.empty}">
-        <div class="alert alert-warning">Không có đơn hàng nào.</div>
-    </div>
-    <table class="table table-bordered" th:if="${!orderItems.empty}">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Sản phẩm</th>
-            <th>Số lượng</th>
-            <th>Đơn giá</th>
-            <th>Thành tiền</th>
-            <th>Đơn hàng</th>
-            <th>Ngày tạo</th>
-            <th>Ngày cập nhật</th>
-            <th>Trạng thái</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${orderItems}">
-            <td th:text="${item.id}"></td>
-            <td th:text="${item.product.tensp}"></td>
-            <td th:text="${item.quantity}"></td>
-            <td th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 2, 'POINT')} + ' ₫'"></td>
-            <td th:text="${#numbers.formatDecimal(item.price * item.quantity, 0, 'COMMA', 2, 'POINT')} + ' ₫'"></td>
-            <td th:text="${item.order.id}"></td>
-            <td th:text="${#temporals.format(item.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
-            <td th:text="${#temporals.format(item.updatedAt, 'dd-MM-yyyy HH:mm')}"></td>
-            <td th:text="${item.status.name()}"></td>
-        </tr>
-        </tbody>
-    </table>
-
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:inline="javascript">

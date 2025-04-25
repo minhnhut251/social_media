@@ -279,7 +279,7 @@
         <ul th:each="friend: ${friends}" class="list-unstyled">
             <li class="friend-item">
                 <img th:src="${friend.avatar != null and !friend.avatar.isEmpty()} ? ${friend.avatar} : '/img/placeholder.jpg'" alt="Avatar" class="friend-avatar">
-                <a th:href="@{/profile/{id}(id=${friend.id})}" th:text="${friend.fullName}" class="friend-name">Nguyễn Văn A</a>
+                <a th:href="@{/profile/{id}(id=${friend.id})}" th:text="${friend.fullName}" class="friend-name text-decoration-none text-dark fw-bold">Nguyễn Văn A</a>
             </li>
 
         </ul>
