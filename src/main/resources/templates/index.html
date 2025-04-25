@@ -128,7 +128,7 @@
 
 
     .main-content{
-        padding-top: 50px;
+        padding-top: 80px;
         transition: margin 0.3s;
         background: white;
         min-height: 100vh;
@@ -214,16 +214,6 @@
                     <i class="fa-solid fa-users me-2"></i> Bạn bè
                 </a>
             </li>
-<!--            <li>-->
-<!--                <a th:href="@{/new_post}" class="d-flex align-items-center">-->
-<!--                    <i class="fa-solid fa-pen-to-square me-2"></i> New Post-->
-<!--                </a>-->
-<!--            </li>-->
-<!--            <li sec:authorize="hasAnyAuthority('ROLE_VENDOR')">-->
-<!--                <a th:href="@{/vendor}" class="d-flex align-items-center">-->
-<!--                    <i class="fa-solid fa-box me-2"></i> Trang người bán hàng-->
-<!--                </a>-->
-<!--            </li>-->
 
             <li sec:authorize="isAuthenticated()">
                 <a th:if="${!hasVendorAccount}" th:href="@{/dangkybanhang}" class="d-flex align-items-center">
@@ -244,7 +234,7 @@
                 <div class="card new-post-card p-3 mb-4 my-4" sec:authorize="isAuthenticated()">
                     <form th:action="@{/add_post}" method="post" enctype="multipart/form-data" th:object="${newpost}">
                         <div class="d-flex align-items-center mb-3">
-                            <img class="user-avatar" th:src="${#authentication.getPrincipal().getUser().getAvatar() != null ? #authentication.getPrincipal().getUser().getAvatar() : '/api/placeholder/40/40'}" alt="User Avatar">
+                            <img class="user-avatar" th:src="${#authentication.getPrincipal().getUser().getAvatar() != null ? #authentication.getPrincipal().getUser().getAvatar() : '/img/placeholder.jpg'}" alt="User Avatar">
                             <input type="text" th:field="*{noiDung}" class="new-post-input" placeholder="Bạn đang nghĩ gì?" required>
                         </div>
                         <div class="post-actions">
@@ -276,16 +266,24 @@
     </div>
     <div class="right-sidebar">
         <h5 class="mb-3">Bạn bè</h5>
-        <ul th:each="friend: ${friends}" class="list-unstyled">
-            <li class="friend-item">
-                <img th:src="${friend.avatar != null and !friend.avatar.isEmpty()} ? ${friend.avatar} : '/img/placeholder.jpg'" alt="Avatar" class="friend-avatar">
-                <a th:href="@{/profile/{id}(id=${friend.id})}" th:text="${friend.fullName}" class="friend-name text-decoration-none text-dark fw-bold">Nguyễn Văn A</a>
-            </li>
+        <div sec:authorize="isAnonymous()">
 
-        </ul>
-<!--        <div th:if="${friends.isNull()}">-->
-<!--            Chưa có bạn bè-->
-<!--        </div>-->
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <div th:if="${friends.isEmpty()}">
+                <a th:href="@{/friends/goiy}" class="btn btn-primary">Tìm bạn</a>
+<!--                <a th:href="@{/register}"-->
+            </div>
+
+
+            <ul th:each="friend: ${friends}" class="list-unstyled">
+                <li class="friend-item">
+                    <img th:src="${friend.avatar != null and !friend.avatar.isEmpty()} ? ${friend.avatar} : '/img/placeholder.jpg'" alt="Avatar" class="friend-avatar">
+                    <a th:href="@{/profile/{id}(id=${friend.id})}" th:text="${friend.fullName}" class="friend-name text-decoration-none text-dark fw-bold">Nguyễn Văn A</a>
+                </li>
+
+            </ul>
+        </div>
     </div>
 
 </div>
