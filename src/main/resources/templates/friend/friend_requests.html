@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -17,8 +18,39 @@
         .friend-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 10px; }
         .btn-custom { background: #007bff; color: white; border: none; }
         .btn-custom:hover { background: #0056b3; }
+        /* Responsive styles */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                display: none !important;
+            }
+            .au {
+                margin-left: 0;
+                padding: 70px 8px 20px 8px;
+            }
+        }
+        @media (max-width: 767.98px) {
+            .au {
+                padding: 70px 4px 10px 4px;
+            }
+            .friend-card img {
+                height: 100px;
+            }
+        }
+        @media (max-width: 575.98px) {
+            .au {
+                padding: 60px 2px 5px 2px;
+            }
+            .friend-card {
+                padding: 6px;
+            }
+            .friend-card img {
+                height: 70px;
+            }
+            h3 {
+                font-size: 1.2rem;
+            }
+        }
     </style>
-
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
@@ -26,18 +58,19 @@
 <!-- Sidebar -->
 <div th:replace="~{fragments/sidebar_friend :: sidebar_friend}"></div>
 
-
 <!-- Main Content -->
-<div class="content au">
+<div class="content au container-fluid">
     <h3 class="mb-4">Lời mời kết bạn</h3>
-    <div class="row">
-        <div th:each="request : ${pendingRequests}" class="col-md-4 mb-3">
-            <div class="friend-card">
+    <div class="row g-3">
+        <div th:each="request : ${pendingRequests}" class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+            <div class="friend-card p-2 border rounded text-center h-100 d-flex flex-column align-items-center">
                 <img th:src="${request.user1.avatar != null and !request.user1.avatar.isEmpty()} ? ${request.user1.avatar} : '/api/placeholder/150/150'"
-                     th:alt="${request.user1.fullName}">
-                <h5 class="mt-2" th:text="${request.user1.fullName}">Tên người dùng</h5>
-                <a th:href="@{/friends/accept-friend(id=${request.id})}" class="btn btn-custom btn-sm w-100 mt-2">Chấp nhận</a>
-                <a th:href="@{/friends/reject-friend(id=${request.id})}" class="btn btn-danger btn-sm w-100 mt-2">Từ chối</a>
+                     th:alt="${request.user1.fullName}" class="img-fluid rounded-circle mb-2" style="width:100px; height:100px; object-fit:cover;">
+                <h5 class="mt-2  mb-2" th:text="${request.user1.fullName}">Tên người dùng</h5>
+                <div class="w-100 mt-auto">
+                    <a th:href="@{/friends/accept-friend(id=${request.id})}" class="btn btn-custom btn-sm w-100 mt-2">Chấp nhận</a>
+                    <a th:href="@{/friends/reject-friend(id=${request.id})}" class="btn btn-danger btn-sm w-100 mt-2">Từ chối</a>
+                </div>
             </div>
         </div>
     </div>
