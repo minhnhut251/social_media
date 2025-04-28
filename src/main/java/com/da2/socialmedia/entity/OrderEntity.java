@@ -47,9 +47,9 @@ public class OrderEntity {
     private User user;
 
     // Bỏ comment hoặc xóa đoạn này nếu không sử dụng
-    // @ManyToOne
-    // @JoinColumn(name = "address_id", nullable = false)
-    // private AddressEntity address;
+     @ManyToOne
+     @JoinColumn(name = "address_id", nullable = false)
+     private AddressEntity address;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderItemEntity> items = new ArrayList<>();

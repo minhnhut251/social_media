@@ -69,7 +69,7 @@ public class CheckoutService {
         OrderEntity order = new OrderEntity();
         order.setOrderCode(orderCode);
         order.setUser(user);
-//        order.setAddress(address);
+        order.setAddress(address);
         order.setSubtotal(subtotal);
         order.setShippingFee(shippingFee);
         order.setDiscount(discount);
