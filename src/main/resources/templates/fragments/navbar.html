@@ -72,7 +72,6 @@
         <div class="d-none d-lg-flex mx-auto gap-4">
             <a th:href="@{/}" class="nav-link px-2"><i class="fas fa-home"></i></a>
             <a th:href="@{/friends/list}" class="nav-link px-2"><i class="fas fa-user-friends"></i></a>
-<!--            <a th:href="@{/video}" class="nav-link px-2"><i class="fas fa-tv"></i></a>-->
             <a th:href="@{/vendor/shop}" class="nav-link px-2"><i class="fas fa-store"></i></a>
             <a th:href="@{/cart}" class="nav-link px-2"><i class="fas fa-shopping-cart"></i></a>
             <a th:href="@{/orders}" class="nav-link px-2"><i class="fa-solid fa-bag-shopping"></i></a>
@@ -101,11 +100,16 @@
     </div>
     <!-- để nó ở đây nhưng làm nó các ra đi -->
     <nav class="mobile-navbar d-flex d-lg-none justify-content-around align-items-center  d-lg-flex mx-auto gap-5">
-        <a th:href="@{/}" class="nav-link"><i class="fas fa-home"></i></a>
-        <a th:href="@{/friends}" class="nav-link"><i class="fas fa-user-friends"></i></a>
-        <a th:href="@{/video}" class="nav-link"><i class="fas fa-tv"></i></a>
-        <a th:href="@{/vendor/shop}" class="nav-link"><i class="fas fa-store"></i></a>
-        <a th:href="@{/messenger}" class="nav-link"><i class="fas fa-comment-dots"></i></a>
+<!--        <a th:href="@{/}" class="nav-link"><i class="fas fa-home"></i></a>-->
+<!--        <a th:href="@{/friends}" class="nav-link"><i class="fas fa-user-friends"></i></a>-->
+<!--        <a th:href="@{/video}" class="nav-link"><i class="fas fa-tv"></i></a>-->
+<!--        <a th:href="@{/vendor/shop}" class="nav-link"><i class="fas fa-store"></i></a>-->
+<!--        <a th:href="@{/messenger}" class="nav-link"><i class="fas fa-comment-dots"></i></a>-->
+        <a th:href="@{/}" class="nav-link px-2"><i class="fas fa-home"></i></a>
+        <a th:href="@{/friends/list}" class="nav-link px-2"><i class="fas fa-user-friends"></i></a>
+        <a th:href="@{/vendor/shop}" class="nav-link px-2"><i class="fas fa-store"></i></a>
+        <a th:href="@{/cart}" class="nav-link px-2"><i class="fas fa-shopping-cart"></i></a>
+        <a th:href="@{/orders}" class="nav-link px-2"><i class="fa-solid fa-bag-shopping"></i></a>
     </nav>
 </nav>
 

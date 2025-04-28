@@ -62,11 +62,11 @@
 
 <div class="container mt-5">
     <!-- Alert messages -->
-    <div th:if="${success}" class="alert alert-success alert-float alert-dismissible fade show" role="alert">
+    <div th:if="${success}" class="alert alert-success alert-float alert-dismissible fade show" style="margin-top: 80px" role="alert">
         <span th:text="${success}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    <div th:if="${error}" class="alert alert-danger alert-float alert-dismissible fade show" role="alert">
+    <div th:if="${error}" class="alert alert-danger alert-float alert-dismissible fade show" style="margin-top: 80px" role="alert">
         <span th:text="${error}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>

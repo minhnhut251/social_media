@@ -39,7 +39,12 @@
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 
-    <div class="login-container">
+<div th:if="${successMessage}" class="alert alert-success" style="margin-top: 80px">
+    <span th:text="${successMessage}"></span>
+</div>
+
+    <div class="login-container" >
+
         <h2>Đăng nhập</h2>
         <form th:action="@{/login}" method="post">
             <div class="mb-3">

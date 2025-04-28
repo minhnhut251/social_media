@@ -62,7 +62,7 @@ public class WebSecurityConfig   {
     SecurityFilterChain userFilterChain(HttpSecurity http) throws Exception {
         http.authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/new_post").authenticated()
+                        auth.requestMatchers("/friends/**","/orders","/messenger","/cart").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .formLogin(login ->

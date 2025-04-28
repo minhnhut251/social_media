@@ -216,9 +216,9 @@
 
             <div class="order-content">
                 <!-- Show only first 2 products and "more" if more exist -->
-                <div th:if="${order.storeGroups != null && !order.storeGroups.isEmpty()}">
-                    <div th:each="storeGroup, storeIdx : ${order.storeGroups}" th:if="${storeIdx.index < 1}">
-                        <div th:each="item, itemIdx : ${storeGroup.items}" th:if="${itemIdx.index < 2}" class="order-product">
+<!--                <div th:if="${order.storeGroups != null && !order.storeGroups.isEmpty()}">-->
+<!--                    <div th:each="storeGroup, storeIdx : ${order.storeGroups}" th:if="${storeIdx.index < 1}">-->
+                        <div th:each="item, itemIdx : ${order.items}" th:if="${itemIdx.index < 2}" class="order-product">
                             <img th:if="${item.product.img != null && !item.product.img.isEmpty()}"
                                  th:src="${item.product.img}" class="product-image" alt="Product Image">
                             <img th:unless="${item.product.img != null && !item.product.img.isEmpty()}"
@@ -235,17 +235,17 @@
                         </div>
 
                         <!-- Show "and X more products" if there are more than 2 products -->
-                        <div th:if="${storeGroup.items.size() > 2}" class="text-center text-muted mt-2">
-                            <span th:text="${'... và ' + (storeGroup.items.size() - 2) + ' sản phẩm khác'}">... và 3 sản phẩm khác</span>
+                        <div th:if="${order.items.size() > 2}" class="text-center text-muted mt-2">
+                            <span th:text="${'... và ' + (order.items.size() - 2) + ' sản phẩm khác'}">... và 3 sản phẩm khác</span>
                         </div>
-                    </div>
+<!--                    </div>-->
 
-                    <!-- Show more store groups if any -->
-                    <div th:if="${order.storeGroups.size() > 1}" class="text-center text-muted mt-2">
-                        <span th:text="${'... và sản phẩm từ ' + (order.storeGroups.size() - 1) + ' cửa hàng khác'}">... và sản phẩm từ 2 cửa hàng khác</span>
-                    </div>
-                </div>
-            </div>
+<!--                    &lt;!&ndash; Show more store groups if any &ndash;&gt;-->
+<!--                    <div th:if="${order.storeGroups.size() > 1}" class="text-center text-muted mt-2">-->
+<!--                        <span th:text="${'... và sản phẩm từ ' + (order.storeGroups.size() - 1) + ' cửa hàng khác'}">... và sản phẩm từ 2 cửa hàng khác</span>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
             <div class="order-footer">
                 <div class="order-total" th:text="${'Tổng: ' + #numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT') + ' VND'}">170.000 VND</div>
