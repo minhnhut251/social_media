@@ -12,7 +12,7 @@
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 <br>
-<div class="container mt-5">
+<div class="container" style="margin-top: 100px;">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -25,12 +25,12 @@
 
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="firstName" class="form-label">Tên</label>
-                                <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required>
-                            </div>
-                            <div class="col-md-6">
                                 <label for="lastName" class="form-label">Họ</label>
                                 <input type="text" class="form-control" id="lastName" th:field="*{lastName}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="firstName" class="form-label">Tên</label>
+                                <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required>
                             </div>
                         </div>
 

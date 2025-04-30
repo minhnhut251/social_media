@@ -127,26 +127,7 @@ public class CartController {
         return ResponseEntity.ok(response);
     }
 
-//    @PostMapping("/add/{productId}")
-//    public ResponseEntity<Map<String, Object>> addToCart(
-//            @PathVariable Long productId,
-//            @RequestParam(defaultValue = "1") Integer quantity,
-//            @AuthenticationPrincipal CustomUserDetails currentUser) {
-//
-//        Map<String, Object> response = new HashMap<>();
-//
-//        try {
-//            CartItemEntity cartItem = cartService.addToCart(currentUser.getUser(), productId, quantity);
-//            response.put("success", true);
-//            response.put("message", "Sản phẩm đã được thêm vào giỏ hàng");
-//            response.put("cartItem", cartItem.getId());
-//        } catch (Exception e) {
-//            response.put("success", false);
-//            response.put("message", e.getMessage());
-//        }
-//
-//        return ResponseEntity.ok(response);
-//    }
+
 
     @PostMapping("/update/{itemId}")
     public ResponseEntity<Map<String, Object>> updateCartItem(
@@ -191,7 +172,4 @@ public class CartController {
 
         return ResponseEntity.ok(response);
     }
-
-    // Phần này nên được tích hợp với CheckoutController hoặc sử dụng CheckoutService
-    // Loại bỏ phần POST /checkout trùng lặp và thay thế bằng redirect đến CheckoutController
 }
