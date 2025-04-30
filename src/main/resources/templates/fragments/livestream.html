@@ -183,47 +183,7 @@
                 width: calc(100% - 4px);
             }
         }
-<!--        .comment-interface {-->
-<!--            display: flex;-->
-<!--            align-items: center;-->
-<!--            gap: 10px;-->
-<!--            background: var(&#45;&#45;overlay-bg);-->
-<!--            color: var(&#45;&#45;primary-text-color);-->
-<!--            border-radius: 20px;-->
-<!--            padding: 12px 25px;-->
-<!--            flex-grow: 1;-->
-<!--        }-->
 
-<!--        .comment-interface input {-->
-<!--            flex-grow: 1;-->
-<!--            border: none;-->
-<!--            background: none;-->
-<!--            color: var(&#45;&#45;primary-text-color);-->
-<!--            outline: none;-->
-<!--        }-->
-
-<!--        /* Comments Section */-->
-<!--        .comments-container {-->
-<!--            position: absolute;-->
-<!--            bottom: 100px;-->
-<!--            left: 10px;-->
-<!--            width: 80%;-->
-<!--            height: 200px;-->
-<!--            display: flex;-->
-<!--            flex-direction: column;-->
-<!--            overflow: hidden;-->
-<!--        }-->
-
-<!--        .comment {-->
-<!--            display: flex;-->
-<!--            align-items: center;-->
-<!--            background: var(&#45;&#45;overlay-bg);-->
-<!--            color: var(&#45;&#45;primary-text-color);-->
-<!--            padding: 10px;-->
-<!--            border-radius: 10px;-->
-<!--            margin-bottom: 5px;-->
-<!--            animation: slideUp 5s linear forwards;-->
-<!--        }-->
 
 
 <!--   Dấu 3 chấm     -->
@@ -343,33 +303,18 @@
         </div>
     </div>
 
-<!--    <a th:href="@{/profile/{id}(id=${post.users.id})}" class="text-white">-->
-<!--        <img th:src="${post.users.avatar != null ? post.users.avatar : '/api/placeholder/40/40'}"-->
-<!--             class="rounded-circle" style="width: 30px; height: 30px;" alt="User avatar">-->
-<!--        <span th:text="${post.users.lastName + ' ' + post.users.firstName}">Username</span>-->
-<!--    </a>-->
     <h5 class="card-title livestream-title" style="padding: 10px;" th:text="${post.noiDung}">Livestream Title</h5>
 
-
-    <!-- Comments Section -->
-<!--    <div class="comments-container" id="comments-container"></div>-->
 
     <!-- Product Showcase -->
     <div th:if="${post.sanPham != null}" class="product-showcase">
         <img th:if="${post.sanPham.img != null && !post.sanPham.img.isEmpty()}" th:src="${post.sanPham.img}" alt="Product Image" style="width:50px;height:50px;background:red;margin-right:10px; object-fit: cover;">
-<!--        <div style="width:50px;height:50px;background:red;margin-right:10px"></div>-->
         <div class="product-details">
             <h6 th:text="${post.sanPham.tensp}" class="mb-1">Áo thun đỏ</h6>
             <p th:text="${#numbers.formatDecimal(post.sanPham.gia, 0, 'COMMA', 0, 'POINT') + ' ₫'}" class="text-muted mb-0">50.000 đ</p>
         </div>
         <div>
-<!--            <form th:action="@{/cart/add/{masp}(masp=${post.sanPham.masp})}" method="post">-->
-<!--                <input type="hidden" name="quantity" value="1">-->
-<!--                <button type="submit" class="btn btn-primary btn-sm me-2">-->
-<!--                    <i class="fas fa-edit"></i> Thêm vào giỏ-->
-<!--                </button>-->
-<!--                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
-<!--            </form>-->
+
             <button type="button" class="btn btn-primary w-100 me-2 add-to-cart-btn" th:data-product-id="${post.sanPham.masp}">
                 <i class="fas fa-edit"></i> Thêm vào giỏ
             </button>
@@ -390,6 +335,8 @@
             const postId = [[${post.mabd}]];
             const videoElement = document.getElementById('livestreamVideo-' + postId);
             const livestreamEndedElement = document.getElementById('livestreamEnded-' + postId);
+
+            alert(videoElement);
 
             // Check if this livestream is marked as ended in localStorage
             const endedLivestreams = JSON.parse(localStorage.getItem('endedLivestreams') || '[]');
