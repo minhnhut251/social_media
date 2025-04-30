@@ -236,7 +236,18 @@ public class PostController {
         return "redirect:/";
     }
 
+    @PostMapping("/end_livestream/{id}")
+    public String endLivestream(@PathVariable("id") long id) {
 
-    // Add this to your PostService class
+        PostEntity existingPost = postService.getPostById(id);
+
+
+        existingPost.setLivestream_ended(true);
+
+
+        postService.savePost(existingPost);
+
+        return "redirect:/livestream/" + id;
+    }
 
 }

@@ -21,7 +21,8 @@ public class PostEntity {
     private Long mabd;
     private String noiDung;
     private String mediaURL;
-    private String sharePost;
+//    private String sharePost;
+    private boolean livestream_ended = false;
 
     @Column(columnDefinition = "TIMESTAMP")
     @CreationTimestamp
