@@ -225,21 +225,21 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Chi tiết đơn hàng #<span th:text="${order.orderCode}">12345</span></h2>
 
-        <div>
-            <span class="order-status" th:classappend="${
-                order.status == 'PENDING' ? 'status-pending' :
-                order.status == 'PROCESSING' ? 'status-processing' :
-                order.status == 'SHIPPING' ? 'status-shipping' :
-                order.status == 'COMPLETED' ? 'status-completed' :
-                order.status == 'CANCELLED' ? 'status-cancelled' : ''
-            }" th:text="${
-                order.status == 'PENDING' ? 'Chờ xác nhận' :
-                order.status == 'PROCESSING' ? 'Đang xử lý' :
-                order.status == 'SHIPPING' ? 'Đang giao hàng' :
-                order.status == 'COMPLETED' ? 'Đã giao hàng' :
-                order.status == 'CANCELLED' ? 'Đã hủy' : order.status
-            }">Trạng thái</span>
-        </div>
+<!--        <div>-->
+<!--            <span class="order-status" th:classappend="${-->
+<!--                order.status == 'PENDING' ? 'status-pending' :-->
+<!--                order.status == 'PROCESSING' ? 'status-processing' :-->
+<!--                order.status == 'SHIPPING' ? 'status-shipping' :-->
+<!--                order.status == 'COMPLETED' ? 'status-completed' :-->
+<!--                order.status == 'CANCELLED' ? 'status-cancelled' : ''-->
+<!--            }" th:text="${-->
+<!--                order.status == 'PENDING' ? 'Chờ xác nhận' :-->
+<!--                order.status == 'PROCESSING' ? 'Đang xử lý' :-->
+<!--                order.status == 'SHIPPING' ? 'Đang giao hàng' :-->
+<!--                order.status == 'COMPLETED' ? 'Đã giao hàng' :-->
+<!--                order.status == 'CANCELLED' ? 'Đã hủy' : order.status-->
+<!--            }">Trạng thái</span>-->
+<!--        </div>-->
     </div>
 
     <div class="row">

@@ -63,7 +63,7 @@
             <th>Banner</th>
             <th>Ngày tạo</th>
             <th>Ngày cập nhật</th>
-            <th>Hành động</th>
+<!--            <th>Hành động</th>-->
           </tr>
           </thead>
           <tbody id="vendorTable">
@@ -81,17 +81,17 @@
             <td><img th:src="${user.banner}" alt="banner" class="banner-image"/></td>
             <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
             <td th:text="${#temporals.format(user.updatedAt, 'yyyy-MM-dd HH:mm')}"></td>
-            <td>
-              <div class="action-buttons">
-                <a th:href="@{'/admin/users/edit/' + ${user.id}}" class="btn btn-sm btn-primary">
-                  <i class="fas fa-edit"></i> Sửa
-                </a>
-                <a th:href="@{'/admin/users/delete/' + ${user.id}}"
-                   class="btn btn-sm btn-danger" onclick="return confirm('Xoá tài khoản này?')">
-                  <i class="fas fa-trash"></i> Xoá
-                </a>
-              </div>
-            </td>
+<!--            <td>-->
+<!--              <div class="action-buttons">-->
+<!--                <a th:href="@{'/admin/users/edit/' + ${user.id}}" class="btn btn-sm btn-primary">-->
+<!--                  <i class="fas fa-edit"></i> Sửa-->
+<!--                </a>-->
+<!--                <a th:href="@{'/admin/users/delete/' + ${user.id}}"-->
+<!--                   class="btn btn-sm btn-danger" onclick="return confirm('Xoá tài khoản này?')">-->
+<!--                  <i class="fas fa-trash"></i> Xoá-->
+<!--                </a>-->
+<!--              </div>-->
+<!--            </td>-->
           </tr>
           <tr th:if="${#lists.isEmpty(users)}">
             <td colspan="13" class="text-center text-muted">Không có tài khoản nào</td>

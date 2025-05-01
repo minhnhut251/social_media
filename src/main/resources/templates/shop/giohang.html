@@ -101,12 +101,12 @@
             margin-bottom: 20px;
         }
 
-        .address-section {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        .store-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
         }
 
         @media (max-width: 767.98px) {
@@ -148,24 +148,10 @@
             <div th:unless="${#lists.isEmpty(cartItems)}">
                 <!-- Group cart items by store -->
                 <div th:each="store : ${storeGroups}" class="mb-4">
-                    <div class="d-flex align-items-center mb-2">
-                        <div class="form-check">
-                            <input class="form-check-input store-checkbox" type="checkbox" th:id="${'store-' + store.id}"
-                                   data-store-id="${store.id}">
-                            <label class="form-check-label fw-bold" th:for="${'store-' + store.id}"
-                                   th:text="${store.name}">Tên cửa hàng</label>
-                        </div>
-                    </div>
+                    <div class="store-header" th:text="${store.name}">Tên cửa hàng</div>
 
                     <div th:each="item : ${store.items}" class="cart-item p-3">
                         <div class="row align-items-center">
-                            <div class="col-auto">
-                                <div class="form-check">
-                                    <input class="form-check-input item-checkbox" type="checkbox"
-                                           th:id="${'item-' + item.id}" th:data-item-id="${item.id}"
-                                           th:data-store-id="${store.id}">
-                                </div>
-                            </div>
                             <div class="col-auto">
                                 <img th:if="${item.product.img != null && !item.product.img.isEmpty()}"
                                      th:src="${item.product.img}" class="product-image" alt="Product Image">
@@ -207,10 +193,10 @@
             <div class="cart-summary">
                 <h4 class="mb-3">Tổng giỏ hàng</h4>
 
-                <div class="summary-item">
-                    <span>Tổng số sản phẩm đã chọn:</span>
-                    <span id="selected-item-count">0</span>
-                </div>
+<!--                <div class="summary-item">-->
+<!--                    <span>Tổng số sản phẩm:</span>-->
+<!--                    <span id="total-item-count">0</span>-->
+<!--                </div>-->
 
                 <div class="summary-item">
                     <span>Tạm tính:</span>
@@ -229,19 +215,17 @@
                     <span id="total-payment" class="text-danger">0 VND</span>
                 </div>
 
-                <a href="/checkout" id="checkout-btn" class="btn btn-primary w-100 mt-3">
+                <a href="/checkout" class="btn btn-primary w-100 mt-3">
                     Tiến hành thanh toán
                 </a>
 
-                <a href="vendor/shop" class="btn btn-outline-secondary w-100 mt-2">
+                <a href="/vendor/shop" class="btn btn-outline-secondary w-100 mt-2">
                     Tiếp tục mua sắm
                 </a>
             </div>
-
         </div>
     </div>
 </div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -249,76 +233,39 @@
         const token = document.querySelector("meta[name='_csrf']").getAttribute("content");
         const header = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
 
-
         // Cart functionality
-        const itemCheckboxes = document.querySelectorAll('.item-checkbox');
-        const storeCheckboxes = document.querySelectorAll('.store-checkbox');
         const decreaseButtons = document.querySelectorAll('.decrease-qty');
         const increaseButtons = document.querySelectorAll('.increase-qty');
         const quantityInputs = document.querySelectorAll('.item-quantity');
         const removeButtons = document.querySelectorAll('.remove-item');
-        const checkoutBtn = document.getElementById('checkout-btn');
 
         // Calculate and update cart summary
         function updateCartSummary() {
-            const selectedItems = document.querySelectorAll('.item-checkbox:checked');
-            const selectedCount = selectedItems.length;
+            const allItems = document.querySelectorAll('.item-quantity');
+            // const itemCount = allItems.length;
             let subtotal = 0;
 
-            selectedItems.forEach(item => {
-                const itemId = item.getAttribute('data-item-id');
-                const quantityInput = document.querySelector(`.item-quantity[data-item-id="${itemId}"]`);
-                const price = parseFloat(quantityInput.getAttribute('data-price'));
-                const quantity = parseInt(quantityInput.value);
-
+            allItems.forEach(item => {
+                const price = parseFloat(item.getAttribute('data-price'));
+                const quantity = parseInt(item.value);
                 subtotal += price * quantity;
             });
 
             // Calculate shipping (for example, free shipping over 500,000 VND, otherwise 30,000 VND)
-            const shippingFee = subtotal > 500000 ? 0 : 30000;
+            const shippingFee = subtotal == 0 ? 0 : 30000;
             const total = subtotal + shippingFee;
 
             // Update summary display
-            document.getElementById('selected-item-count').textContent = selectedCount;
+            // document.getElementById('total-item-count').textContent = itemCount;
             document.getElementById('subtotal').textContent = formatCurrency(subtotal);
             document.getElementById('shipping-fee').textContent = formatCurrency(shippingFee);
             document.getElementById('total-payment').textContent = formatCurrency(total);
-
-            // Enable/disable checkout button
-            checkoutBtn.disabled = selectedCount === 0;
         }
 
         // Format number to currency (VND)
         function formatCurrency(amount) {
             return new Intl.NumberFormat('vi-VN', { style: 'decimal' }).format(amount) + ' VND';
         }
-
-        // Item checkbox change handler
-        itemCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const storeId = this.getAttribute('data-store-id');
-                const storeCheckbox = document.querySelector(`.store-checkbox[data-store-id="${storeId}"]`);
-                const storeItems = document.querySelectorAll(`.item-checkbox[data-store-id="${storeId}"]`);
-                const allChecked = Array.from(storeItems).every(item => item.checked);
-
-                storeCheckbox.checked = allChecked;
-                updateCartSummary();
-            });
-        });
-
-        // Store checkbox change handler
-        storeCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const storeId = this.getAttribute('data-store-id');
-                const storeItems = document.querySelectorAll(`.item-checkbox[data-store-id="${storeId}"]`);
-
-                storeItems.forEach(item => {
-                    item.checked = this.checked;
-                });
-
-                updateCartSummary();
-            });
-        });
 
         // Decrease quantity button handler
         decreaseButtons.forEach(button => {
@@ -403,45 +350,6 @@
                         alert('Có lỗi xảy ra khi xóa sản phẩm.');
                     });
                 }
-            });
-        });
-
-        // Checkout button handler
-        checkoutBtn.addEventListener('click', function() {
-            const selectedItems = Array.from(document.querySelectorAll('.item-checkbox:checked'))
-                .map(item => {
-                    const itemId = item.getAttribute('data-item-id');
-                    const quantity = document.querySelector(`.item-quantity[data-item-id="${itemId}"]`).value;
-                    return { id: itemId, quantity: quantity };
-                });
-
-            // Adding address on this page has been removed, this line is here just so that there wouldnt be an error
-            const addressId = null;
-
-
-            // Create order
-            fetch('/cart/checkout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    [header]: token
-                },
-                body: JSON.stringify({
-                    items: selectedItems,
-                    addressId: addressId
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = data.redirectUrl || '/orders';
-                } else {
-                    alert(data.message || 'Có lỗi xảy ra khi tạo đơn hàng.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Có lỗi xảy ra khi tạo đơn hàng.');
             });
         });
 
