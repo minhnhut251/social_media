@@ -186,7 +186,7 @@
 
 
 
-<!--   Dấu 3 chấm     -->
+/*  Dấu 3 chấm     */
                 .post-dropdown .dropdown-toggle::after {
             display: none;
         }
@@ -203,13 +203,8 @@
 
 
 
-        <!-- Add these styles to the <style> section in livestream.html (for livestreaming video)-->
-
-
 /* Ensure all interactive UI elements have a higher z-index */
-.top-navigation, .product-showcase, .interaction-bar {
-    position: relative;
-}
+/* .top-navigation, .product-showcase, .interaction-bar {position: relative;} */
 
 /* Style for the livestream video */
 .livestream-video {
@@ -219,7 +214,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: -10;
+    z-index: 0;
 }
 
 /* Style for the ended message */
@@ -235,7 +230,7 @@
     align-items: center;
     justify-content: center;
     font-size: 24px;
-    z-index: -9;
+    z-index: 0;
 }
     </style>
 
@@ -245,10 +240,10 @@
     </div>
 
     <!-- Top Navigation -->
-    <div class="top-navigation">
+    <div class="top-navigation" style="z-index: 10;">
         <div class="nav-icons">
 <!--            <div class="nav-icon"><i class="fas fa-user"></i></div>-->
-            <a th:href="@{/profile/{id}(id=${post.users.id})}">
+            <a th:href="@{/profile/{id}(id=${post.users.id})}" >
                 <img th:src="${post.users.avatar != null ? post.users.avatar : '/img/placeholder.jpg'}"
                      class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" alt="User avatar">
 
@@ -295,7 +290,7 @@
         </div>
     </div>
 
-    <h5 class="card-title livestream-title" style="padding: 10px;" th:text="${post.noiDung}">Livestream Title</h5>
+    <h5 class="card-title livestream-title" style="padding: 10px; z-index: 1;" th:text="${post.noiDung}">Livestream Title</h5>
 
 
     <!-- Product Showcase -->

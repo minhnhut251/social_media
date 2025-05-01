@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(function(stream) {
                 videoElement.srcObject = stream;
 
-                alert(videoElement.id + "playing");
+//                alert(videoElement.id + "playing");
             })
             .catch(function(err) {
                 console.error("Error_accessing_camera_", err);

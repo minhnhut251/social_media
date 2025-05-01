@@ -190,7 +190,7 @@ public class PostController {
         // Create the post without an image file
         postService.createPost(post, user, null);
 
-        return "redirect:/";
+        return "redirect:/livestream/" + post.getMabd();
     }
 
     @GetMapping("/livestream_edit/{id}")
@@ -233,7 +233,7 @@ public class PostController {
         // Save the updated post
         postService.savePost(existingPost);
 
-        return "redirect:/";
+        return "redirect:/livestream/" + id;
     }
 
     @PostMapping("/end_livestream/{id}")

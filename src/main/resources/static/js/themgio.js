@@ -33,10 +33,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     if (data.success) {
                         // Show success message
-                        showNotification(data.message || 'Sản phẩm đã được thêm vào giỏ hàng', 'success');
+//                        showNotification(data.message || 'Sản phẩm đã được thêm vào giỏ hàng', 'success');
 
                         // Update cart count
                         updateCartCount();
+                        alert("Thêm sản phẩm thành công.");
                     } else {
                         showNotification(data.message || 'Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng', 'error');
                     }

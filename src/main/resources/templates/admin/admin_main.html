@@ -11,7 +11,7 @@
     <style>
         body { background-color: #ffffff; color: #000000; }
         .sidebar { width: 250px; height: 100vh; position: fixed; left: 0; top: 0; padding: 60px 20px; background: #f8f9fa; }
-        .au { margin-left: 270px; padding: 60px 20px; }
+        .au { margin-left: 270px; padding: 100px 20px; }
         .sidebar a { color: #000000; text-decoration: none; display: block; padding: 10px; border-radius: 5px; }
         .sidebar a:hover { background: #e2e6ea; color: #007bff; }
 
@@ -26,9 +26,9 @@
 
 <div class="content au">
     <div>
-        <h2>Welcome to CodeJava.net Admin Control Panel</h2>
+        <h2>Trang Admin ShopSocial</h2>
         <form th:action="@{/admin/logout}" method="post">
-            <input type="submit" value="Logout" />
+            <input class="btn btn-danger" type="submit" value="Logout" />
         </form>
     </div>
 
