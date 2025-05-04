@@ -27,6 +27,29 @@
                 margin-left: 0;
                 padding: 70px 8px 20px 8px;
             }
+            .sidebar-mobile {
+                display: block !important;
+                width: 100%;
+                background: #f8f9fa;
+                border-radius: 16px;
+                box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.08);
+                padding: 16px 0;
+            }
+            .sidebar-mobile a {
+                display: block;
+                padding: 12px 20px;
+                border-radius: 8px;
+                margin-bottom: 8px;
+                font-weight: 500;
+                color: #000;
+                background: none;
+                transition: background 0.2s, color 0.2s;
+                text-decoration: none;
+            }
+            .sidebar-mobile a:hover {
+                background: #e2e6ea;
+                color: #007bff;
+            }
         }
         @media (max-width: 767.98px) {
             .au {
@@ -50,14 +73,60 @@
                 font-size: 1.2rem;
             }
         }
+        @media (max-width: 991.98px) {
+            .sidebar {
+                display: none !important;
+            }
+            .au {
+                margin-left: 0;
+                padding: 70px 8px 20px 8px;
+            }
+            .offcanvas .sidebar {
+                display: block !important;
+                position: static;
+                width: 100%;
+                height: auto;
+                background: #f8f9fa;
+                border-radius: 16px;
+                box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.08);
+                margin: 0 0 16px 0;
+                padding: 16px 0;
+            }
+            .offcanvas .sidebar a {
+                display: block;
+                padding: 12px 20px;
+                border-radius: 8px;
+                margin-bottom: 8px;
+                font-weight: 500;
+                color: #000;
+                background: none;
+                transition: background 0.2s, color 0.2s;
+                text-decoration: none;
+            }
+            .offcanvas .sidebar a:hover {
+                background: #e2e6ea;
+                color: #007bff;
+            }
+        }
     </style>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<div th:replace="~{fragments/sidebar_friend :: sidebar_friend}"></div>
+
+<!-- Hamburger button for mobile -->
+<button class="btn btn-primary d-lg-none position-fixed"
+        style="bottom: 20px; left: 20px; z-index: 1051; border-radius: 50%; width: 56px; height: 56px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+        type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+    <i class="fas fa-bars fa-lg"></i>
+</button>
+
+<!-- Desktop Sidebar -->
+<div class="sidebar d-none d-lg-block">
+    <div th:replace="~{fragments/sidebar_friend :: sidebar_friend}"></div>
+</div>
 
 <!-- Main Content -->
-<div class="content au container-fluid">
+<div class="content au container">
     <h3 class="mb-4">Những người bạn có thể biết</h3>
     <div class="row g-3">
         <div th:each="userDTO : ${suggestedUsers}" class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
@@ -81,7 +150,34 @@
         </div>
     </div>
 </div>
+<!-- Offcanvas Sidebar for mobile -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+    <div class="offcanvas-header" style="background: #fff;">
+        <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">Menu</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+        <div class="sidebar" style="width: 100%; position: static; height: auto; box-shadow: none; border-radius: 0; padding: 0 0 0 0;">
+            <div th:replace="~{fragments/sidebar_friend :: sidebar_friend}"></div>
+        </div>
+    </div>
 
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    // Auto-hide alerts after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert-float');
+            alerts.forEach(function(alert) {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    });
+</script>
 </body>
 </html>
 

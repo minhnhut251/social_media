@@ -192,9 +192,9 @@
         margin-bottom: 8px;
     }
 
-    .aii{
+    /* .aii{
         padding-top: 50px;
-    }
+    } */
 
 
 
@@ -229,13 +229,26 @@
     .sidebar i {
         font-size: 20px;
     }
+    .main-content {
+        margin-left: 10px;
+        padding: 30px;
+        transition: all 0.3s;
+    }
 
 </style>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<div class="container-fluid aii">
+
+<!-- Hamburger button for mobile -->
+<button class="btn btn-primary d-lg-none position-fixed"
+        style="bottom: 20px; left: 20px; z-index: 1051; border-radius: 50%; width: 56px; height: 56px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+        type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+    <i class="fas fa-bars fa-lg"></i>
+</button>
+
+<div class="container-fluid aii main-content">
     <div class="row">
-        <!-- Left Sidebar -->
+        <!-- Sidebar for desktop -->
         <div class="col-lg-3 col-xl-2 d-none d-lg-block">
             <div class="sidebar">
                 <div sec:authorize="isAuthenticated()">
@@ -254,136 +267,69 @@
                             <i class="fa-solid fa-users me-2"></i> Bạn bè
                         </a>
                     </li>
-
                 </ul>
-
-
-<!--                <div class="filter-section">-->
-<!--                    <div class="d-flex align-items-center">-->
-<!--                        <i class="bi bi-funnel me-2"></i>-->
-<!--                        <h5 class="mb-0">Bộ Lọc</h5>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div class="filter-section">-->
-<!--                    <div class="filter-title">Loại</div>-->
-<!--                    <div class="checkbox-item">-->
-<!--                        <input type="checkbox" class="form-check-input" id="type1" checked>-->
-<!--                        <label class="form-check-label" for="type1">Áo</label>-->
-<!--                    </div>-->
-<!--                    <div class="checkbox-item">-->
-<!--                        <input type="checkbox" class="form-check-input" id="type2" checked>-->
-<!--                        <label class="form-check-label" for="type2">Quần</label>-->
-<!--                    </div>-->
-<!--                    <div class="checkbox-item">-->
-<!--                        <input type="checkbox" class="form-check-input" id="type3" checked>-->
-<!--                        <label class="form-check-label" for="type3">Giày</label>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div class="filter-section">-->
-<!--                    <div class="filter-title">Giá</div>-->
-<!--                    <div class="checkbox-item">-->
-<!--                        <input type="checkbox" class="form-check-input" id="price1" checked>-->
-<!--                        <label class="form-check-label" for="price1">Dưới 500k</label>-->
-<!--                    </div>-->
-<!--                    <div class="checkbox-item">-->
-<!--                        <input type="checkbox" class="form-check-input" id="price2" checked>-->
-<!--                        <label class="form-check-label" for="price2">500k - 1 triệu</label>-->
-<!--                    </div>-->
-<!--                    <div class="checkbox-item">-->
-<!--                        <input type="checkbox" class="form-check-input" id="price3" checked>-->
-<!--                        <label class="form-check-label" for="price3">Trên 1 triệu</label>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div class="filter-section">-->
-<!--                    <div class="filter-title">Nơi bán</div>-->
-<!--                    <div class="checkbox-item">-->
-<!--                        <input type="checkbox" class="form-check-input" id="location1" checked>-->
-<!--                        <label class="form-check-label" for="location1">Hà Nội</label>-->
-<!--                    </div>-->
-<!--                    <div class="checkbox-item">-->
-<!--                        <input type="checkbox" class="form-check-input" id="location2" checked>-->
-<!--                        <label class="form-check-label" for="location2">TP. Hồ Chí Minh</label>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div class="filter-section">-->
-<!--                    <div class="filter-title">Dịch vụ & khuyến mãi</div>-->
-<!--                    <div class="checkbox-item">-->
-<!--                        <input type="checkbox" class="form-check-input" id="service1" checked>-->
-<!--                        <label class="form-check-label" for="service1">Freeship</label>-->
-<!--                    </div>-->
-<!--                    <div class="checkbox-item">-->
-<!--                        <input type="checkbox" class="form-check-input" id="service2" checked>-->
-<!--                        <label class="form-check-label" for="service2">Khuyến mãi</label>-->
-<!--                    </div>-->
-<!--                </div>-->
             </div>
         </div>
 
-        <div class="col-12 col-lg-6 col-xl-8 py-3" style="margin-top: 50px;">
-            <div class="d-lg-none mb-3">
-                <button class="btn btn-outline-secondary btn-sm me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterSidebar">
-                    <i class="bi bi-funnel"></i> Bộ lọc
-                </button>
-<!--                <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartSidebar">-->
-<!--                    <i class="bi bi-cart"></i> Giỏ hàng-->
-<!--                </button>-->
-            </div>
-
-
-
-            <div class="row">
-
-                <div class="col-6 col-md-4 col-xl-3 product-col" th:each="product : ${products}">
-                    <div class="card product-card">
+        <!-- Main content -->
+        <div class="col-12 col-lg-9 col-xl-10 py-3" style="margin-top: 50px;">
+            <div class="row g-3">
+                <div class="col-12 col-sm-6 col-md-4 col-xl-3 product-col" th:each="product : ${products}">
+                    <div class="card product-card h-100 d-flex flex-column">
                         <img th:if="${product.img != null && !product.img.isEmpty()}" th:src="${product.img}" class="product-image" alt="Quần Jean">
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column">
                             <h6 class="card-title" th:text="${product.tensp}">Quần Jean Nam</h6>
-                            <p class="card-text text-danger" th:text="${product.gia}">399.000đ</p>
-                            <p class="card-text text-danger" th:text="${product.tkbh.tenStore}">399.000đ</p>
-                            <div class="d-flex justify-content-between">
-                                <button type="button" class="btn btn-primary w-100 me-2 add-to-cart-btn" th:data-product-id="${product.masp}">
-                                    <i class="fas fa-edit"></i> Thêm vào giỏ
+                            <p class="card-text text-danger mb-1" th:text="${product.gia}">399.000đ</p>
+                            <p class="card-text text-secondary mb-2" th:text="${product.tkbh.tenStore}">Tên cửa hàng</p>
+                            <div class="d-flex gap-2 mt-auto">
+                                <button type="button"
+                                        class="btn btn-primary btn-sm flex-fill d-flex align-items-center justify-content-center add-to-cart-btn shadow-sm"
+                                        style="border-radius: 20px; font-weight: 500; font-size: 0.95rem; padding: 6px 10px;"
+                                        th:data-product-id="${product.masp}">
+                                    <i class="fas fa-cart-plus me-2"></i> Thêm vào giỏ
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary buy-now-btn" th:data-product-id="${product.masp}">Mua ngay</button>
+                                <button type="button"
+                                        class="btn btn-outline-primary btn-sm flex-fill d-flex align-items-center justify-content-center buy-now-btn shadow-sm"
+                                        style="border-radius: 20px; font-weight: 500; font-size: 0.95rem; padding: 6px 10px;"
+                                        th:data-product-id="${product.masp}">
+                                    <i class="fas fa-bolt me-2"></i> Mua ngay
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-
-
-
-<!--        <div class="col-lg-3 col-xl-2 d-none d-lg-block">-->
-<!--            <div class="cart-sidebar">-->
-<!--                <h5 class="mb-3"><i class="bi bi-cart me-2"></i>Giỏ hàng</h5>-->
-<!--                <div class="mb-3">-->
-<!--                    <div class="text-center">-->
-<!--                        <i class="bi bi-cart3" style="font-size: 3rem; color: #aaa;"></i>-->
-<!--                        <p class="mt-2">Chưa có sản phẩm</p>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="mb-3">-->
-<!--                    <h6>Đơn hàng</h6>-->
-<!--                    <p class="text-muted">Bạn chưa có đơn hàng nào</p>-->
-<!--                </div>-->
-<!--                <div class="mb-3">-->
-<!--                    <h6>Địa chỉ</h6>-->
-<!--                    <button class="btn btn-sm btn-outline-primary w-100">+ Thêm địa chỉ</button>-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                    <h6>Nhận xét</h6>-->
-<!--                    <p class="text-muted">Chưa có nhận xét nào</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
     </div>
 </div>
+
+<!-- Offcanvas Sidebar for mobile -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+    <div class="offcanvas-header" style="background: #fff;">
+        <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">Menu</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" style="background: white; padding: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.1);">
+        <div sec:authorize="isAuthenticated()">
+            <a class="h5 d-flex align-items-center mb-3" th:href="@{/profile/{userId}(userId=${#authentication.getPrincipal().getId()})}">
+                <i class="fa-solid fa-user-circle me-2"></i> Trang cá nhân
+            </a>
+        </div>
+        <ul class="list-unstyled">
+            <li>
+                <a th:href="@{/vendor/shop}" class="d-flex align-items-center mb-2">
+                    <i class="fa-solid fa-cart-shopping me-2"></i> Mua sắm
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/friends/list}" class="d-flex align-items-center mb-2">
+                    <i class="fa-solid fa-users me-2"></i> Bạn bè
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
 <div class="offcanvas offcanvas-start" tabindex="-1" id="filterSidebar">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title">Bộ Lọc</h5>
@@ -447,35 +393,6 @@
     </div>
 </div>
 
-<!--<div class="offcanvas offcanvas-end" tabindex="-1" id="cartSidebar">-->
-<!--    <div class="offcanvas-header">-->
-<!--        <h5 class="offcanvas-title"><i class="bi bi-cart me-2"></i>Giỏ hàng</h5>-->
-<!--        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>-->
-<!--    </div>-->
-<!--    <div class="offcanvas-body">-->
-<!--        <div class="mb-3">-->
-<!--            <div class="text-center">-->
-<!--                <i class="bi bi-cart3" style="font-size: 3rem; color: #aaa;"></i>-->
-<!--                <p class="mt-2">Chưa có sản phẩm</p>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        <div class="mb-3">-->
-<!--            <h6>Đơn hàng</h6>-->
-<!--            <p class="text-muted">Bạn chưa có đơn hàng nào</p>-->
-<!--        </div>-->
-
-<!--        <div class="mb-3">-->
-<!--            <h6>Địa chỉ</h6>-->
-<!--            <button class="btn btn-sm btn-outline-primary w-100">+ Thêm địa chỉ</button>-->
-<!--        </div>-->
-
-<!--        <div>-->
-<!--            <h6>Nhận xét</h6>-->
-<!--            <p class="text-muted">Chưa có nhận xét nào</p>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/js/themgio.js"></script>
 </body>

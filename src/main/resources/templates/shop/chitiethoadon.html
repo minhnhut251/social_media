@@ -225,21 +225,6 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Chi tiết đơn hàng #<span th:text="${order.orderCode}">12345</span></h2>
 
-<!--        <div>-->
-<!--            <span class="order-status" th:classappend="${-->
-<!--                order.status == 'PENDING' ? 'status-pending' :-->
-<!--                order.status == 'PROCESSING' ? 'status-processing' :-->
-<!--                order.status == 'SHIPPING' ? 'status-shipping' :-->
-<!--                order.status == 'COMPLETED' ? 'status-completed' :-->
-<!--                order.status == 'CANCELLED' ? 'status-cancelled' : ''-->
-<!--            }" th:text="${-->
-<!--                order.status == 'PENDING' ? 'Chờ xác nhận' :-->
-<!--                order.status == 'PROCESSING' ? 'Đang xử lý' :-->
-<!--                order.status == 'SHIPPING' ? 'Đang giao hàng' :-->
-<!--                order.status == 'COMPLETED' ? 'Đã giao hàng' :-->
-<!--                order.status == 'CANCELLED' ? 'Đã hủy' : order.status-->
-<!--            }">Trạng thái</span>-->
-<!--        </div>-->
     </div>
 
     <div class="row">
@@ -308,13 +293,17 @@
                                 <span class="ms-3 text-muted" th:text="${'x' + item.quantity}">x1</span>
                             </div>
                         </div>
-
-                        <div class="text-end">
-                            <div class="fw-bold order-item-price" th:text="${#numbers.formatDecimal(item.product.gia * item.quantity, 0, 'COMMA', 0, 'POINT') + ' VND'}">150.000 VND</div>
+                        <div class="d-flex align-items-center justify-content-end gap-2" style="min-width: 170px;">
+                            <div class="fw-bold order-item-price mb-0" th:text="${#numbers.formatDecimal(item.product.gia * item.quantity, 0, 'COMMA', 0, 'POINT') + ' VND'}">150.000 VND</div>
+                            <td th:text="${item.status.name()}"></td>
+                            <a th:if="${item.status.name() == 'DA_GIAO'}"
+                               th:href="@{/orders/trahang/{id} (id=${item.id})}"
+                               class="btn btn-outline-danger btn-xs px-2 py-1 d-flex align-items-center"
+                               style="font-size: 0.85rem; height: 28px;">
+                                <i class="fa-solid fa-rotate-left me-1" style="font-size: 1rem;"></i>
+                                Trả hàng
+                            </a>
                         </div>
-
-                        <td th:text="${item.status.name()}"></td>
-                        <a th:if="${item.status.name() == 'DA_GIAO'}" th:href="@{/orders/trahang/{id} (id=${item.id})}" class="btn btn-primary">Trả hàng</a>
                     </div>
 
 

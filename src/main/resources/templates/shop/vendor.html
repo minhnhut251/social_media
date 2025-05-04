@@ -133,19 +133,30 @@
             border-radius: var(--border-radius);
             animation: slideIn 0.5s forwards;
         }
-
+        @media (max-width: 991.98px) {
+            .main-content {
+                margin-left: 0;
+                padding: 30px 8px 20px 8px;
+            }
+        }
+      
     </style>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<!-- Sidebar Toggle Button for Mobile -->
-<button class="btn btn-primary toggle-sidebar d-lg-none position-fixed" style="top: 70px; left: 15px; z-index: 1000; display: none;">
-    <i class="fas fa-bars"></i>
+<!-- Hamburger button for mobile -->
+<button class="btn btn-primary d-lg-none position-fixed"
+        style="bottom: 20px; left: 20px; z-index: 1051; border-radius: 50%; width: 56px; height: 56px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+        type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+    <i class="fas fa-bars fa-lg"></i>
 </button>
 
 <div class="d-flex">
-    <div th:replace="~{fragments/sidebar_vendor :: sidebar_vendor}" class="sidebar"></div>
+    <!-- Sidebar for desktop only -->
+    <div class="d-none d-lg-block">
+        <div th:replace="~{fragments/sidebar_vendor :: sidebar_vendor}"></div>
+    </div>
 
     <div class="main-content">
         <!-- Alert messages -->
@@ -252,6 +263,20 @@
     </div>
 </div>
 
+<!-- Offcanvas Sidebar for mobile -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+    <div class="offcanvas-header" style="background: #fff;">
+        <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">Menu</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" style="background: white; padding: 18px; box-shadow: 2px 0 5px rgba(0,0,0,0.1);">
+        <!-- Sidebar for mobile (no d-none d-lg-block here) -->
+        <div class="sidebar" style="width: 100%; position: static; height: auto; box-shadow: none; border-radius: 0; padding: 0;">
+            <div th:replace="~{fragments/sidebar_vendor :: sidebar_vendor}"></div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script>
     // Auto-hide alerts after 5 seconds
@@ -263,16 +288,6 @@
                 bsAlert.close();
             });
         }, 5000);
-
-        // Toggle sidebar on mobile
-        const toggleBtn = document.querySelector('.toggle-sidebar');
-        const sidebar = document.querySelector('.sidebar');
-
-        if (toggleBtn && sidebar) {
-            toggleBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('show');
-            });
-        }
     });
 </script>
 </body>

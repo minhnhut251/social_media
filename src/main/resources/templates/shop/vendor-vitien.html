@@ -18,7 +18,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-<!--            font-family: Arial, sans-serif;-->
         }
 
         .product-img {
@@ -54,7 +53,7 @@
         /* Add margin to main container to avoid sidebar overlap */
         .main-vendor-wallet-container {
             margin-left: 270px;
-            padding: 60px 20px 20px 20px;
+            padding: 80px 20px 20px 20px;
             min-height: 100vh;
             transition: margin 0.3s;
         }
@@ -64,6 +63,38 @@
             .main-vendor-wallet-container {
                 margin-left: 0;
                 padding: 70px 8px 20px 8px;
+            }
+            .sidebar {
+                display: none !important;
+            }
+        }
+        /* Sidebar for mobile in offcanvas */
+        @media (max-width: 991.98px) {
+            .offcanvas .sidebar {
+                display: block !important;
+                position: static;
+                width: 100%;
+                height: auto;
+                background: #f8f9fa;
+                border-radius: 16px;
+                box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.08);
+                margin: 0 0 16px 0;
+                padding: 16px 0;
+            }
+            .offcanvas .sidebar a {
+                display: block;
+                padding: 12px 20px;
+                border-radius: 8px;
+                margin-bottom: 8px;
+                font-weight: 500;
+                color: #000;
+                background: none;
+                transition: background 0.2s, color 0.2s;
+                text-decoration: none;
+            }
+            .offcanvas .sidebar a:hover {
+                background: #e2e6ea;
+                color: #007bff;
             }
         }
 
@@ -91,19 +122,55 @@
 </head>
 <body class="bg-light">
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<div th:replace="~{fragments/sidebar_vendor :: sidebar_vendor}"></div>
 
-<hr>
-<hr>
-<hr>
+<!-- Hamburger button for mobile -->
+<button class="btn btn-primary d-lg-none position-fixed"
+        style="bottom: 20px; left: 20px; z-index: 1051; border-radius: 50%; width: 56px; height: 56px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+        type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+    <i class="fas fa-bars fa-lg"></i>
+</button>
 
-<div class="main-vendor-wallet-container">
-    <h3 class="mb-4">Ví tiền</h3>
-    <div class="wallet-card">
-        <div class="wallet-label">Số dư hiện tại</div>
-        <div class="wallet-amount" th:text="${tkbh.wallet}"></div>
-        <a th:href="@{/vendor/vitien/ruttien}" class="btn btn-primary mt-3">Rút tiền</a>
+<div class="d-flex">
+    <!-- Sidebar for desktop only -->
+    <div class="sidebar d-none d-lg-block">
+        <div th:replace="~{fragments/sidebar_vendor :: sidebar_vendor}"></div>
+    </div>
+
+    <div class="main-vendor-wallet-container flex-grow-1">
+        <h3 class="mb-4">Ví tiền</h3>
+        <div class="wallet-card">
+            <div class="wallet-label">Số dư hiện tại</div>
+            <div class="wallet-amount" th:text="${tkbh.wallet}"></div>
+            <a th:href="@{/vendor/vitien/ruttien}" class="btn btn-primary mt-3">Rút tiền</a>
+        </div>
     </div>
 </div>
+
+<!-- Offcanvas Sidebar for mobile -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+    <div class="offcanvas-header" style="background: #fff;">
+        <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">Menu</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" style="background: white; padding: 18px; box-shadow: 2px 0 5px rgba(0,0,0,0.1);">
+        <div class="sidebar" style="width: 100%; position: static; height: auto; box-shadow: none; border-radius: 0; padding: 0;">
+            <div th:replace="~{fragments/sidebar_vendor :: sidebar_vendor}"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    // Auto-hide alerts after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert-float');
+            alerts.forEach(function(alert) {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    });
+</script>
 </body>
 </html>

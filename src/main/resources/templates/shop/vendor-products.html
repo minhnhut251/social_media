@@ -51,101 +51,168 @@
             right: 20px;
             z-index: 1000;
         }
+        .main-content {
+            margin-left: 240px;
+            padding: 80px 40px;
+            transition: all 0.3s;
+        }
+        @media (max-width: 991.98px) {
+            .main-content {
+                margin-left: 0;
+                padding: 30px 8px 20px 8px;
+            }
+            .sidebar {
+                display: none !important;
+            }
+            .offcanvas .sidebar {
+                display: block !important;
+            }
+        }
+        @media (max-width: 991.98px) {
+            .offcanvas .sidebar {
+                display: block !important;
+                position: static;
+                width: 100%;
+                height: auto;
+                background: #f8f9fa;
+                border-radius: 16px;
+                box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.08);
+                margin: 0 0 16px 0;
+                padding: 16px 0;
+            }
+            .offcanvas .sidebar a {
+                display: block;
+                padding: 12px 20px;
+                border-radius: 8px;
+                margin-bottom: 8px;
+                font-weight: 500;
+                color: #000;
+                background: none;
+                transition: background 0.2s, color 0.2s;
+                text-decoration: none;
+            }
+            .offcanvas .sidebar a:hover {
+                background: #e2e6ea;
+                color: #007bff;
+            }
+        }
     </style>
 </head>
 <body class="bg-light">
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<div th:replace="~{fragments/sidebar_vendor :: sidebar_vendor}"></div>
 
-<hr>
-<hr>
-<hr>
+<!-- Hamburger button for mobile -->
+<button class="btn btn-primary d-lg-none position-fixed"
+        style="bottom: 20px; left: 20px; z-index: 1051; border-radius: 50%; width: 56px; height: 56px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+        type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+    <i class="fas fa-bars fa-lg"></i>
+</button>
 
-<div class="container mt-5">
-    <!-- Alert messages -->
-    <div th:if="${success}" class="alert alert-success alert-float alert-dismissible fade show" style="margin-top: 100px" role="alert">
-        <span th:text="${success}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    <div th:if="${error}" class="alert alert-danger alert-float alert-dismissible fade show" style="margin-top: 100px" role="alert">
-        <span th:text="${error}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div class="d-flex">
+    <!-- Sidebar for desktop only -->
+    <div class="sidebar d-none d-lg-block">
+        <div th:replace="~{fragments/sidebar_vendor :: sidebar_vendor}"></div>
     </div>
 
-    <h1 class="mb-4">Quản lý sản phẩm</h1>
-
-    <div th:if="${vendorInfo.status.name() != 'ACTIVE'}">
-        <div class="alert alert-warning">
-            Tài khoản của bạn chưa được xác nhận. Vui lòng chờ quản trị viên xác nhận để có thể quản lý sản phẩm.
+    <div class="main-content ">
+        <!-- Alert messages -->
+        <div th:if="${success}" class="alert alert-success alert-float alert-dismissible fade show" style="margin-top: 100px" role="alert">
+            <span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    </div>
-
-    <div th:if="${vendorInfo.status.name() == 'ACTIVE'}">
-        <!-- Add Product Form -->
-        <div class="form-section mb-4">
-            <h3>Thêm sản phẩm mới</h3>
-            <form th:action="@{/vendor/product/add}" method="post" enctype="multipart/form-data">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="tensp" class="form-label">Tên sản phẩm</label>
-                        <input type="text" class="form-control" id="tensp" name="tensp" required>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="sl" class="form-label">Số lượng</label>
-                        <input type="number" class="form-control" id="sl" name="sl" min="1" required>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label for="gia" class="form-label">Giá (VND)</label>
-                        <input type="number" class="form-control" id="gia" name="gia" min="0" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="moTa" class="form-label">Mô tả</label>
-                        <textarea class="form-control" id="moTa" name="moTa" rows="3"></textarea>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="productImage" class="form-label">Hình ảnh</label>
-                        <input type="file" class="form-control" id="productImage" name="productImage" accept="image/*">
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
-            </form>
+        <div th:if="${error}" class="alert alert-danger alert-float alert-dismissible fade show" style="margin-top: 100px" role="alert">
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 
-        <!-- Product List -->
-        <div class="products-section">
-            <h3 class="mb-4">Danh sách sản phẩm</h3>
+        <h1 class="mb-4">Quản lý sản phẩm</h1>
 
-            <div th:if="${products.empty}" class="alert alert-info">
-                Bạn chưa có sản phẩm nào. Hãy thêm sản phẩm mới.
+        <div th:if="${vendorInfo.status.name() != 'ACTIVE'}">
+            <div class="alert alert-warning">
+                Tài khoản của bạn chưa được xác nhận. Vui lòng chờ quản trị viên xác nhận để có thể quản lý sản phẩm.
+            </div>
+        </div>
+
+        <div th:if="${vendorInfo.status.name() == 'ACTIVE'}">
+            <!-- Add Product Form -->
+            <div class="form-section mb-4">
+                <h3>Thêm sản phẩm mới</h3>
+                <form th:action="@{/vendor/product/add}" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="tensp" class="form-label">Tên sản phẩm</label>
+                            <input type="text" class="form-control" id="tensp" name="tensp" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="sl" class="form-label">Số lượng</label>
+                            <input type="number" class="form-control" id="sl" name="sl" min="1" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="gia" class="form-label">Giá (VND)</label>
+                            <input type="number" class="form-control" id="gia" name="gia" min="0" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="moTa" class="form-label">Mô tả</label>
+                            <textarea class="form-control" id="moTa" name="moTa" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="productImage" class="form-label">Hình ảnh</label>
+                            <input type="file" class="form-control" id="productImage" name="productImage" accept="image/*">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+                </form>
             </div>
 
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-                <div class="col" th:each="product : ${products}">
-                    <div class="card h-100 product-card">
-                        <img th:if="${product.img != null && !product.img.isEmpty()}" th:src="${product.img}" class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;">
-                        <img th:unless="${product.img != null && !product.img.isEmpty()}" src="/images/product-placeholder.jpg" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${product.tensp}">Product Name</h5>
-                            <p class="card-text text-muted" th:text="${product.moTa}">Description</p>
-                            <p class="card-text"><strong>Giá: </strong><span th:text="${#numbers.formatDecimal(product.gia, 0, 'COMMA', 0, 'POINT')}">0</span> VND</p>
-                            <p class="card-text"><strong>Số lượng: </strong><span th:text="${product.sl}">0</span></p>
-                        </div>
-                        <div class="card-footer bg-transparent border-top-0">
-                            <div class="d-flex justify-content-between">
-                                <a th:href="@{/vendor/product/{id}(id=${product.masp})}" class="btn btn-primary">
-                                    <i class="fas fa-edit"></i> Sửa
-                                </a>
-                                <a th:href="@{/vendor/product/delete/{id}(id=${product.masp})}" class="btn btn-danger"
-                                   onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
-                                    <i class="fas fa-trash"></i> Xóa
-                                </a>
+            <!-- Product List -->
+            <div class="products-section">
+                <h3 class="mb-4">Danh sách sản phẩm</h3>
+
+                <div th:if="${products.empty}" class="alert alert-info">
+                    Bạn chưa có sản phẩm nào. Hãy thêm sản phẩm mới.
+                </div>
+
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="col" th:each="product : ${products}">
+                        <div class="card h-100 product-card">
+                            <img th:if="${product.img != null && !product.img.isEmpty()}" th:src="${product.img}" class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;">
+                            <img th:unless="${product.img != null && !product.img.isEmpty()}" src="/images/product-placeholder.jpg" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${product.tensp}">Product Name</h5>
+                                <p class="card-text text-muted" th:text="${product.moTa}">Description</p>
+                                <p class="card-text"><strong>Giá: </strong><span th:text="${#numbers.formatDecimal(product.gia, 0, 'COMMA', 0, 'POINT')}">0</span> VND</p>
+                                <p class="card-text"><strong>Số lượng: </strong><span th:text="${product.sl}">0</span></p>
+                            </div>
+                            <div class="card-footer bg-transparent border-top-0">
+                                <div class="d-flex justify-content-between">
+                                    <a th:href="@{/vendor/product/{id}(id=${product.masp})}" class="btn btn-primary">
+                                        <i class="fas fa-edit"></i> Sửa
+                                    </a>
+                                    <a th:href="@{/vendor/product/delete/{id}(id=${product.masp})}" class="btn btn-danger"
+                                       onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
+                                        <i class="fas fa-trash"></i> Xóa
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+</div>
+
+<!-- Offcanvas Sidebar for mobile -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+    <div class="offcanvas-header" style="background: #fff;">
+        <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">Menu</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" style="background: white; padding: 18px; box-shadow: 2px 0 5px rgba(0,0,0,0.1);">
+        <div class="sidebar" style="width: 100%; position: static; height: auto; box-shadow: none; border-radius: 0; padding: 0;">
+            <div th:replace="~{fragments/sidebar_vendor :: sidebar_vendor}"></div>
+        </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

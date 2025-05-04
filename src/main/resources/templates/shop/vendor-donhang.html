@@ -13,92 +13,139 @@
 
         .au { margin-left: 270px; padding: 60px 20px; }
 
-        /* Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-<!--            font-family: Arial, sans-serif;-->
+        /** {*/
+        /*    margin: 0;*/
+        /*    padding: 0;*/
+        /*    box-sizing: border-box;*/
+        /*}*/
+
+        body {
+            background-color: #f5f5f5;
+            color: var(--text-color);
+             padding-top: 56px;
         }
 
-        .product-img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
+
+        .main-content {
+            margin-left: 240px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+        .sidebar{
+            padding: 22px 20px !important;
+        }
+        @media (max-width: 991.98px) {
+            .main-content {
+                margin-left: 0;
+                padding: 30px 8px 20px 8px;
+            }
+            .sidebar {
+                display: none !important;
+            }
+            .offcanvas .sidebar {
+                display: block !important;
+            }
+        }
+        @media (max-width: 991.98px) {
+            .offcanvas .sidebar {
+                display: block !important;
+                position: static;
+                width: 100%;
+                height: auto;
+                background: #f8f9fa;
+                border-radius: 16px;
+                box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.08);
+                margin: 0 0 16px 0;
+                padding: 16px 0;
+            }
+            .offcanvas .sidebar a {
+                display: block;
+                padding: 12px 20px;
+                border-radius: 8px;
+                margin-bottom: 8px;
+                font-weight: 500;
+                color: #000;
+                background: none;
+                transition: background 0.2s, color 0.2s;
+                text-decoration: none;
+            }
+            .offcanvas .sidebar a:hover {
+                background: #e2e6ea;
+                color: #007bff;
+            }
+        }
+        .mt-5{
+            margin-top: 0 !important;
         }
 
-        .product-card {
-            transition: all 0.3s ease;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        .form-section, .products-section {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .alert-float {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
     </style>
 </head>
 <body class="bg-light">
 <div th:replace="~{fragments/navbar :: navbar}"></div>
-<div th:replace="~{fragments/sidebar_vendor :: sidebar_vendor}"></div>
 
-<hr>
-<hr>
-<hr>
+<!-- Hamburger button for mobile -->
+<button class="btn btn-primary d-lg-none position-fixed"
+        style="bottom: 20px; left: 20px; z-index: 1051; border-radius: 50%; width: 56px; height: 56px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
+        type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+    <i class="fas fa-bars fa-lg"></i>
+</button>
 
-<div class="container mt-5">
-    <!-- Alert messages -->
-
-    <div th:if="${orderItems.empty}">
-        <p class="empty-message">No order items found for this vendor.</p>
+<div class="d-flex">
+    <!-- Sidebar for desktop only -->
+    <div class="sidebar d-none d-lg-block">
+        <div th:replace="~{fragments/sidebar_vendor :: sidebar_vendor}"></div>
     </div>
 
-    <table class="table" th:if="${!orderItems.empty}">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total</th>
-            <th>Order ID</th>
-            <th>Created At</th>
-            <th>Updated At</th>
-            <th>Status</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${orderItems}">
-            <td th:text="${item.id}"></td>
-            <td th:text="${item.product.tensp}"></td>
-            <td th:text="${item.quantity}"></td>
-            <td th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 2, 'POINT')}"></td>
-            <td th:text="${#numbers.formatDecimal(item.total, 0, 'COMMA', 2, 'POINT')}"></td>
-            <td th:text="${item.order.id}"></td>
-            <td th:text="${#temporals.format(item.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
-            <td th:text="${#temporals.format(item.updatedAt, 'dd-MM-yyyy HH:mm')}"></td>
-            <td th:text="${item.status.name()}"></td>
-            <td> <a th:if="${item.status.name() == 'DA_THANH_TOAN'}" th:href="@{/vendor/donhang/update_donhang/{id} (id=${item.id})}" class="btn btn-primary">Xác nhận đã giao</a></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="main-content">
+        <div th:if="${orderItems.empty}">
+            <p class="empty-message">No order items found for this vendor.</p>
+        </div>
 
-
+        <table class="table" th:if="${!orderItems.empty}">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Order ID</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${orderItems}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.product.tensp}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 2, 'POINT')}"></td>
+                <td th:text="${#numbers.formatDecimal(item.total, 0, 'COMMA', 2, 'POINT')}"></td>
+                <td th:text="${item.order.id}"></td>
+                <td th:text="${#temporals.format(item.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+                <td th:text="${#temporals.format(item.updatedAt, 'dd-MM-yyyy HH:mm')}"></td>
+                <td th:text="${item.status.name()}"></td>
+                <td> <a th:if="${item.status.name() == 'DA_THANH_TOAN'}" th:href="@{/vendor/donhang/update_donhang/{id} (id=${item.id})}" class="btn btn-primary">Xác nhận đã giao</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<!-- Offcanvas Sidebar for mobile -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+    <div class="offcanvas-header" style="background: #fff;">
+        <h5 class="offcanvas-title" id="sidebarOffcanvasLabel">Menu</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" style="background: white; padding: 18px; box-shadow: 2px 0 5px rgba(0,0,0,0.1);">
+        <div class="sidebar" style="width: 100%; position: static; height: auto; box-shadow: none; border-radius: 0; padding: 0;">
+            <div th:replace="~{fragments/sidebar_vendor :: sidebar_vendor}"></div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
