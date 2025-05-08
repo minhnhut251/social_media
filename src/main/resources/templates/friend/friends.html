@@ -137,9 +137,34 @@
 
                 <h5 class="mt-2 mb-2" th:text="${userDTO.user.fullName}">Tên người dùng</h5>
 
+<!--                <div class="w-100 mt-auto">-->
+<!--                    <div th:if="${userDTO.friendStatus == 'Pending'}">-->
+<!--                        <button class="btn btn-secondary btn-sm w-100" disabled>Đã gửi lời mời</button>-->
+<!--                    </div>-->
+<!--                    <div th:if="${userDTO.friendStatus == null}">-->
+<!--                        <a th:href="@{/friends/add-friend(id=${userDTO.user.id})}"-->
+<!--                           class="btn btn-primary btn-sm w-100">Thêm bạn bè</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="w-100 mt-auto">-->
+<!--                    <div th:if="${userDTO.friendStatus == 'Pending'}">-->
+<!--                        <div class="d-flex">-->
+<!--                            <span class="btn btn-secondary btn-sm flex-grow-1 me-1">Đã gửi lời mời</span>-->
+<!--                            <a th:href="@{/friends/cancel-request(id=${userDTO.user.id})}"-->
+<!--                               class="btn btn-danger btn-sm" title="Hủy lời mời">-->
+<!--                                <i class="fas fa-times"></i>-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div th:if="${userDTO.friendStatus == null}">-->
+<!--                        <a th:href="@{/friends/add-friend(id=${userDTO.user.id})}"-->
+<!--                           class="btn btn-primary btn-sm w-100">Thêm bạn bè</a>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div class="w-100 mt-auto">
                     <div th:if="${userDTO.friendStatus == 'Pending'}">
-                        <button class="btn btn-secondary btn-sm w-100" disabled>Đã gửi lời mời</button>
+                        <a th:href="@{/friends/cancel-request(id=${userDTO.user.id})}"
+                           class="btn btn-outline-danger btn-sm w-100">Hủy lời mời kết bạn</a>
                     </div>
                     <div th:if="${userDTO.friendStatus == null}">
                         <a th:href="@{/friends/add-friend(id=${userDTO.user.id})}"

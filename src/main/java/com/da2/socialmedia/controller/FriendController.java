@@ -147,6 +147,22 @@ public class FriendController {
         return "/friend/friend_requests";
     }
 
+    @GetMapping("/cancel-request")
+    public String cancelFriendRequest(@AuthenticationPrincipal CustomUserDetails currentUser,
+                                      @RequestParam("id") Long receiverId,
+                                      RedirectAttributes redirectAttributes) {
+        User sender = currentUser.getUser();
+        boolean success = friendService.cancelFriendRequest(sender, receiverId);
+
+        if (success) {
+            redirectAttributes.addFlashAttribute("successMessage", "Đã hủy lời mời kết bạn!");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Không thể hủy lời mời kết bạn!");
+        }
+
+        return "redirect:/friends/goiy";
+    }
+
 
     @GetMapping("/list")
     public String friendList(@AuthenticationPrincipal CustomUserDetails currentUser, Model model) {
