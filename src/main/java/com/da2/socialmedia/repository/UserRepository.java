@@ -11,6 +11,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.email = ?1")
     public User findByEmail(String email);
 
+    @Query("SELECT u FROM User u WHERE u.id <> :currentUserId")
+    List<User> findAllExceptCurrent(@Param("currentUserId") Long currentUserId);
+
 
     @Query("SELECT CASE WHEN f.user1.id = :userId THEN f.user2.id ELSE f.user1.id END " +
             "FROM FriendEntity f WHERE f.user1.id = :userId OR f.user2.id = :userId")

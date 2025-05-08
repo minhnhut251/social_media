@@ -28,31 +28,101 @@ public class FriendController {
     @Autowired
     private FriendRepository friendRepository;
 
-    @GetMapping("/goiy")
-    public String showSuggestions(@AuthenticationPrincipal CustomUserDetails currentUser, Model model) {
-        User user = currentUser.getUser();
-
-        // Lấy danh sách ID bạn bè đã kết bạn
-        List<Long> friendIds = friendRepository.findConfirmedFriendIds(user.getId());
-
-        // Lấy danh sách người dùng chưa kết bạn
-
-        List<User> suggestedUsers = userRepository.findUsersNotInFriendList(user.getId(), friendIds);
-
-        List<UserFriendDTOEntity> suggestionDTOs = new ArrayList<>();
-
-        for (User suggested : suggestedUsers) {
-            Optional<FriendEntity> friendship = friendRepository.findFriendship(user, suggested);
-            String status = friendship.map(FriendEntity::getStatus).orElse(null);
-            suggestionDTOs.add(new UserFriendDTOEntity(suggested, status));
-        }
-
-//        model.addAttribute("suggestedUsers", suggestedUsers);
+//    @GetMapping("/goiy")
+//    public String showSuggestions(@AuthenticationPrincipal CustomUserDetails currentUser, Model model) {
+//        User user = currentUser.getUser();
+//
+//        // Lấy danh sách ID bạn bè đã kết bạn
+//        List<Long> friendIds = friendRepository.findConfirmedFriendIds(user.getId());
+//
+//        // Lấy danh sách người dùng chưa kết bạn
+//
+//        List<User> suggestedUsers = userRepository.findUsersNotInFriendList(user.getId(), friendIds);
+//
+//        List<UserFriendDTOEntity> suggestionDTOs = new ArrayList<>();
+//
+//        for (User suggested : suggestedUsers) {
+//            Optional<FriendEntity> friendship = friendRepository.findFriendship(user, suggested);
+//            String status = friendship.map(FriendEntity::getStatus).orElse(null);
+//            suggestionDTOs.add(new UserFriendDTOEntity(suggested, status));
+//        }
+//
+////        model.addAttribute("suggestedUsers", suggestedUsers);
+////        return "/friend/friends";
+//
+//        model.addAttribute("suggestedUsers", suggestionDTOs);
 //        return "/friend/friends";
+//    }
 
-        model.addAttribute("suggestedUsers", suggestionDTOs);
-        return "/friend/friends";
+//    @GetMapping("/goiy")
+//    public String showSuggestions(@AuthenticationPrincipal CustomUserDetails currentUser, Model model) {
+//        User user = currentUser.getUser();
+//
+//        // Danh sách ID bạn bè đã kết bạn
+//        List<Long> friendIds = friendRepository.findConfirmedFriendIds(user.getId());
+//
+//        // Danh sách người dùng chưa kết bạn
+//        List<User> suggestedUsers = userRepository.findUsersNotInFriendList(user.getId(), friendIds);
+//
+//        List<UserFriendDTOEntity> suggestionDTOs = new ArrayList<>();
+//
+//        for (User suggested : suggestedUsers) {
+//            Optional<FriendEntity> friendship = friendRepository.findFriendship(user, suggested);
+//
+//            // Nếu có mối quan hệ kết bạn đang chờ
+//            if (friendship.isPresent()) {
+//                FriendEntity relation = friendship.get();
+//
+//                // Nếu user hiện tại là người GỬI lời mời, vẫn hiển thị trong gợi ý + nút hủy
+//                if (relation.getUser1().getId().equals(user.getId()) && "Pending".equalsIgnoreCase(relation.getStatus())) {
+//                    suggestionDTOs.add(new UserFriendDTOEntity(suggested, "pending"));
+//                }
+//
+//
+//                // Nếu user hiện tại là người NHẬN lời mời => KHÔNG thêm vào gợi ý
+//                // Do đó, `continue` để bỏ qua vòng lặp này
+//                continue;
+//            }
+//
+//            // Không có lời mời nào => thêm bình thường
+//            suggestionDTOs.add(new UserFriendDTOEntity(suggested, null));
+//        }
+//
+//        model.addAttribute("suggestedUsers", suggestionDTOs);
+//        return "/friend/friends";
+//    }
+@GetMapping("/goiy")
+public String showSuggestions(@AuthenticationPrincipal CustomUserDetails currentUser, Model model) {
+    User user = currentUser.getUser();
+
+    // Danh sách tất cả người dùng ngoại trừ chính mình
+    List<User> allUsers = userRepository.findAllExceptCurrent(user.getId());
+
+    List<UserFriendDTOEntity> suggestionDTOs = new ArrayList<>();
+
+    for (User suggested : allUsers) {
+        Optional<FriendEntity> relationOpt = friendRepository.findFriendship(user, suggested);
+
+        if (relationOpt.isPresent()) {
+            FriendEntity relation = relationOpt.get();
+            String status = relation.getStatus();
+
+            if (relation.getUser1().getId().equals(user.getId()) && "Pending".equalsIgnoreCase(status)) {
+                // Người dùng hiện tại là NGƯỜI GỬI lời mời -> hiển thị nút "Hủy lời mời"
+                suggestionDTOs.add(new UserFriendDTOEntity(suggested, "pending"));
+            }
+            // Nếu là người nhận -> KHÔNG thêm vào danh sách gợi ý
+        } else {
+            // Chưa có mối quan hệ nào -> có thể gợi ý "Thêm bạn bè"
+            suggestionDTOs.add(new UserFriendDTOEntity(suggested, "none"));
+        }
     }
+
+    model.addAttribute("suggestedUsers", suggestionDTOs);
+    return "/friend/friends";
+}
+
+
 
 
 
@@ -145,6 +215,22 @@ public class FriendController {
 
         model.addAttribute("pendingRequests", pendingRequests);
         return "/friend/friend_requests";
+    }
+
+    @GetMapping("/cancel-request")
+    public String cancelFriendRequest(@AuthenticationPrincipal CustomUserDetails currentUser,
+                                      @RequestParam("id") Long receiverId,
+                                      RedirectAttributes redirectAttributes) {
+        User sender = currentUser.getUser();
+        boolean success = friendService.cancelFriendRequest(sender, receiverId);
+
+        if (success) {
+            redirectAttributes.addFlashAttribute("successMessage", "Đã hủy lời mời kết bạn!");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Không thể hủy lời mời kết bạn!");
+        }
+
+        return "redirect:/friends/goiy";
     }
 
 

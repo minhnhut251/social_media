@@ -38,6 +38,21 @@ public class FriendService {
         friendRepository.save(friendRequest);
         return true;
     }
+    public boolean cancelFriendRequest(User sender, Long receiverId) {
+        User receiver = userRepository.findById(receiverId).orElse(null);
+        if (receiver == null) {
+            return false;
+        }
+
+        // Chỉ tìm lời mời từ sender đến receiver với trạng thái Pending
+        Optional<FriendEntity> pendingRequest = friendRepository.findByUser1AndUser2AndStatus(sender, receiver, "Pending");
+
+        if (pendingRequest.isPresent()) {
+            friendRepository.delete(pendingRequest.get());
+            return true;
+        }
+        return false;
+    }
 
 
     // Chấp nhận lời mời kết bạn
