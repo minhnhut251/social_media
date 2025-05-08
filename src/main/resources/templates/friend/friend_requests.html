@@ -1,17 +1,18 @@
-
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lời mời kết bạn</title>
+    <title>ShopSocial</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <script src="/webjars/jquery/jquery.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <style>
         body { background-color: #ffffff; color: #000000; }
         .sidebar { width: 250px; height: 100vh; position: fixed; left: 0; top: 0; padding: 60px 20px; background: #f8f9fa; }
-        .au { margin-left: 270px; padding: 60px 20px; }
+        .au { margin-left: 270px; padding: 100px 20px; }
         .sidebar a { color: #000000; text-decoration: none; display: block; padding: 10px; border-radius: 5px; }
         .sidebar a:hover { background: #e2e6ea; color: #007bff; }
         .friend-card { background: #ffffff; padding: 10px; border-radius: 10px; text-align: center; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
@@ -25,7 +26,7 @@
             }
             .au {
                 margin-left: 0;
-                padding: 70px 8px 20px 8px;
+                padding: 100px 8px 20px 8px;
             }
             .offcanvas .sidebar {
                 display: block !important;
@@ -56,7 +57,7 @@
         }
         @media (max-width: 767.98px) {
             .au {
-                padding: 70px 4px 10px 4px;
+                padding: 100px 4px 10px 4px;
             }
             .friend-card img {
                 height: 100px;
@@ -64,7 +65,7 @@
         }
         @media (max-width: 575.98px) {
             .au {
-                padding: 60px 2px 5px 2px;
+                padding: 100px 2px 5px 2px;
             }
             .friend-card {
                 padding: 6px;
