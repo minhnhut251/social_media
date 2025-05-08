@@ -76,4 +76,14 @@ public class ProductService {
 
         productRepository.delete(product);
     }
+
+    public void discontinueProduct(Long id) {
+        SanphamEntity product = getProductById(id);
+
+        // Delete associated image
+//        fileService.deleteFileIfExists(product.getImg());
+
+        product.setDiscontinued(true);
+        productRepository.save(product);
+    }
 }

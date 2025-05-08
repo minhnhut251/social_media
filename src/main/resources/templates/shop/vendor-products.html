@@ -193,7 +193,7 @@
                 </div>
 
                 <div class="row row-cols-1 row-cols-md-3 g-4">
-                    <div class="col" th:each="product : ${products}">
+                    <div class="col" th:each="product : ${products}" th:if="${!product.discontinued}">
                         <div class="card h-100 product-card">
                             <img th:if="${product.img != null && !product.img.isEmpty()}" th:src="${product.img}" class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;">
                             <img th:unless="${product.img != null && !product.img.isEmpty()}" src="/images/product-placeholder.jpg" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
@@ -208,9 +208,13 @@
                                     <a th:href="@{/vendor/product/{id}(id=${product.masp})}" class="btn btn-primary">
                                         <i class="fas fa-edit"></i> Sửa
                                     </a>
-                                    <a th:href="@{/vendor/product/delete/{id}(id=${product.masp})}" class="btn btn-danger"
-                                       onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
-                                        <i class="fas fa-trash"></i> Xóa
+<!--                                    <a th:href="@{/vendor/product/delete/{id}(id=${product.masp})}" class="btn btn-danger"-->
+<!--                                       onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">-->
+<!--                                        <i class="fas fa-trash"></i> Xóa-->
+<!--                                    </a>-->
+                                    <a th:href="@{/vendor/product/discontinue/{id}(id=${product.masp})}" class="btn btn-danger"
+                                       onclick="return confirm('Bạn có chắc chắn muốn ngừng kinh doanh sản phẩm này?')">
+                                        <i class="fas fa-trash"></i> Ngừng kinh doanh
                                     </a>
                                 </div>
                             </div>

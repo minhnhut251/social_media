@@ -116,6 +116,19 @@ public class ProductController {
         return "redirect:/vendor/products";
     }
 
+    @GetMapping("/product/discontinue/{id}")
+    public String discontinueProduct(@PathVariable("id") Long id,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            productService.discontinueProduct(id);
+            redirectAttributes.addFlashAttribute("success", "Đã ngừng kinh doanh sản phẩm!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Lỗi: " + e.getMessage());
+        }
+
+        return "redirect:/vendor/products";
+    }
+
 
     @GetMapping("/shop")
     public String showShopPage(Model model) {

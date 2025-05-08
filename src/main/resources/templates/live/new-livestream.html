@@ -28,7 +28,7 @@
                                 <label for="productId" class="form-label">Chọn sản phẩm (tùy chọn)</label>
                                 <select class="form-select" id="productId" name="productId">
                                     <option value="">-- Không chọn sản phẩm --</option>
-                                    <option th:each="product : ${products}"
+                                    <option th:each="product : ${products}" th:if="${!product.discontinued}"
                                             th:value="${product.masp}"
                                             th:text="${product.tensp + ' - ' + product.gia + ' đ'}"></option>
                                 </select>

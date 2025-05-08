@@ -25,4 +25,6 @@ public class SanphamEntity {
     @ManyToOne
     @JoinColumn(name = "matkbh", nullable = false)
     private TaiKhoanBanHangEntity tkbh;
+
+    private boolean discontinued = false;
 }

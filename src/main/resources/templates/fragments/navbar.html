@@ -85,7 +85,7 @@
                 <a th:href="@{/login}" class="btn btn-primary btn-sm">Login</a>
             </div>
             <div sec:authorize="isAuthenticated()" class="d-flex align-items-center gap-2">
-                <span class="fw-bold">
+                <span class="fw-bold d-none d-lg-flex">
                     <a th:href="@{/profile/{userId}(userId=${#authentication.getPrincipal().getId()})}" class="text-decoration-none text-dark">
                         <span sec:authentication="principal.fullName"></span>
                     </a>

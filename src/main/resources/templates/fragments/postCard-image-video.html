@@ -79,12 +79,12 @@
                     <i class="fas fa-ellipsis-h"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" th:href="@{/post/{id}(id=${post.mabd})}"><i class="fas fa-eye me-2"></i>View Post</a></li>
+                    <li><a class="dropdown-item" th:href="@{/post/{id}(id=${post.mabd})}"><i class="fas fa-eye me-2"></i>Xem bài đăng</a></li>
                     <li th:if="${post.users.id == #authentication.getPrincipal().getId()}">
-                        <a class="dropdown-item" th:href="@{/post_edit/{id}(id=${post.mabd})}"><i class="fas fa-edit me-2"></i>Edit</a>
+                        <a class="dropdown-item" th:href="@{/post_edit/{id}(id=${post.mabd})}"><i class="fas fa-edit me-2"></i>Sửa</a>
                     </li>
                     <li th:if="${post.users.id == #authentication.getPrincipal().getId()}">
-                        <a class="dropdown-item text-danger" th:href="@{/post_delete/{id}(id=${post.mabd})}"><i class="fas fa-trash me-2"></i>Delete</a>
+                        <a class="dropdown-item text-danger" th:href="@{/post_delete/{id}(id=${post.mabd})}"><i class="fas fa-trash me-2"></i>Xóa</a>
                     </li>
                 </ul>
             </div>

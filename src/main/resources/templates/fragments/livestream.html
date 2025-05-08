@@ -127,17 +127,18 @@
         /* Responsive styles */
         @media (max-width: 992px) {
             .livestream-container {
-                height: 60vw;
+                height: 100vw;
                 max-height: 600px;
             }
             .product-showcase {
                 padding: 12px 6px;
+                bottom: 60px;
             }
         }
 
         @media (max-width: 768px) {
             .livestream-container {
-                height: 80vw;
+                height: 100vw;
                 max-width: 100vw;
                 min-height: 300px;
             }
@@ -154,8 +155,7 @@
                 height: 34px;
             }
             .product-showcase {
-                flex-direction: column;
-                align-items: flex-start;
+
                 padding: 10px 4px;
             }
             .product-details {
@@ -171,7 +171,7 @@
 
         @media (max-width: 480px) {
             .livestream-container {
-                height: 60vw;
+                height: 120vw;
                 min-height: 200px;
             }
             .product-showcase {
@@ -241,16 +241,18 @@
 
     <!-- Top Navigation -->
     <div class="top-navigation" style="z-index: 10;">
-        <div class="nav-icons">
+        <div class="nav-icons align-items-center">
 <!--            <div class="nav-icon"><i class="fas fa-user"></i></div>-->
             <a th:href="@{/profile/{id}(id=${post.users.id})}" >
                 <img th:src="${post.users.avatar != null ? post.users.avatar : '/img/placeholder.jpg'}"
                      class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" alt="User avatar">
 
             </a>
+            <a th:href="@{/profile/{id}(id=${post.users.id})}" th:text="${post.users.fullName}" class="text-decoration-none text-dark fw-bold">Username</a>
 
 
-                <button th:id="'likeBtn-' + ${post.mabd}"
+
+            <button th:id="'likeBtn-' + ${post.mabd}"
                         th:class="${likedPosts != null && likedPosts[post.mabd]} ? 'btn btn-primary btn-sm' : 'btn btn-outline-primary btn-sm'"
                         th:onclick="'toggleLike(' + ${post.mabd} + ')'">
                     <i th:class="${likedPosts != null && likedPosts[post.mabd]} ? 'fas fa-thumbs-up' : 'far fa-thumbs-up'"></i>
@@ -267,26 +269,27 @@
 
 
 
-            <div class="nav-icon"><i class="fas fa-share-alt"></i></div>
+<!--            <div class="nav-icon"><i class="fas fa-share-alt"></i></div>-->
 
+
+        </div>
+        <div class="nav-icons">
+<!--            <div class="nav-icon"><i class="fas fa-eye"></i><span class="badge">99</span></div>-->
+<!--            <div class="exit-icon"><i class="fas fa-times"></i></div>-->
             <div class="post-dropdown dropdown" sec:authorize="isAuthenticated()">
                 <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fas fa-ellipsis-h"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" th:href="@{/livestream/{id}(id=${post.mabd})}"><i class="fas fa-eye me-2"></i>View Post</a></li>
+                    <li><a class="dropdown-item" th:href="@{/livestream/{id}(id=${post.mabd})}"><i class="fas fa-eye me-2"></i>Xem livestream</a></li>
                     <li th:if="${post.users.id == #authentication.getPrincipal().getId()}">
-                        <a class="dropdown-item" th:href="@{/livestream_edit/{id}(id=${post.mabd})}"><i class="fas fa-edit me-2"></i>Edit</a>
+                        <a class="dropdown-item" th:href="@{/livestream_edit/{id}(id=${post.mabd})}"><i class="fas fa-edit me-2"></i>Sửa</a>
                     </li>
                     <li th:if="${post.users.id == #authentication.getPrincipal().getId()}">
-                        <a class="dropdown-item text-danger" th:href="@{/post_delete/{id}(id=${post.mabd})}"><i class="fas fa-trash me-2"></i>Delete</a>
+                        <a class="dropdown-item text-danger" th:href="@{/post_delete/{id}(id=${post.mabd})}"><i class="fas fa-trash me-2"></i>Xóa</a>
                     </li>
                 </ul>
             </div>
-        </div>
-        <div class="nav-icons">
-            <div class="nav-icon"><i class="fas fa-eye"></i><span class="badge">99</span></div>
-            <div class="exit-icon"><i class="fas fa-times"></i></div>
         </div>
     </div>
 
@@ -300,22 +303,37 @@
             <h6 th:text="${post.sanPham.tensp}" class="mb-1">Áo thun đỏ</h6>
             <p th:text="${#numbers.formatDecimal(post.sanPham.gia, 0, 'COMMA', 0, 'POINT') + ' ₫'}" class="text-muted mb-0">50.000 đ</p>
         </div>
-        <div>
+<!--        <div>-->
 
-            <button type="button" class="btn btn-primary w-100 me-2 add-to-cart-btn" th:data-product-id="${post.sanPham.masp}">
-                <i class="fas fa-edit"></i> Thêm vào giỏ
+<!--            <button type="button" class="btn btn-primary w-100 me-2 add-to-cart-btn" th:data-product-id="${post.sanPham.masp}">-->
+<!--                <i class="fas fa-edit"></i> Thêm vào giỏ-->
+<!--            </button>-->
+<!--            <button type="button" class="btn btn-outline-secondary buy-now-btn" th:data-product-id="${post.sanPham.masp}">Mua ngay</button>-->
+
+
+<!--        </div>-->
+
+        <div class="d-flex gap-2 mt-auto flex-column me-2">
+            <button type="button"
+                    class="btn btn-primary btn-sm flex-fill d-flex align-items-center justify-content-center add-to-cart-btn"
+                    style="border-radius: 20px; font-weight: 500; font-size: 0.95rem; padding: 6px 10px;"
+                    th:data-product-id="${post.sanPham.masp}">
+                <i class="fas fa-cart-plus me-2"></i> Thêm vào giỏ
             </button>
-            <button type="button" class="btn btn-outline-secondary buy-now-btn" th:data-product-id="${post.sanPham.masp}">Mua ngay</button>
-
-
+            <button type="button"
+                    class="btn btn-outline-primary btn-sm flex-fill d-flex align-items-center justify-content-center buy-now-btn"
+                    style="border-radius: 20px; font-weight: 500; font-size: 0.95rem; padding: 6px 10px;"
+                    th:data-product-id="${post.sanPham.masp}">
+                <i class="fas fa-bolt me-2"></i> Mua ngay
+            </button>
         </div>
     </div>
 
     <!-- Interaction Bar -->
-    <div class="interaction-bar">
-        <div class="nav-icon"><i class="fas fa-shopping-cart"></i></div>
+<!--    <div class="interaction-bar">-->
+<!--        <div class="nav-icon"><i class="fas fa-shopping-cart"></i></div>-->
 
-    </div>
+<!--    </div>-->
 
 
 </div>

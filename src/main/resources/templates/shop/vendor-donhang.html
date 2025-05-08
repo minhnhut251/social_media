@@ -118,15 +118,15 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
+                <th>Sản phẩm</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Tổng</th>
                 <th>Order ID</th>
-                <th>Created At</th>
-                <th>Updated At</th>
-                <th>Status</th>
-                <th></th>
+                <th>Thời điểm tạo</th>
+                <th>Cập nhật vào</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
             </tr>
             </thead>
             <tbody>
@@ -139,7 +139,11 @@
                 <td th:text="${item.order.id}"></td>
                 <td th:text="${#temporals.format(item.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
                 <td th:text="${#temporals.format(item.updatedAt, 'dd-MM-yyyy HH:mm')}"></td>
-                <td th:text="${item.status.name()}"></td>
+<!--                <td th:text="${item.status.name()}"></td>-->
+                <td th:text="${
+                                item.status.name() == 'DA_THANH_TOAN' ? 'Đã thanh toán' :
+                                item.status.name() == 'DA_GIAO' ? 'Đã giao' :
+                                item.status.name() == 'DA_TRA' ? 'Đã trả' : ''}"></td>
                 <td> <a th:if="${item.status.name() == 'DA_THANH_TOAN'}" th:href="@{/vendor/donhang/update_donhang/{id} (id=${item.id})}" class="btn btn-primary">Xác nhận đã giao</a></td>
             </tr>
             </tbody>
