@@ -161,16 +161,31 @@
 <!--                           class="btn btn-primary btn-sm w-100">Thêm bạn bè</a>-->
 <!--                    </div>-->
 <!--                </div>-->
+<!--                <div class="w-100 mt-auto">-->
+<!--                    <div th:if="${userDTO.friendStatus == 'Pending'}">-->
+<!--                        <a th:href="@{/friends/cancel-request(id=${userDTO.user.id})}"-->
+<!--                           class="btn btn-outline-danger btn-sm w-100">Hủy lời mời kết bạn</a>-->
+<!--                    </div>-->
+<!--                    <div th:if="${userDTO.friendStatus == null}">-->
+<!--                        <a th:href="@{/friends/add-friend(id=${userDTO.user.id})}"-->
+<!--                           class="btn btn-primary btn-sm w-100">Thêm bạn bè</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+
                 <div class="w-100 mt-auto">
-                    <div th:if="${userDTO.friendStatus == 'Pending'}">
+                    <!-- Nếu đã gửi lời mời -->
+                    <div th:if="${userDTO.friendStatus?.toLowerCase() == 'pending'}">
                         <a th:href="@{/friends/cancel-request(id=${userDTO.user.id})}"
                            class="btn btn-outline-danger btn-sm w-100">Hủy lời mời kết bạn</a>
                     </div>
-                    <div th:if="${userDTO.friendStatus == null}">
+
+                    <!-- Nếu chưa có mối quan hệ -->
+                    <div th:if="${userDTO.friendStatus == null or userDTO.friendStatus == 'none'}">
                         <a th:href="@{/friends/add-friend(id=${userDTO.user.id})}"
                            class="btn btn-primary btn-sm w-100">Thêm bạn bè</a>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
