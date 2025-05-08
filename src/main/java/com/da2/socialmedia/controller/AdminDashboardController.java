@@ -73,6 +73,18 @@ public class AdminDashboardController {
         return "redirect:/admin/users";
     }
 
+    @GetMapping("/users/lock/{id}")
+    public String lockUsers(@PathVariable Long id, @RequestParam(required = false) boolean confirm, Model model) {
+//        User user = userService.getUserById(id);
+
+//        if (!confirm) {
+//            return "redirect:/admin/users";
+//        }
+
+        userService.lockUser(id);
+        return "redirect:/admin/users";
+    }
+
 
 //    @GetMapping("/users/delete/{id}")
 //    public String deleteUsers(@PathVariable Long id) {

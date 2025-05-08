@@ -61,6 +61,8 @@ public class CustomUserDetails implements UserDetails   {
 
     public User getUser(){return user;}
 
+//    public boolean getLocked(){return user.isLocked();}
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<RoleEntity> roles = user.getRoles();
