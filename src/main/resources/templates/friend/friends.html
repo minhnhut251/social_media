@@ -131,10 +131,11 @@
     <div class="row g-3">
         <div th:each="userDTO : ${suggestedUsers}" class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
             <div class="friend-card p-2 border rounded text-center h-100 d-flex flex-column align-items-center">
+                <a th:href="@{/profile/{id}(id=${userDTO.user.id})}">
                 <img th:src="${userDTO.user.avatar != null && !userDTO.user.avatar.isEmpty()} ?
                           ${userDTO.user.avatar} : '/api/placeholder/150/150'"
                      th:alt="${userDTO.user.fullName}" class="img-fluid rounded-circle mb-2" style="width:100px; height:100px; object-fit:cover;">
-
+                </a>
                 <h5 class="mt-2 mb-2" th:text="${userDTO.user.fullName}">Tên người dùng</h5>
 
 <!--                <div class="w-100 mt-auto">-->
