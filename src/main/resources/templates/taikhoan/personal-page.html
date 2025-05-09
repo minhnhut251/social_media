@@ -81,7 +81,7 @@
                     <img th:unless="${profileUser.avatar != null}" src="/img/placeholder.jpg" class="avatar" alt="Avatar">
                     <span class="edit-overlay"><i class="fas fa-camera"></i></span>
                 </a>
-                <img th:if="${!isOwnProfile}" th:src="@{${profileUser.avatar}}" class="avatar" alt="Avatar">
+                <img th:if="${!isOwnProfile}" th:src="${profileUser.avatar != null and !profileUser.avatar.isEmpty()} ? ${profileUser.avatar} : '/img/placeholder.jpg'" class="avatar" alt="Avatar">
             </div>
         </div>
 
@@ -147,5 +147,6 @@
 
 <script src="/js/like.js"></script>
 <script src="/js/themgio.js"></script>
+<script src="/js/livestream.js"></script>
 </body>
 </html>

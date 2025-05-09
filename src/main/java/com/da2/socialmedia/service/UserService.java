@@ -67,6 +67,15 @@ public class UserService {
         userRepository.save(existingUser);
     }
 
+    public void unlockUser(Long id) {
+        User existingUser = getUserById(id);
+
+        // Update user fields
+        existingUser.setLocked(false);
+
+        userRepository.save(existingUser);
+    }
+
 
 
     public void updateAvatar(Long id, MultipartFile avatar_file) {

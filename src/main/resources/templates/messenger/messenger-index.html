@@ -12,7 +12,7 @@
 
     <style>
         body {
-            background-color: #6a11cb;
+            background-color: #f8f9fa;
             min-height: 100vh;
             margin: 0;
             overflow-x: hidden;
@@ -124,6 +124,7 @@
                 flex-direction: column;
                 border-radius: 0;
                 margin: 0;
+                margin-top:100px;
             }
             .sidebar {
                 width: 100%;
@@ -145,17 +146,17 @@
         @media (max-width: 600px) {
             .messenger-container {
                 width: 100vw;
-                height: 100vh;
-                min-height: 100vh;
+                height: 90vh;
                 border-radius: 0;
                 margin: 0;
+                margin-top:80px;
             }
             .sidebar {
-                max-height: 35vh;
+                height: 20vh;
                 padding: 8px 2px;
             }
             .chat-section {
-                height: 65vh;
+                height: 70vh;
                 min-height: 200px;
             }
             .chat-header, .message-input {
@@ -194,20 +195,19 @@
 <div class="messenger-container">
     <!-- Sidebar with user list -->
     <div class="sidebar p-3">
-        <div class="input-group mb-3">
-            <span class="input-group-text"><i class="bi bi-search"></i></span>
-            <input type="text" class="form-control" placeholder="Search">
-        </div>
+<!--        <div class="input-group mb-3">-->
+<!--            <span class="input-group-text"><i class="bi bi-search"></i></span>-->
+<!--            <input type="text" class="form-control" placeholder="Search">-->
+<!--        </div>-->
         <!-- User list sorted by most recent messages -->
         <div class="list-group" id="userList">
             <a th:each="user : ${sortedUsers}"
                th:if="${#authentication.getPrincipal().getUser().getId() != user.id}"
                th:href="@{/messenger/{userId}(userId=${user.id})}"
                th:class="${selectedUserId != null && selectedUserId == user.id} ? 'list-group-item list-group-item-action d-flex align-items-center py-2 active user-item' : 'list-group-item list-group-item-action d-flex align-items-center py-2 user-item'">
-                <img th:if="${user.avatar}" th:src="${user.avatar}" class="rounded-circle me-3" alt="Profile" style="width: 40px; height: 40px; object-fit: cover">
-                <img th:unless="${user.avatar}" src="/img/placeholder.jpg" class="rounded-circle me-3" alt="Profile">
+                <img th:src="${user.avatar != null and !user.avatar.isEmpty()} ? ${user.avatar} : '/img/placeholder.jpg'" class="rounded-circle me-3" alt="Profile" style="width: 40px; height: 40px; object-fit: cover">
                 <div>
-                    <h6 class="mb-1" th:text="${user.fullName}">User Name</h6>
+                    <h6 class="mb-1" th:text="${user.fullName}" style="color: black;">User Name</h6>
                     <small class="text-muted" th:if="${lastMessages.containsKey(user.id)}" th:text="${#strings.abbreviate(lastMessages.get(user.id).noiDung, 30) + ' • ' + #temporals.format(lastMessages.get(user.id).createdAt, 'dd MMM')}">Last message preview</small>
                 </div>
             </a>
@@ -221,11 +221,10 @@
         <!-- If a conversation is selected -->
         <div th:if="${nguoiNhan != null}" class="d-flex flex-column h-100">
             <div class="chat-header d-flex align-items-center p-3">
-                <img th:if="${nguoiNhan.avatar}" th:src="${nguoiNhan.avatar}" class="rounded-circle me-3" alt="Profile" style="width: 40px; height: 40px; object-fit: cover">
-                <img th:unless="${nguoiNhan.avatar}" src="/img/placeholder.jpg" class="rounded-circle me-3" alt="Profile">
+                <img th:src="${nguoiNhan.avatar != null and !nguoiNhan.avatar.isEmpty()} ? ${nguoiNhan.avatar} : '/img/placeholder.jpg'" class="rounded-circle me-3" alt="Profile" style="width: 40px; height: 40px; object-fit: cover">
                 <div>
                     <h6 class="mb-0"><span th:text="${nguoiNhan.fullName}">User Name</span></h6>
-                    <small class="text-muted">Last active 2 hours ago</small>
+<!--                    <small class="text-muted">Last active 2 hours ago</small>-->
                 </div>
                 <div class="ms-auto">
                     <button class="btn btn-link text-dark"><i class="bi bi-telephone-fill"></i></button>

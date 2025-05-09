@@ -234,7 +234,9 @@
 }
     </style>
 
-    <video th:id="'livestreamVideo-' + ${post.mabd}" class="livestream-video" autoplay></video>
+    <a th:href="@{/livestream/{id}(id=${post.mabd})}">
+        <video th:id="'livestreamVideo-' + ${post.mabd}" class="livestream-video" autoplay></video>
+    </a>
     <div th:id="'livestreamEnded-' + ${post.mabd}" class="livestream-ended" style="display: none;" th:data-ended="${post.livestream_ended}">
         Livestream đã kết thúc
     </div>
@@ -252,7 +254,7 @@
 
 
 
-            <button th:id="'likeBtn-' + ${post.mabd}"
+            <button sec:authorize="isAuthenticated()" th:id="'likeBtn-' + ${post.mabd}"
                         th:class="${likedPosts != null && likedPosts[post.mabd]} ? 'btn btn-primary btn-sm' : 'btn btn-outline-primary btn-sm'"
                         th:onclick="'toggleLike(' + ${post.mabd} + ')'">
                     <i th:class="${likedPosts != null && likedPosts[post.mabd]} ? 'fas fa-thumbs-up' : 'far fa-thumbs-up'"></i>
@@ -297,7 +299,7 @@
 
 
     <!-- Product Showcase -->
-    <div th:if="${post.sanPham != null}" class="product-showcase">
+    <div th:if="${post.sanPham != null && !post.sanPham.discontinued}" class="product-showcase">
         <img th:if="${post.sanPham.img != null && !post.sanPham.img.isEmpty()}" th:src="${post.sanPham.img}" alt="Product Image" style="width:50px;height:50px;background:red;margin-right:10px; object-fit: cover;">
         <div class="product-details">
             <h6 th:text="${post.sanPham.tensp}" class="mb-1">Áo thun đỏ</h6>

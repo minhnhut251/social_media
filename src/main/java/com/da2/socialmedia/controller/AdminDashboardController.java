@@ -85,6 +85,13 @@ public class AdminDashboardController {
         return "redirect:/admin/users";
     }
 
+    @GetMapping("/users/unlock/{id}")
+    public String unlockUsers(@PathVariable Long id, @RequestParam(required = false) boolean confirm, Model model) {
+
+        userService.unlockUser(id);
+        return "redirect:/admin/users";
+    }
+
 
 //    @GetMapping("/users/delete/{id}")
 //    public String deleteUsers(@PathVariable Long id) {

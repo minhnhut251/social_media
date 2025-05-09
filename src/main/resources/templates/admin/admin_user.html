@@ -90,7 +90,11 @@
                    class="btn btn-sm btn-danger" onclick="return confirm('Khóa tài khoản này?')">
                   <i class="fas fa-trash"></i> Khóa tài khoản
                 </a>
-                <div th:if="${user.locked}">Đã khóa</div>
+                <a th:if="${user.locked}" th:href="@{'/admin/users/unlock/' + ${user.id}}"
+                   class="btn btn-sm btn-danger" onclick="return confirm('Mở khóa tài khoản này?')">
+                  <i class="fas fa-trash"></i> Mở khóa
+                </a>
+<!--                <div th:if="${user.locked}">Đã khóa</div>-->
               </div>
             </td>
           </tr>
