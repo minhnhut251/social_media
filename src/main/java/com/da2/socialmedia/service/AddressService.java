@@ -28,19 +28,22 @@ public class AddressService {
         address.setUser(user);
 
         // Thiết lập các trường dữ liệu từ addressData theo đúng entity
-        address.setRecipientName(addressData.get("fullName"));
-        address.setPhone(addressData.get("phone"));
+//        address.setRecipientName(addressData.get("recipientName"));
+//        address.setPhone(addressData.get("phone"));
         address.setProvince(addressData.get("province"));
         address.setDistrict(addressData.get("district"));
         address.setWard(addressData.get("ward"));
 
         // Sử dụng addressDetail thay vì addressLine1 và addressLine2
-        String addressDetail = addressData.get("addressLine1");
-        if (addressData.containsKey("addressLine2") && addressData.get("addressLine2") != null
-                && !addressData.get("addressLine2").isEmpty()) {
-            addressDetail += ", " + addressData.get("addressLine2");
-        }
-        address.setAddressDetail(addressDetail);
+//        String addressDetail = addressData.get("addressLine1");
+//        if (addressData.containsKey("addressLine2") && addressData.get("addressLine2") != null
+//                && !addressData.get("addressLine2").isEmpty()) {
+//            addressDetail += ", " + addressData.get("addressLine2");
+//        }
+//        address.setAddressDetail(addressDetail);
+
+        address.setAddressDetail(addressData.get("addressDetail"));
+
 
         // Đặt địa chỉ mặc định nếu được chỉ định
         if (addressData.containsKey("isDefault") && "true".equals(addressData.get("isDefault"))) {

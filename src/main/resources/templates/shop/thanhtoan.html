@@ -174,9 +174,9 @@
                                            th:id="${'address-' + address.id}" th:value="${address.id}"
                                            th:checked="${status.index == 0}">
                                     <label class="form-check-label" th:for="${'address-' + address.id}">
-                                        <div class="fw-bold" th:text="${address.recipientName}">Tên người nhận</div>
-                                        <div th:text="${address.phone}">Số điện thoại</div>
-                                        <div class="text-muted small" th:text="${address.addressDetail + ', ' + address.ward + ', ' + address.district + ', ' + address.province}">
+<!--                                        <div class="fw-bold" th:text="${address.recipientName}">Tên người nhận</div>-->
+<!--                                        <div th:text="${address.phone}">Số điện thoại</div>-->
+                                        <div th:text="${address.addressDetail + ', ' + address.ward + ', ' + address.district + ', ' + address.province}">
                                             Địa chỉ chi tiết
                                         </div>
                                         <div th:if="${address.isDefault}" class="badge bg-primary mt-1">Mặc định</div>
@@ -359,14 +359,14 @@
             </div>
             <div class="modal-body">
                 <form id="addressForm" th:action="@{/cart/add-address}" method="post">
-                    <div class="mb-3">
-                        <label for="recipientName" class="form-label">Tên người nhận</label>
-                        <input type="text" class="form-control" id="recipientName" name="recipientName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Số điện thoại</label>
-                        <input type="tel" class="form-control" id="phone" name="phone" required>
-                    </div>
+<!--                    <div class="mb-3">-->
+<!--                        <label for="recipientName" class="form-label">Tên người nhận</label>-->
+<!--                        <input type="text" class="form-control" id="recipientName" name="recipientName" required>-->
+<!--                    </div>-->
+<!--                    <div class="mb-3">-->
+<!--                        <label for="phone" class="form-label">Số điện thoại</label>-->
+<!--                        <input type="tel" class="form-control" id="phone" name="phone" required>-->
+<!--                    </div>-->
                     <div class="mb-3">
                         <label for="province" class="form-label">Tỉnh/Thành phố</label>
                         <input type="text" class="form-control" id="province" name="province" required>
